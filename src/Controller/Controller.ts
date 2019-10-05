@@ -11,8 +11,8 @@ class Controller {
 
     this.model.setState({
       min: 11,
-      max: 91,
-      values: [30],
+      max: 98,
+      values: [30, 60],
       step: 5,
     });
     this.view.renderTemplate({
@@ -20,7 +20,7 @@ class Controller {
       skin: "green",
       bar: true,
       tip: true,
-      type: "single",
+      type: "double",
     });
   }
 
@@ -35,6 +35,38 @@ class Controller {
         value: (this.model.state.values as number[])[i],
       });
     }
+
+    this._addListener(wrapper, edge);
+  }
+
+  private _addListener(wrapper: HTMLElement, edge: number) {
+    wrapper.addEventListener("mousedown", e => {
+      e.preventDefault();
+      if ((e.target as HTMLElement).className !== "slider__handler") return;
+
+      const target = e.target;
+      const shiftX = e.offsetX;
+
+      const mousemove = _onMouseMove.bind(this);
+      const mouseup = _onMouseUp;
+
+      document.addEventListener("mousemove", mousemove);
+      document.addEventListener("mouseup", mouseup);
+
+      function _onMouseMove(this: Controller, e: MouseEvent) {
+        let left = e.clientX - shiftX - wrapper.offsetLeft;
+
+        left = left < 0 ? 0 : left;
+        left = left > edge ? edge : left;
+
+        this.model.setState({ left, target });
+      }
+
+      function _onMouseUp() {
+        document.removeEventListener("mousemove", mousemove);
+        document.removeEventListener("mouseup", mouseup);
+      }
+    });
   }
 }
 

@@ -9,6 +9,7 @@ interface IOnlyNumbers {
 
 class Model extends Observer {
   public state: IState = {};
+  private mapOfHandlers: Map<any, any> = new Map();
 
   constructor(state = {}) {
     super();
@@ -19,15 +20,56 @@ class Model extends Observer {
   public setState(state: any = {}): void {
     Object.assign(this.state, state);
 
-    this._correctState();
-    this.state.values ? this._correctValues() : "";
+    this._correctMinMaxRange();
+    this._correctStep();
+    this.state.values = this.state.values
+      ? (this.state.values as number[]).map(value => this._correctValue(value)).sort()
+      : [];
 
-    if (state.target) {
+    if (state.target && state.edge) {
       const pxValue = this._countPxValueFromValue(this.state.value as number);
       const pxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value));
 
-      this.emit("pxValueDone", { pxValue, value: this.state.value, target: state.target, pxValues });
+      this.mapOfHandlers.set(state.target, { value: state.value, pxValue });
+
+      console.log(this.mapOfHandlers);
+
+      this.emit("pxValueDone", {
+        target: state.target,
+        value: this.state.value,
+        values: this.state.values,
+        pxValue,
+        pxValues,
+      });
     }
+
+    if (state.target && state.left) {
+      this.state.value = this._countValueFromLeft(state.left);
+      this.state.value = this._correctValue(this.state.value);
+
+      const pxValue = this._countPxValueFromValue(this.state.value as number);
+
+      this.mapOfHandlers.set(state.target, { value: this.state.value, pxValue });
+
+      const pxValues = [];
+      for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
+        pxValues.push(handlerObj.pxValue);
+      }
+      pxValues.sort((a, b) => a - b);
+
+      this.emit("pxValueDone", {
+        target: state.target,
+        value: this.state.value,
+        values: this.state.values,
+        pxValue,
+        pxValues,
+      });
+    }
+  }
+
+  private _countValueFromLeft(left: number): number {
+    const state = this.state as IOnlyNumbers;
+    return (left / ((state.edge / (state.max - state.min)) * state.step)) * state.step + state.min;
   }
 
   private _countPxValueFromValue(value: number): number {
@@ -35,14 +77,11 @@ class Model extends Observer {
     return (value - state.min) * (state.edge / (state.max - state.min));
   }
 
-  private _correctState() {
-    this._correctMinMaxRange();
-    this._correctStep();
-  }
+  private _correctValue(value: number): number {
+    value = this._correctValueInTheRange(value);
+    value = this._correctValueByStep(value);
 
-  private _correctValues() {
-    this.state.values = (this.state.values as number[]).map(value => this._correctValueInTheRange(value));
-    this.state.values = (this.state.values as number[]).map(value => this._correctValueByStep(value)).sort();
+    return value;
   }
 
   private _correctMinMaxRange(): void {
