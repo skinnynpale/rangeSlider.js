@@ -3,6 +3,9 @@ import { Observer } from "../Observer/Observer";
 interface IState {
   [key: string]: number | number[];
 }
+interface IOnlyNumbers {
+  [key: string]: number;
+}
 
 class Model extends Observer {
   public state: IState = {};
@@ -13,11 +16,23 @@ class Model extends Observer {
     this.setState(state);
   }
 
-  public setState(state = {}): void {
+  public setState(state: any = {}): void {
     Object.assign(this.state, state);
 
     this._correctState();
     this.state.values ? this._correctValues() : "";
+
+    if (state.target) {
+      const pxValue = this._countPxValueFromValue(this.state.value as number);
+      const pxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value));
+
+      this.emit("pxValueDone", { pxValue, value: this.state.value, target: state.target, pxValues });
+    }
+  }
+
+  private _countPxValueFromValue(value: number): number {
+    const state = this.state as IOnlyNumbers;
+    return (value - state.min) * (state.edge / (state.max - state.min));
   }
 
   private _correctState() {

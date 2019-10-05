@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { View } from "./View";
 
 import jsdom from "jsdom";
-
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');
 const document = dom.window.document;
