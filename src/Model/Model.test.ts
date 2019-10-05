@@ -86,4 +86,14 @@ describe("Model", () => {
     expect(model.state.min).to.eq(-200);
     expect(model.state.max).to.eq(50);
   });
+  it("Должен отсортировать значения", () => {
+    const model = new Model({
+      min: 10,
+      max: 80,
+      values: [60, -40],
+      step: 3,
+    });
+
+    expect(model.state.values).to.deep.eq([12, 60]);
+  });
 });

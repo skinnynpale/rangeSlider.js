@@ -15,9 +15,7 @@ class Model {
     this._correctMinMaxRange();
     this._correctStep();
     this.state.values = (this.state.values as number[]).map(value => this._correctValueInTheRange(value));
-    this.state.values = (this.state.values as number[]).map(value => this._correctValueByStep(value));
-
-    console.log(this.state);
+    this.state.values = (this.state.values as number[]).map(value => this._correctValueByStep(value)).sort();
   }
 
   private _correctMinMaxRange(): void {
