@@ -2,7 +2,6 @@ class View {
   constructor(public anchor: HTMLElement = document.body) {}
 
   public renderTemplate({ direction, skin, bar, tip, type }: any) {
-    this.anchor.innerHTML = "";
     const sliderTemplate = `
       <div class="wrapper-slider wrapper-slider--${direction}">
         <div class="slider slider--${direction} slider--${skin}">
