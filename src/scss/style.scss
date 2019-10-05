@@ -1,0 +1,130 @@
+div[class*="anchor"] {
+  padding: 20px;
+  width: 250px;
+}
+
+.wrapper-slider {
+  position: relative;
+
+  &--horizontal {
+    padding-top: 46px;
+    padding-bottom: 10px;
+  }
+}
+
+.slider {
+  background-color: rgb(230, 230, 230);
+  border-radius: 3px;
+
+  &__tongue {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 0;
+    z-index: -1;
+  }
+
+  &__bar {
+    position: absolute;
+    border-radius: 3px;
+  }
+
+  &__handler {
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+  }
+
+  &__tip {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    border-radius: 3px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+    outline: none;
+    &::before {
+      content: attr(data-value);
+    }
+  }
+
+  &--horizontal {
+    height: 8px;
+
+    .slider__bar {
+      width: 150px;
+      height: 8px;
+      bottom: 10px;
+    }
+    .slider__handler {
+      bottom: 3px;
+      left: 135px;
+    }
+    .slider__tip {
+      padding: 2px 5px;
+      top: -33px;
+      left: 50%;
+      transform: translate(-50%);
+    }
+    .slider__tongue {
+      bottom: -5px;
+      left: 50%;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 14px solid inherit;
+      transform: rotate(180deg) translate(50%);
+    }
+  }
+
+  &--vertical {
+    height: 250px;
+    width: 8px;
+
+    .slider__bar {
+      width: 8px;
+      height: 150px;
+      bottom: 0px;
+    }
+    .slider__handler {
+      bottom: 135px;
+      left: -8px;
+    }
+    .slider__tip {
+      padding: 2px 5px;
+      top: 0px;
+      left: 40px;
+    }
+  }
+
+  &--green {
+    .slider__bar {
+      background-color: rgb(58, 190, 140);
+    }
+    .slider__handler {
+      background-color: rgb(58, 190, 140);
+    }
+    .slider__tip {
+      background-color: rgb(58, 190, 140);
+    }
+    .slider__tongue {
+      border-bottom: 14px solid rgb(58, 190, 140);
+    }
+  }
+
+  &--red {
+    .slider__bar {
+      background-color: rgb(216, 77, 77);
+    }
+    .slider__handler {
+      background-color: rgb(216, 77, 77);
+    }
+    .slider__tip {
+      background-color: rgb(216, 77, 77);
+    }
+    .slider__tongue {
+      border-bottom: 14px solid rgb(216, 77, 77);
+    }
+  }
+}

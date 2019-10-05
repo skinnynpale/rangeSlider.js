@@ -1,5 +1,9 @@
-class View {
-  constructor(public anchor: HTMLElement = document.body) {}
+import { Observer } from "../Observer/Observer";
+
+class View extends Observer {
+  constructor(public anchor: HTMLElement = document.body) {
+    super();
+  }
 
   public renderTemplate({ direction, skin, bar, tip, type }: any) {
     const sliderTemplate = `
