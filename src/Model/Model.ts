@@ -9,6 +9,7 @@ interface IOnlyNumbers {
 
 class Model extends Observer {
   public state: IState = {};
+  private mapOfHandlers: Map<HTMLElement, IOnlyNumbers> = new Map();
 
   constructor(state = {}) {
     super();
@@ -19,30 +20,86 @@ class Model extends Observer {
   public setState(state: any = {}): void {
     Object.assign(this.state, state);
 
-    this._correctState();
-    this.state.values ? this._correctValues() : "";
-
-    if (state.target) {
-      const pxValue = this._countPxValueFromValue(this.state.value as number);
-      const pxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value));
-
-      this.emit("pxValueDone", { pxValue, value: this.state.value, target: state.target, pxValues });
+    if (state.min || state.max || state.step) {
+      this._correctMinMaxRange();
+      this._correctStep();
     }
+
+    if (state.values) {
+      this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort();
+    }
+
+    // для начальной отрисовки
+    if (state.tempTarget && state.edge && state.tempValue) {
+      // высчитываем tempPxValue от переданного value
+      const tempPxValue = this._countPxValueFromValue(this.state.tempValue as number);
+
+      // высчитываем массив tempPxValues для правильного отображения bar
+      const tempPxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value));
+
+      // записываем результаты в нашу карту
+      this.mapOfHandlers.set(state.tempTarget, {
+        tempValue: state.tempValue,
+        tempPxValue,
+      });
+
+      this.emit("pxValueDone", {
+        tempTarget: this.state.tempTarget,
+        tempValue: this.state.tempValue,
+        tempPxValue,
+        tempPxValues,
+      });
+    }
+
+    // для отрисовки от действий пользователя
+    if (state.tempTarget && state.left) {
+      // высчитываем tempValue от переданного userLeft
+      this.state.tempValue = this._countValueFromLeft(state.left);
+
+      // Корректируем его
+      this.state.tempValue = this._correctValue(this.state.tempValue);
+
+      // Высчитываем сколько px для этого value нужно
+      const tempPxValue = this._countPxValueFromValue(this.state.tempValue as number);
+
+      // записываем новый результат в нашу карту заменяя старые значения
+      this.mapOfHandlers.set(state.tempTarget, { tempValue: this.state.tempValue, tempPxValue });
+
+      // берем из карты из всех бегунков value и перезаписываем массив значений
+      this.state.values = [];
+      for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
+        this.state.values.push(handlerObj.tempValue);
+      }
+      this.state.values.sort((a, b) => a - b);
+
+      // высчитываем массив tempPxValues для правильного отображения bar
+      const tempPxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value));
+
+      this.emit("pxValueDone", {
+        tempTarget: state.tempTarget,
+        tempValue: this.state.tempValue,
+        tempPxValue,
+        tempPxValues,
+      });
+    }
+  }
+
+  private _countValueFromLeft(left: number): number {
+    const state = this.state as IOnlyNumbers;
+    return (left / ((state.edge / (state.max - state.min)) * state.step)) * state.step + state.min;
   }
 
   private _countPxValueFromValue(value: number): number {
     const state = this.state as IOnlyNumbers;
-    return (value - state.min) * (state.edge / (state.max - state.min));
+    const tempPxValue = (value - state.min) * (state.edge / (state.max - state.min));
+    return tempPxValue;
   }
 
-  private _correctState() {
-    this._correctMinMaxRange();
-    this._correctStep();
-  }
+  private _correctValue(value: number): number {
+    value = this._correctValueInTheRange(value);
+    value = this._correctValueByStep(value);
 
-  private _correctValues() {
-    this.state.values = (this.state.values as number[]).map(value => this._correctValueInTheRange(value));
-    this.state.values = (this.state.values as number[]).map(value => this._correctValueByStep(value)).sort();
+    return value;
   }
 
   private _correctMinMaxRange(): void {
