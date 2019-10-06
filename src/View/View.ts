@@ -2,6 +2,7 @@ import { Observer } from "../Observer/Observer";
 
 class View extends Observer {
   private wrapper!: HTMLElement;
+  private state: any = {};
   constructor(public anchor: HTMLElement = document.body) {
     super();
   }
@@ -30,6 +31,8 @@ class View extends Observer {
       </div>
     `;
 
+    Object.assign(this.state, arguments[0]);
+
     this.anchor.insertAdjacentHTML("afterbegin", sliderTemplate);
     this.wrapper = this.anchor.querySelector(".wrapper-slider") as HTMLElement;
 
@@ -40,16 +43,27 @@ class View extends Observer {
     const tip = tempTarget.querySelector(".slider__tip") as HTMLElement;
     const bar = tempTarget.parentElement.querySelector(".slider__bar");
 
-    console.log(arguments[0]);
-
-    tempTarget.style.left = tempPxValue + "px";
-    bar.style.left = tempPxValues[0] + "px";
-    bar.style.width = tempPxValues[1] - tempPxValues[0] + 10 + "px";
+    if (this.state.direction === "vertical") {
+      if (this.state.type === "double") {
+        bar.style.bottom = tempPxValues[0] + "px";
+        bar.style.height = tempPxValues[1] - tempPxValues[0] + 10 + "px";
+      } else {
+        bar.style.height = tempPxValue + 10 + "px";
+      }
+    } else {
+      if (this.state.type === "double") {
+        bar.style.left = tempPxValues[0] + "px";
+        bar.style.width = tempPxValues[1] - tempPxValues[0] + 10 + "px";
+      } else {
+        bar.style.width = tempPxValue + 10 + "px";
+      }
+    }
+    if (this.state.direction === "vertical") {
+      tempTarget.style.bottom = tempPxValue + "px";
+    } else {
+      tempTarget.style.left = tempPxValue + "px";
+    }
     tip.setAttribute("data-value", `${tempValue}`);
-
-    // tempTarget.style.left = tempPxValue + "px";
-    // bar.style.width = tempPxValue + 10 + "px";
-    // tip.setAttribute("data-value", `${tempValue}`);
   }
 }
 
