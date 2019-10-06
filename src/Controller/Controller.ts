@@ -1,31 +1,42 @@
 import { Model } from "../Model/Model";
 import { View } from "../View/View";
+import { IntervalView } from "../View/IntervalView";
+import { VisualModel } from "../Model/VisualModel";
 
 class Controller {
   private model = new Model();
-  private view = new View();
+  private visualModel = new VisualModel();
+  private view: View = new View();
+  private intervalView: IntervalView = new IntervalView();
 
   constructor() {
-    this._bindEvents();
-
     this.model.setState({
       min: 11,
       max: 98,
       values: [31, 58],
       step: 5,
     });
-    this.view.renderTemplate({
+    this.visualModel.setState({
       direction: "horizontal",
       skin: "green",
       bar: true,
       tip: true,
       type: "double",
     });
+
+    if (this.visualModel.state.type === "double") {
+      this._bindView(this.intervalView);
+    } else {
+      this._bindView(this.view);
+    }
+
+    this.visualModel.setState({});
   }
 
-  private _bindEvents() {
-    this.view.on("finishRenderTemplate", (wrapper: HTMLElement) => this._arrangeHandlers(wrapper));
-    this.model.on("pxValueDone", (obj: {}) => this.view.renderValues(obj));
+  private _bindView(ExtendsView: View | IntervalView) {
+    this.visualModel.on("newVisualModel", (state: {}) => ExtendsView.renderTemplate(state));
+    ExtendsView.on("finishRenderTemplate", (wrapper: HTMLElement) => this._arrangeHandlers(wrapper));
+    this.model.on("pxValueDone", (obj: {}) => ExtendsView.renderValues(obj));
   }
 
   // Начальная расстановка бегунков

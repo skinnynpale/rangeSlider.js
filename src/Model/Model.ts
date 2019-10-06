@@ -1,4 +1,5 @@
 import { Observer } from "../Observer/Observer";
+import { VisualModel } from "./VisualModel";
 
 interface IState {
   [key: string]: number | number[];
