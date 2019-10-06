@@ -83,6 +83,29 @@ class Model extends Observer {
         tempPxValues,
       });
     }
+
+    if (state.target && state.left) {
+      this.state.value = this._countValueFromLeft(state.left);
+      this.state.value = this._correctValue(this.state.value);
+
+      const pxValue = this._countPxValueFromValue(this.state.value as number);
+
+      this.mapOfHandlers.set(state.target, { value: this.state.value, pxValue });
+
+      const pxValues = [];
+      for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
+        pxValues.push(handlerObj.pxValue);
+      }
+      pxValues.sort((a, b) => a - b);
+
+      this.emit("pxValueDone", {
+        target: state.target,
+        value: this.state.value,
+        values: this.state.values,
+        pxValue,
+        pxValues,
+      });
+    }
   }
 
   private _countValueFromLeft(left: number): number {
