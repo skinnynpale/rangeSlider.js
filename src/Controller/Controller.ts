@@ -11,10 +11,10 @@ class Controller {
     this._bindEvents();
 
     this.model.setState({
-      min: 11,
-      max: 150,
-      values: [31, 100],
-      step: 5,
+      min: 1,
+      max: 5,
+      values: [2, 3],
+      step: 1,
     });
     this.visualModel.setState({
       direction: "horizontal",
@@ -29,18 +29,11 @@ class Controller {
     this.visualModel.on("newVisualModel", (state: {}) => this.view.update(state));
     this.view.on("finishRenderTemplate", (wrapper: HTMLElement) => this._arrangeHandlers(wrapper));
     this.model.on("pxValueDone", (obj: {}) => this.view.update(obj));
+    this.view.on("onUserMove", (obj: {}) => this.model.setState(obj));
   }
 
   // Начальная расстановка бегунков
-  private _arrangeHandlers(wrapper: HTMLElement) {
-    const handlers = wrapper.querySelectorAll(".slider__handler");
-    let edge;
-    if (this.visualModel.state.direction === "vertical") {
-      edge = wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
-    } else {
-      edge = wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
-    }
-
+  private _arrangeHandlers({ edge, handlers }: any) {
     for (let i = 0; i < handlers.length; i++) {
       this.model.setState({
         edge,
@@ -48,41 +41,6 @@ class Controller {
         tempValue: (this.model.state.values as number[])[i],
       });
     }
-
-    this._listenUserEvents(wrapper);
-  }
-
-  private _listenUserEvents(wrapper: HTMLElement) {
-    wrapper.addEventListener("mousedown", e => {
-      e.preventDefault();
-      if ((e.target as HTMLElement).className !== "slider__handler") return;
-
-      const tempTarget = e.target as HTMLElement;
-      const shiftX = e.offsetX;
-      const shiftY = tempTarget.offsetHeight - e.offsetY;
-
-      const mousemove = _onMouseMove.bind(this);
-      const mouseup = _onMouseUp;
-
-      document.addEventListener("mousemove", mousemove);
-      document.addEventListener("mouseup", mouseup);
-
-      function _onMouseMove(this: Controller, e: MouseEvent) {
-        let left;
-        if (this.visualModel.state.direction === "vertical") {
-          left = wrapper.offsetHeight - e.clientY - shiftY + wrapper.getBoundingClientRect().top;
-        } else {
-          left = e.clientX - shiftX - wrapper.offsetLeft;
-        }
-
-        this.model.setState({ left, tempTarget });
-      }
-
-      function _onMouseUp() {
-        document.removeEventListener("mousemove", mousemove);
-        document.removeEventListener("mouseup", mouseup);
-      }
-    });
   }
 }
 

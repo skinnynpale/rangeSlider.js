@@ -46,8 +46,17 @@ class View extends Observer {
 
     this.anchor.insertAdjacentHTML("afterbegin", sliderTemplate);
     this.wrapper = this.anchor.querySelector(".wrapper-slider") as HTMLElement;
+    const handlers = this.wrapper.querySelectorAll(".slider__handler");
 
-    this.emit("finishRenderTemplate", this.wrapper);
+    let edge;
+    if (this.state.direction === "vertical") {
+      edge = this.wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
+    } else {
+      edge = this.wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
+    }
+
+    this._listenUserEvents();
+    this.emit("finishRenderTemplate", { handlers, edge });
   }
 
   private _renderValues({ tempPxValue, tempPxValues, tempValue, tempTarget }: any) {
@@ -85,6 +94,39 @@ class View extends Observer {
     } else {
       tempTarget.style.left = tempPxValue + "px";
     }
+  }
+
+  private _listenUserEvents() {
+    this.wrapper.addEventListener("mousedown", e => {
+      e.preventDefault();
+      if ((e.target as HTMLElement).className !== "slider__handler") return;
+
+      const tempTarget = e.target as HTMLElement;
+      const shiftX = e.offsetX;
+      const shiftY = tempTarget.offsetHeight - e.offsetY;
+
+      const mousemove = _onMouseMove.bind(this);
+      const mouseup = _onMouseUp;
+
+      document.addEventListener("mousemove", mousemove);
+      document.addEventListener("mouseup", mouseup);
+
+      function _onMouseMove(this: View, e: MouseEvent) {
+        let left;
+        if (this.state.direction === "vertical") {
+          left = this.wrapper.offsetHeight - e.clientY - shiftY + this.wrapper.getBoundingClientRect().top;
+        } else {
+          left = e.clientX - shiftX - this.wrapper.offsetLeft;
+        }
+
+        this.emit("onUserMove", { left, tempTarget });
+      }
+
+      function _onMouseUp() {
+        document.removeEventListener("mousemove", mousemove);
+        document.removeEventListener("mouseup", mouseup);
+      }
+    });
   }
 }
 
