@@ -12,12 +12,12 @@ class Controller {
 
     this.model.setState({
       min: 11,
-      max: 30000,
-      values: [31, 10000],
+      max: 150,
+      values: [31, 100],
       step: 5,
     });
     this.visualModel.setState({
-      direction: "vertical",
+      direction: "horizontal",
       skin: "red",
       bar: true,
       tip: true,
@@ -34,7 +34,6 @@ class Controller {
   // Начальная расстановка бегунков
   private _arrangeHandlers(wrapper: HTMLElement) {
     const handlers = wrapper.querySelectorAll(".slider__handler");
-
     let edge;
     if (this.visualModel.state.direction === "vertical") {
       edge = wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
