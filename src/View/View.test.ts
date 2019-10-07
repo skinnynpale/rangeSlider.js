@@ -26,6 +26,10 @@ describe("View", () => {
       bar: true,
       tip: true,
       type: "single",
+      scale: {
+        status: false,
+        count: 6,
+      },
     });
 
     expect(anchor.children[0].className).to.include("wrapper-slider wrapper-slider--horizontal");
@@ -42,9 +46,15 @@ describe("View", () => {
       bar: false,
       tip: false,
       type: "double",
+      scale: {
+        status: true,
+        count: 6,
+      },
     });
 
     expect(anchor.querySelectorAll(".slider__bar").length).to.eq(0);
+    expect(anchor.querySelectorAll(".slider__dashes").length).to.eq(1);
+    expect(anchor.querySelectorAll(".slider__dash").length).to.eq(6);
     expect(anchor.querySelectorAll(".slider__tip").length).to.eq(0);
     expect(anchor.querySelectorAll(".slider__handler").length).to.equal(2);
   });
