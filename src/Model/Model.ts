@@ -30,27 +30,35 @@ class Model extends Observer {
 
     // для начальной отрисовки
     if (state.tempTarget && state.edge && state.tempValue) {
-      this.state.tempPxValue = this._countPxValueFromValue(state.tempValue as number);
-      this._createArrayOfPxValues(this.state.values as number[]);
-
-      this.mapOfHandlers.set(state.tempTarget, {
-        tempValue: state.tempValue,
-        tempPxValue: this.state.tempPxValue,
-      });
+      this._initialCounting(state);
     }
 
     // для отрисовки от действий пользователя
     if (state.tempTarget && state.left) {
-      this.state.tempValue = this._countValueFromLeft(state.left);
-      this.state.tempPxValue = this._countPxValueFromValue(this.state.tempValue as number);
-
-      this.mapOfHandlers.set(state.tempTarget, {
-        tempValue: this.state.tempValue,
-        tempPxValue: this.state.tempPxValue,
-      });
-      this._updateArrayOfValues();
-      this._createArrayOfPxValues(this.state.values as number[]);
+      this._dynamicCounting(state);
     }
+  }
+
+  private _initialCounting(state: any) {
+    this.state.tempPxValue = this._countPxValueFromValue(state.tempValue as number);
+    this._createArrayOfPxValues(this.state.values as number[]);
+
+    this.mapOfHandlers.set(state.tempTarget, {
+      tempValue: state.tempValue,
+      tempPxValue: this.state.tempPxValue,
+    });
+  }
+
+  private _dynamicCounting(state: any) {
+    this.state.tempValue = this._countValueFromLeft(state.left);
+    this.state.tempPxValue = this._countPxValueFromValue(this.state.tempValue as number);
+
+    this.mapOfHandlers.set(state.tempTarget, {
+      tempValue: this.state.tempValue,
+      tempPxValue: this.state.tempPxValue,
+    });
+    this._updateArrayOfValues();
+    this._createArrayOfPxValues(this.state.values as number[]);
   }
 
   private _updateArrayOfValues(): void {
