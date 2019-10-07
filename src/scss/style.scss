@@ -136,3 +136,16 @@ div[class*="anchor"] {
     }
   }
 }
+
+.slider__dashes {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  bottom: -30px;
+}
+
+.slider__dash {
+  width: 1px;
+  height: 3px;
+  background-color: red;
+}

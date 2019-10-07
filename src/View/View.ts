@@ -29,6 +29,14 @@ class View extends Observer {
     const sliderTemplate = `
       <div class="wrapper-slider wrapper-slider--${direction}">
         <div class="slider slider--${direction} slider--${skin}">
+          <div class="slider__dashes">
+            <div class="slider__dash"></div>
+            <div class="slider__dash"></div>
+            <div class="slider__dash"></div>
+            <div class="slider__dash"></div>
+            <div class="slider__dash"></div>
+            <div class="slider__dash"></div>
+          </div>
           ${bar ? `<div class="slider__bar"></div>` : ""}
           <div class="slider__handler">
             ${tip ? `<div class="slider__tip">  <div class="slider__tongue"></div></div>` : ""}

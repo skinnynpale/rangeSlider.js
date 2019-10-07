@@ -11,17 +11,17 @@ class Controller {
     this._bindEvents();
 
     this.model.setState({
-      min: 1,
-      max: 5,
-      values: [2, 3],
-      step: 1,
+      min: 10,
+      max: 80,
+      values: [-40],
+      step: 3,
     });
     this.visualModel.setState({
       direction: "horizontal",
       skin: "red",
       bar: true,
       tip: true,
-      type: "double",
+      type: "single",
     });
   }
 
