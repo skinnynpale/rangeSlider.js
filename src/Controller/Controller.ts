@@ -12,13 +12,13 @@ class Controller {
 
     this.model.setState({
       min: 11,
-      max: 98,
-      values: [31, 58],
+      max: 30000,
+      values: [31, 10000],
       step: 5,
     });
     this.visualModel.setState({
-      direction: "horizontal",
-      skin: "green",
+      direction: "vertical",
+      skin: "red",
       bar: true,
       tip: true,
       type: "double",
@@ -26,18 +26,20 @@ class Controller {
   }
 
   private _bindEvents() {
-    this.visualModel.on("newVisualModel", (state: {}) => this.view.renderTemplate(state));
+    this.visualModel.on("newVisualModel", (state: {}) => this.view.update(state));
     this.view.on("finishRenderTemplate", (wrapper: HTMLElement) => this._arrangeHandlers(wrapper));
-    this.model.on("pxValueDone", (obj: {}) => this.view.renderValues(obj));
+    this.model.on("pxValueDone", (obj: {}) => this.view.update(obj));
   }
 
   // Начальная расстановка бегунков
   private _arrangeHandlers(wrapper: HTMLElement) {
     const handlers = wrapper.querySelectorAll(".slider__handler");
-    let edge = wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
 
+    let edge;
     if (this.visualModel.state.direction === "vertical") {
       edge = wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
+    } else {
+      edge = wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
     }
 
     for (let i = 0; i < handlers.length; i++) {
@@ -48,17 +50,17 @@ class Controller {
       });
     }
 
-    this._listenUserEvents(wrapper, edge);
+    this._listenUserEvents(wrapper);
   }
 
-  private _listenUserEvents(wrapper: HTMLElement, edge: number) {
+  private _listenUserEvents(wrapper: HTMLElement) {
     wrapper.addEventListener("mousedown", e => {
       e.preventDefault();
       if ((e.target as HTMLElement).className !== "slider__handler") return;
 
-      const tempTarget = e.target;
+      const tempTarget = e.target as HTMLElement;
       const shiftX = e.offsetX;
-      const shiftY = (e.target as HTMLElement).offsetHeight - e.offsetY;
+      const shiftY = tempTarget.offsetHeight - e.offsetY;
 
       const mousemove = _onMouseMove.bind(this);
       const mouseup = _onMouseUp;

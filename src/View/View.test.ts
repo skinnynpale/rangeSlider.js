@@ -20,7 +20,7 @@ describe("View", () => {
 
   it("Должен правильно отрисовать DOM отталкиваясь от настроек", () => {
     const view = new View(anchor);
-    view.renderTemplate({
+    view.update({
       direction: "horizontal",
       skin: "green",
       bar: true,
@@ -36,7 +36,7 @@ describe("View", () => {
   });
   it("Должен правильно отрисовать DOM отталкиваясь от настроек", () => {
     const view = new View(anchor);
-    view.renderTemplate({
+    view.update({
       direction: "horizontal",
       skin: "green",
       bar: false,

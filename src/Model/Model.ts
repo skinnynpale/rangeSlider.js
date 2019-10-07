@@ -27,7 +27,7 @@ class Model extends Observer {
     }
 
     if (state.values) {
-      this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort();
+      this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort((a, b) => a - b);
     }
 
     // для начальной отрисовки
@@ -36,7 +36,9 @@ class Model extends Observer {
       const tempPxValue = this._countPxValueFromValue(this.state.tempValue as number);
 
       // высчитываем массив tempPxValues для правильного отображения bar
-      const tempPxValues = (this.state.values as number[]).map(value => this._countPxValueFromValue(value));
+      const tempPxValues = (this.state.values as number[])
+        .map(value => this._countPxValueFromValue(value))
+        .sort((a, b) => a - b);
 
       // записываем результаты в нашу карту
       this.mapOfHandlers.set(state.tempTarget, {

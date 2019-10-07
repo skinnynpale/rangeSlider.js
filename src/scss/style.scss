@@ -96,6 +96,14 @@ div[class*="anchor"] {
       top: 0px;
       left: 40px;
     }
+    .slider__tongue {
+      left: -2%;
+      top: 56%;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 14px solid inherit;
+      transform: rotate(-90deg) translate(50%, -50%);
+    }
   }
 
   &--green {
