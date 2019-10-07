@@ -7,21 +7,26 @@ class Controller {
   private visualModel = new VisualModel();
   private view: View = new View();
 
-  constructor() {
+  constructor(anchor: HTMLElement) {
+    this.view = new View(anchor);
     this._bindEvents();
 
     this.model.setState({
       min: 10,
       max: 80,
-      values: [-40],
-      step: 3,
+      values: [12, 50],
+      step: 2,
     });
     this.visualModel.setState({
       direction: "horizontal",
       skin: "red",
       bar: true,
       tip: true,
-      type: "single",
+      type: "double",
+      scale: {
+        status: true,
+        count: 6,
+      },
     });
   }
 

@@ -23,20 +23,12 @@ class View extends Observer {
     }
   }
 
-  private _renderTemplate({ direction, skin, bar, tip, type }: any) {
+  private _renderTemplate({ direction, skin, bar, tip, type, dashes }: any) {
     this._recreateTemplate();
 
     const sliderTemplate = `
       <div class="wrapper-slider wrapper-slider--${direction}">
         <div class="slider slider--${direction} slider--${skin}">
-          <div class="slider__dashes">
-            <div class="slider__dash"></div>
-            <div class="slider__dash"></div>
-            <div class="slider__dash"></div>
-            <div class="slider__dash"></div>
-            <div class="slider__dash"></div>
-            <div class="slider__dash"></div>
-          </div>
           ${bar ? `<div class="slider__bar"></div>` : ""}
           <div class="slider__handler">
             ${tip ? `<div class="slider__tip">  <div class="slider__tongue"></div></div>` : ""}
@@ -61,6 +53,20 @@ class View extends Observer {
       edge = this.wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
     } else {
       edge = this.wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
+    }
+
+    if (this.state.scale.status) {
+      const dashesHTML = `<div class="slider__dashes"></div>`;
+      this.wrapper.insertAdjacentHTML("afterbegin", dashesHTML);
+
+      const dashesWrapper = this.wrapper.querySelector(".slider__dashes") as HTMLElement;
+      const dashHTML = `<div class="slider__dash"></div>`;
+      for (let i = 0; i < this.state.scale.count; i++) {
+        dashesWrapper.insertAdjacentHTML("beforeend", dashHTML);
+      }
+
+      dashesWrapper.style.width = edge + "px";
+      dashesWrapper.style.left = `${(handlers[0] as HTMLElement).offsetWidth / 2}px`;
     }
 
     this._listenUserEvents();
