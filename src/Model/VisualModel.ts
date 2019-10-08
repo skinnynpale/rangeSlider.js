@@ -1,7 +1,18 @@
 import { Observer } from "../Observer/Observer";
 
+interface IVisualModel {
+  direction: string;
+  skin: string;
+  bar: boolean;
+  tip: boolean;
+  type: string;
+  scale: {
+    [key: string]: number | boolean;
+  };
+}
+
 class VisualModel extends Observer {
-  constructor(public state: any = {}) {
+  constructor(public state: {} = {}) {
     super();
   }
 
@@ -12,4 +23,4 @@ class VisualModel extends Observer {
   }
 }
 
-export { VisualModel };
+export { VisualModel, IVisualModel };

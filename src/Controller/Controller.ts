@@ -1,6 +1,6 @@
 import { Model } from "../Model/Model";
-import { View } from "../View/View";
-import { VisualModel } from "../Model/VisualModel";
+import { View, ITemp } from "../View/View";
+import { VisualModel, IVisualModel } from "../Model/VisualModel";
 
 class Controller {
   private model = new Model();
@@ -19,21 +19,21 @@ class Controller {
     });
     this.visualModel.setState({
       direction: "horizontal",
-      skin: "red",
+      skin: "green",
       bar: true,
       tip: true,
-      type: "double",
+      type: "single",
       scale: {
         status: true,
-        count: 6,
+        amount: 6,
       },
     });
   }
 
   private _bindEvents() {
-    this.visualModel.on("newVisualModel", (state: {}) => this.view.update(state));
+    this.visualModel.on("newVisualModel", (state: {}) => this.view.update(state as IVisualModel));
     this.view.on("finishRenderTemplate", (wrapper: HTMLElement) => this._arrangeHandlers(wrapper));
-    this.model.on("pxValueDone", (obj: {}) => this.view.update(obj));
+    this.model.on("pxValueDone", (obj: {}) => this.view.update(obj as ITemp));
     this.view.on("onUserMove", (obj: {}) => this.model.setState(obj));
   }
 
