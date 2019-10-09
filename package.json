@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha -w",
     "tslint": "tslint --project tsconfig.json",
     "dev": "webpack-dev-server --open",
     "prod": "webpack --mode production"

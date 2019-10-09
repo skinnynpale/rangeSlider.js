@@ -1,6 +1,6 @@
 import { Model } from "../Model/Model";
-import { View, ITemp } from "../View/View";
-import { VisualModel, IVisualModel } from "../Model/VisualModel";
+import { ITemp, View } from "../View/View";
+import { IVisualModel, VisualModel } from "../Model/VisualModel";
 
 class Controller {
   private model = new Model();
@@ -13,8 +13,8 @@ class Controller {
 
     this.model.setState({
       min: 10,
-      max: 80,
-      values: [12, 50],
+      max: 100,
+      values: [90],
       step: 2,
     });
     this.visualModel.setState({
@@ -23,10 +23,6 @@ class Controller {
       bar: true,
       tip: true,
       type: "single",
-      scale: {
-        status: true,
-        amount: 6,
-      },
     });
   }
 

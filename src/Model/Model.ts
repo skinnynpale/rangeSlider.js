@@ -1,9 +1,9 @@
 import { Observer } from "../Observer/Observer";
-import { VisualModel } from "./VisualModel";
 
 interface IState {
   [key: string]: number | number[] | HTMLElement;
 }
+
 interface IOnlyNumbers {
   [key: string]: number;
 }
@@ -51,7 +51,6 @@ class Model extends Observer {
 
   private _dynamicCounting(state: IState) {
     this.state.tempValue = this._countValueFromLeft(state.left as number);
-
     this.state.tempPxValue = this._countPxValueFromValue(this.state.tempValue as number);
 
     this.mapOfHandlers.set(state.tempTarget as HTMLElement, {
@@ -60,6 +59,12 @@ class Model extends Observer {
     });
     this._updateArrayOfValues();
     this._createArrayOfPxValues(this.state.values as number[]);
+  }
+
+  private _countScaleValues({ edge, max, min, step }: IOnlyNumbers): number[] {
+    const ratio = (edge / (max - min)) * step - 1;
+    const newAmount = edge / ratio + 1;
+    return [ratio, newAmount];
   }
 
   private _updateArrayOfValues(): void {
@@ -89,8 +94,7 @@ class Model extends Observer {
 
   private _countPxValueFromValue(value: number): number {
     const state = this.state as IOnlyNumbers;
-    const tempPxValue = (value - state.min) * (state.edge / (state.max - state.min));
-    return tempPxValue;
+    return (value - state.min) * (state.edge / (state.max - state.min));
   }
 
   private _correctValue(value: number): number {

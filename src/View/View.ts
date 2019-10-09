@@ -1,20 +1,28 @@
 import { Observer } from "../Observer/Observer";
 import { constants } from "../constants";
+import { IVisualModel } from "../Model/VisualModel";
+
+interface ITemp {
+  tempPxValue: number;
+  tempPxValues: number[];
+  tempValue: number;
+  tempTarget: HTMLElement;
+}
 
 class View extends Observer {
+  protected state: any = {};
   private wrapper!: HTMLElement;
-  private state: any = {};
 
   constructor(public anchor: HTMLElement = document.body) {
     super();
   }
 
-  public update(state: any) {
-    if (state.direction && state.skin && state.type) {
+  public update(state: IVisualModel | ITemp) {
+    if ((state as IVisualModel).direction && (state as IVisualModel).skin && (state as IVisualModel).type) {
       Object.assign(this.state, arguments[0]);
-      this._renderTemplate(state);
+      this._renderTemplate(state as IVisualModel);
     } else {
-      this._renderValues(state);
+      this._renderValues(state as ITemp);
     }
   }
 
@@ -24,7 +32,7 @@ class View extends Observer {
     }
   }
 
-  private _renderTemplate({ direction, skin, bar, tip, type, scale }: any) {
+  private _renderTemplate({ direction, skin, bar, tip, type }: IVisualModel) {
     this._recreateTemplate();
 
     const sliderTemplate = `
@@ -35,12 +43,12 @@ class View extends Observer {
             ${tip ? `<div class="slider__tip">  <div class="slider__tongue"></div></div>` : ""}
           </div>
           ${
-            type === "double"
-              ? `<div class="slider__handler">
+      type === "double"
+        ? `<div class="slider__handler">
             ${tip ? `<div class="slider__tip">  <div class="slider__tongue"></div></div>` : ""}
           </div>`
-              : ""
-          }
+        : ""
+    }
         </div>
       </div>
     `;
@@ -56,25 +64,11 @@ class View extends Observer {
       edge = this.wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
     }
 
-    if (scale.status) {
-      const dashesHTML = `<div class="slider__dashes"></div>`;
-      this.wrapper.insertAdjacentHTML("afterbegin", dashesHTML);
-
-      const dashesWrapper = this.wrapper.querySelector(".slider__dashes") as HTMLElement;
-      const dashHTML = `<div class="slider__dash"></div>`;
-      for (let i = 0; i < this.state.scale.count; i++) {
-        dashesWrapper.insertAdjacentHTML("beforeend", dashHTML);
-      }
-
-      dashesWrapper.style.width = edge + "px";
-      dashesWrapper.style.left = `${(handlers[0] as HTMLElement).offsetWidth / 2}px`;
-    }
-
     this._listenUserEvents();
     this.emit("finishRenderTemplate", { handlers, edge });
   }
 
-  private _renderValues({ tempPxValue, tempPxValues, tempValue, tempTarget }: any) {
+  private _renderValues({ tempPxValue, tempPxValues, tempValue, tempTarget }: ITemp) {
     if (!tempTarget) return;
 
     let tip;
@@ -84,21 +78,21 @@ class View extends Observer {
     }
     let bar;
     if (this.state.bar === true) {
-      bar = tempTarget.parentElement.querySelector(".slider__bar");
+      bar = tempTarget.parentElement && (tempTarget.parentElement.querySelector(".slider__bar") as HTMLElement);
 
       if (this.state.direction === constants.DIRECTION_VERTICAL) {
         if (this.state.type === constants.TYPE_DOUBLE) {
-          bar.style.bottom = tempPxValues[0] + "px";
-          bar.style.height = tempPxValues[1] - tempPxValues[0] + 10 + "px";
+          bar && (bar.style.bottom = tempPxValues[0] + "px");
+          bar && (bar.style.height = tempPxValues[1] - tempPxValues[0] + 10 + "px");
         } else {
-          bar.style.height = tempPxValue + 10 + "px";
+          bar && (bar.style.height = tempPxValue + 10 + "px");
         }
       } else {
         if (this.state.type === constants.TYPE_DOUBLE) {
-          bar.style.left = tempPxValues[0] + "px";
-          bar.style.width = tempPxValues[1] - tempPxValues[0] + 10 + "px";
+          bar && (bar.style.left = tempPxValues[0] + "px");
+          bar && (bar.style.width = tempPxValues[1] - tempPxValues[0] + 10 + "px");
         } else {
-          bar.style.width = tempPxValue + 10 + "px";
+          bar && (bar.style.width = tempPxValue + 10 + "px");
         }
       }
     }
@@ -144,4 +138,4 @@ class View extends Observer {
   }
 }
 
-export { View };
+export { View, ITemp };

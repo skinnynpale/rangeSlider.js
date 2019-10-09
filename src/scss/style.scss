@@ -8,8 +8,12 @@ div[class*="anchor"] {
 
   &--horizontal {
     padding-top: 46px;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
   }
+}
+
+.scale {
+  position: relative;
 }
 
 .slider {
@@ -56,10 +60,10 @@ div[class*="anchor"] {
     .slider__bar {
       width: 150px;
       height: 8px;
-      bottom: 10px;
+      bottom: 30px;
     }
     .slider__handler {
-      bottom: 3px;
+      bottom: 23px;
       left: 135px;
     }
     .slider__tip {
@@ -75,6 +79,15 @@ div[class*="anchor"] {
       border-right: 8px solid transparent;
       border-bottom: 14px solid inherit;
       transform: rotate(180deg) translate(50%);
+    }
+    .scale {
+      bottom: -30px;
+      display: flex;
+
+      &__dash {
+        width: 1px;
+        height: 3px;
+      }
     }
   }
 
@@ -104,6 +117,15 @@ div[class*="anchor"] {
       border-bottom: 14px solid inherit;
       transform: rotate(-90deg) translate(50%, -50%);
     }
+    .scale {
+      height: 100%;
+      left: 20px;
+
+      &__dash {
+        width: 3px;
+        height: 1px;
+      }
+    }
   }
 
   &--green {
@@ -118,6 +140,9 @@ div[class*="anchor"] {
     }
     .slider__tongue {
       border-bottom: 14px solid rgb(58, 190, 140);
+    }
+    .scale__dash {
+      background-color: rgb(58, 190, 140);
     }
   }
 
@@ -134,18 +159,8 @@ div[class*="anchor"] {
     .slider__tongue {
       border-bottom: 14px solid rgb(216, 77, 77);
     }
+    .scale__dash {
+      background-color: rgb(216, 77, 77);
+    }
   }
-}
-
-.slider__dashes {
-  position: relative;
-  bottom: -30px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.slider__dash {
-  width: 1px;
-  height: 3px;
-  background-color: red;
 }

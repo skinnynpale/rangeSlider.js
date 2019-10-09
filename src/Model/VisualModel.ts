@@ -6,9 +6,6 @@ interface IVisualModel {
   bar: boolean;
   tip: boolean;
   type: string;
-  scale: {
-    [key: string]: number | boolean;
-  };
 }
 
 class VisualModel extends Observer {
