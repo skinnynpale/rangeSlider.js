@@ -1,13 +1,5 @@
 import { Observer } from "../Observer/Observer";
 
-interface IVisualModel {
-  direction: string;
-  skin: string;
-  bar: boolean;
-  tip: boolean;
-  type: string;
-}
-
 class VisualModel extends Observer {
   constructor(public state: {} = {}) {
     super();
@@ -20,4 +12,4 @@ class VisualModel extends Observer {
   }
 }
 
-export { VisualModel, IVisualModel };
+export { VisualModel };

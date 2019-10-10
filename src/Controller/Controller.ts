@@ -1,7 +1,7 @@
 import { Model } from "../Model/Model";
-import { ITemp, View } from "../View/View";
-import { IVisualModel, VisualModel } from "../Model/VisualModel";
+import { VisualModel } from "../Model/VisualModel";
 import { ApplicationConfigurator, Application } from "../View/AbstractFactory/AbstractFactory";
+import { IVisualModel, ITemp } from "../helpers/interfaces";
 
 class Controller {
   private model = new Model();

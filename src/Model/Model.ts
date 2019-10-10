@@ -1,12 +1,5 @@
 import { Observer } from "../Observer/Observer";
-
-interface IState {
-  [key: string]: number | number[] | HTMLElement;
-}
-
-interface IOnlyNumbers {
-  [key: string]: number;
-}
+import { IOnlyNumbers, IState } from "../helpers/interfaces";
 
 class Model extends Observer {
   public state: IState = {};

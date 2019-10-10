@@ -1,7 +1,6 @@
-import { ITemp } from "../View";
-import { IVisualModel } from "../../Model/VisualModel";
 import { Observer } from "../../Observer/Observer";
-import { constants } from "../../constants";
+import { constants } from "../../helpers/constants";
+import { ITemp, IVisualModel, IOnlyBoolean, IOnlyString } from "../../helpers/interfaces";
 
 /**
  * Bar
@@ -248,20 +247,6 @@ class IntervalVerticalFactory implements GUIFactory {
   public createTemplate(): Template {
     return new Template();
   }
-}
-
-// TODO Вынести интерфейсы в helpers
-
-interface IOnlyBoolean {
-  [key: string]: boolean;
-}
-
-interface IOnlyString {
-  [key: string]: string;
-}
-
-interface IOnlyHTMLElements {
-  [key: string]: HTMLElement;
 }
 
 /**
