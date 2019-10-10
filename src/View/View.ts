@@ -17,12 +17,10 @@ class View extends Observer {
     super();
   }
 
-  public update(state: IVisualModel | ITemp) {
-    if ((state as IVisualModel).direction && (state as IVisualModel).skin && (state as IVisualModel).type) {
+  public update(state: IVisualModel) {
+    if (state.direction && state.skin && state.type) {
       Object.assign(this.state, arguments[0]);
-      this._renderTemplate(state as IVisualModel);
-    } else {
-      this._renderValues(state as ITemp);
+      this._renderTemplate(state);
     }
   }
 
@@ -33,27 +31,27 @@ class View extends Observer {
   }
 
   private _renderTemplate({ direction, skin, bar, tip, type }: IVisualModel) {
-    this._recreateTemplate();
+    // this._recreateTemplate();
 
-    const sliderTemplate = `
-      <div class="wrapper-slider wrapper-slider--${direction}">
-        <div class="slider slider--${direction} slider--${skin}">
-          ${bar ? `<div class="slider__bar"></div>` : ""}
-          <div class="slider__handler">
-            ${tip ? `<div class="slider__tip">  <div class="slider__tongue"></div></div>` : ""}
-          </div>
-          ${
-      type === "double"
-        ? `<div class="slider__handler">
-            ${tip ? `<div class="slider__tip">  <div class="slider__tongue"></div></div>` : ""}
-          </div>`
-        : ""
-    }
-        </div>
-      </div>
-    `;
+    // const sliderTemplate = `
+    //   <div class="wrapper-slider wrapper-slider--${direction}">
+    //     <div class="slider slider--${direction} slider--${skin}">
+    //       ${bar ? `<div class="slider__bar"></div>` : ""}
+    //       <div class="slider__handler">
+    //         ${tip ? `<div class="slider__tip">  <div class="slider__tongue"></div></div>` : ""}
+    //       </div>
+    //       ${
+    //         type === "double"
+    //           ? `<div class="slider__handler">
+    //         ${tip ? `<div class="slider__tip">  <div class="slider__tongue"></div></div>` : ""}
+    //       </div>`
+    //           : ""
+    //       }
+    //     </div>
+    //   </div>
+    // `;
 
-    this.anchor.insertAdjacentHTML("afterbegin", sliderTemplate);
+    // this.anchor.insertAdjacentHTML("afterbegin", sliderTemplate);
     this.wrapper = this.anchor.querySelector(".wrapper-slider") as HTMLElement;
     const handlers = this.wrapper.querySelectorAll(".slider__handler");
 
@@ -66,42 +64,6 @@ class View extends Observer {
 
     this._listenUserEvents();
     this.emit("finishRenderTemplate", { handlers, edge });
-  }
-
-  private _renderValues({ tempPxValue, tempPxValues, tempValue, tempTarget }: ITemp) {
-    if (!tempTarget) return;
-
-    let tip;
-    if (this.state.tip === true) {
-      tip = tempTarget.querySelector(".slider__tip") as HTMLElement;
-      tip.setAttribute("data-value", `${tempValue}`);
-    }
-    let bar;
-    if (this.state.bar === true) {
-      bar = tempTarget.parentElement && (tempTarget.parentElement.querySelector(".slider__bar") as HTMLElement);
-
-      if (this.state.direction === constants.DIRECTION_VERTICAL) {
-        if (this.state.type === constants.TYPE_DOUBLE) {
-          bar && (bar.style.bottom = tempPxValues[0] + "px");
-          bar && (bar.style.height = tempPxValues[1] - tempPxValues[0] + 10 + "px");
-        } else {
-          bar && (bar.style.height = tempPxValue + 10 + "px");
-        }
-      } else {
-        if (this.state.type === constants.TYPE_DOUBLE) {
-          bar && (bar.style.left = tempPxValues[0] + "px");
-          bar && (bar.style.width = tempPxValues[1] - tempPxValues[0] + 10 + "px");
-        } else {
-          bar && (bar.style.width = tempPxValue + 10 + "px");
-        }
-      }
-    }
-
-    if (this.state.direction === constants.DIRECTION_VERTICAL) {
-      tempTarget.style.bottom = tempPxValue + "px";
-    } else {
-      tempTarget.style.left = tempPxValue + "px";
-    }
   }
 
   private _listenUserEvents() {

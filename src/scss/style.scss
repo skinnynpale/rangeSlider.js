@@ -12,6 +12,19 @@ div[class*="anchor"] {
   }
 }
 
+.settings {
+  border: 1px dotted green;
+  font-family: monospace;
+  background-color: #fff;
+  width: 280px;
+  &__separation {
+    width: 100%;
+    height: 1px;
+    background-color: rgb(209, 209, 209);
+    margin: 20px 0;
+  }
+}
+
 .scale {
   position: relative;
 }
@@ -19,6 +32,12 @@ div[class*="anchor"] {
 .slider {
   background-color: rgb(230, 230, 230);
   border-radius: 3px;
+
+  &__settings {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
 
   &__tongue {
     position: absolute;
