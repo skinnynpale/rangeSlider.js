@@ -13,7 +13,8 @@
         "curly": false,
         "no-shadowed-variable": false,
         "max-classes-per-file": false,
-        "interface-name": false
+        "interface-name": false,
+        "no-empty": false
     },
     "rulesDirectory": []
 }

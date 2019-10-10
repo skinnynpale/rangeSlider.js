@@ -27,6 +27,12 @@ div[class*="anchor"] {
 
 .scale {
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  &__dash {
+    background-color: rgb(41, 41, 41);
+    z-index: 1;
+  }
 }
 
 .slider {
@@ -100,12 +106,12 @@ div[class*="anchor"] {
       transform: rotate(180deg) translate(50%);
     }
     .scale {
-      bottom: -30px;
+      position: absolute;
       display: flex;
-
+      justify-content: space-between;
       &__dash {
         width: 1px;
-        height: 3px;
+        height: 8px;
       }
     }
   }
@@ -137,11 +143,12 @@ div[class*="anchor"] {
       transform: rotate(-90deg) translate(50%, -50%);
     }
     .scale {
-      height: 100%;
-      left: 20px;
-
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-content: space-between;
       &__dash {
-        width: 3px;
+        width: 8px;
         height: 1px;
       }
     }
@@ -160,9 +167,6 @@ div[class*="anchor"] {
     .slider__tongue {
       border-bottom: 14px solid rgb(58, 190, 140);
     }
-    .scale__dash {
-      background-color: rgb(58, 190, 140);
-    }
   }
 
   &--red {
@@ -177,9 +181,6 @@ div[class*="anchor"] {
     }
     .slider__tongue {
       border-bottom: 14px solid rgb(216, 77, 77);
-    }
-    .scale__dash {
-      background-color: rgb(216, 77, 77);
     }
   }
 }

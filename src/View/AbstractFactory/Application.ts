@@ -29,7 +29,13 @@ import {
 import { Template } from "./UIs/Template/Template";
 
 /**
- * Guifactory
+ * Scale
+ */
+
+import { Scale } from "./UIs/Scale/Scale";
+
+/**
+ * Factories
  */
 
 import {
@@ -46,6 +52,7 @@ import {
  */
 
 class Application extends Observer {
+  public scale?: Scale;
   private bar?: Bar;
   private tip?: Tip;
   private handler!: Handler;
@@ -55,12 +62,12 @@ class Application extends Observer {
     super();
   }
 
-  public createUI({ bar, tip }: IOnlyBoolean) {
+  public createUI({ bar, scale }: IOnlyBoolean) {
     this.template = this.factory.createTemplate();
     this.handler = this.factory.createHandler();
 
     bar ? (this.bar = this.factory.createBar()) : "";
-    tip ? (this.tip = this.factory.createTip()) : "";
+    scale ? (this.scale = this.factory.createScale()) : "";
   }
 
   public init(state: IVisualModel) {
@@ -68,13 +75,16 @@ class Application extends Observer {
 
     const UIs = Object.keys(this);
     for (const UI of UIs) {
-      if (UI === "factory" || UI === "template" || UI === "tip" || UI === "events" || UI === "anchor") continue;
+      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor") continue;
 
       this.template.append((this as any)[UI], this.anchor);
     }
 
     // Коллаборации
-    this.tip ? this.handler.append(this.tip) : "";
+    if (state.tip) {
+      this.tip = this.factory.createTip();
+      this.handler.append(this.tip);
+    }
     // Коллаборации
 
     // для правильной отрисовки
@@ -84,13 +94,15 @@ class Application extends Observer {
 
     this.listenUserEvents(wrapper, state);
     this.emit("finishInit", { handlers, edge });
+
+    state.scale ? this.emit("finishScaleInit", () => {}) : "";
   }
 
   public paint(state: ITemp) {
     const UIs = Object.keys(this);
 
     for (const UI of UIs) {
-      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor") continue;
+      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor" || UI === "scale") continue;
 
       (this as any)[UI].paint(state);
     }

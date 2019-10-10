@@ -32,6 +32,15 @@ class Model extends Observer {
     }
   }
 
+  public countScaleValues(): void {
+    const state = this.state as IOnlyNumbers;
+
+    const ratio = (state.edge / (state.max - state.min)) * state.step;
+    const amount = state.edge / ratio;
+
+    this.emit("newScaleValues", { amount, edge: state.edge });
+  }
+
   private _initialCounting(state: IState) {
     this.state.tempPxValue = this._countPxValueFromValue(state.tempValue as number);
     this._createArrayOfPxValues(this.state.values as number[]);
@@ -52,12 +61,6 @@ class Model extends Observer {
     });
     this._updateArrayOfValues();
     this._createArrayOfPxValues(this.state.values as number[]);
-  }
-
-  private _countScaleValues({ edge, max, min, step }: IOnlyNumbers): number[] {
-    const ratio = (edge / (max - min)) * step - 1;
-    const newAmount = edge / ratio + 1;
-    return [ratio, newAmount];
   }
 
   private _updateArrayOfValues(): void {

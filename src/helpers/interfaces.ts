@@ -7,6 +7,7 @@ interface IOnlyNumbers {
 }
 
 interface IVisualModel {
+  scale: boolean;
   direction: string;
   skin: string;
   bar: boolean;
