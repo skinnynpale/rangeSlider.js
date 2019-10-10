@@ -1,6 +1,7 @@
 import { ITemp } from "../View";
 import { IVisualModel } from "../../Model/VisualModel";
 import { Observer } from "../../Observer/Observer";
+import { constants } from "../../constants";
 
 /**
  * Bar
@@ -80,9 +81,10 @@ interface Handler {
 }
 
 class Handler implements Handler {
-  constructor(public anchor: HTMLElement) {}
+  protected anchor!: HTMLElement;
 
   public init(anchor: HTMLElement) {
+    this.anchor = anchor;
     const handlerTemplate = `<div class="slider__handler"></div>`;
     const slider = anchor.querySelector(".slider") as HTMLElement;
     slider.insertAdjacentHTML("beforeend", handlerTemplate);
@@ -111,6 +113,7 @@ class SingleVerticalHandler extends Handler implements Handler {
 
 class IntervalHorizontalHandler extends Handler implements Handler {
   public init(anchor: HTMLElement) {
+    this.anchor = anchor;
     const handlerTemplate = `<div class="slider__handler"></div>`;
     const slider = anchor.querySelector(".slider") as HTMLElement;
     slider.insertAdjacentHTML("beforeend", handlerTemplate);
@@ -124,6 +127,7 @@ class IntervalHorizontalHandler extends Handler implements Handler {
 
 class IntervalVerticalHandler extends Handler implements Handler {
   public init(anchor: HTMLElement) {
+    this.anchor = anchor;
     const handlerTemplate = `<div class="slider__handler"></div>`;
     const slider = anchor.querySelector(".slider") as HTMLElement;
     slider.insertAdjacentHTML("beforeend", handlerTemplate);
@@ -155,7 +159,7 @@ class Template implements Template {
     anchor.insertAdjacentHTML("afterbegin", sliderTemplate);
   }
 
-  public append(component: Handler | Bar | Tip, anchor: HTMLElement) {
+  public append(component: Handler | Bar, anchor: HTMLElement) {
     component.init(anchor);
   }
 }
@@ -167,7 +171,7 @@ class Template implements Template {
 interface GUIFactory {
   createBar(): Bar;
   createTip(): Tip;
-  createHandler(anchor: HTMLElement): Handler;
+  createHandler(): Handler;
   createTemplate(): Template;
 }
 
@@ -183,8 +187,8 @@ class SingleHorizontalFactory implements GUIFactory {
     return new Tip();
   }
 
-  public createHandler(anchor: HTMLElement): Handler {
-    return new SingleHorizontalHandler(anchor);
+  public createHandler(): Handler {
+    return new SingleHorizontalHandler();
   }
 
   public createTemplate(): Template {
@@ -201,8 +205,8 @@ class SingleVerticalFactory implements GUIFactory {
     return new Tip();
   }
 
-  public createHandler(anchor: HTMLElement): Handler {
-    return new SingleVerticalHandler(anchor);
+  public createHandler(): Handler {
+    return new SingleVerticalHandler();
   }
 
   public createTemplate(): Template {
@@ -219,8 +223,8 @@ class IntervalHorizontalFactory implements GUIFactory {
     return new Tip();
   }
 
-  public createHandler(anchor: HTMLElement): Handler {
-    return new IntervalHorizontalHandler(anchor);
+  public createHandler(): Handler {
+    return new IntervalHorizontalHandler();
   }
 
   public createTemplate(): Template {
@@ -237,8 +241,8 @@ class IntervalVerticalFactory implements GUIFactory {
     return new Tip();
   }
 
-  public createHandler(anchor: HTMLElement): Handler {
-    return new IntervalVerticalHandler(anchor);
+  public createHandler(): Handler {
+    return new IntervalVerticalHandler();
   }
 
   public createTemplate(): Template {
@@ -265,46 +269,99 @@ interface IOnlyHTMLElements {
  *
  */
 
-class Application {
+class Application extends Observer {
   private bar?: Bar;
   private tip?: Tip;
   private handler!: Handler;
   private template!: Template;
-  private factory: GUIFactory;
 
-  constructor(factory: GUIFactory) {
-    this.factory = factory;
+  constructor(private factory: GUIFactory, private anchor: HTMLElement) {
+    super();
   }
 
-  public createUI({ bar, tip }: IOnlyBoolean, anchor: HTMLElement) {
+  public createUI({ bar, tip }: IOnlyBoolean) {
     this.template = this.factory.createTemplate();
-    this.handler = this.factory.createHandler(anchor);
+    this.handler = this.factory.createHandler();
 
     bar ? (this.bar = this.factory.createBar()) : "";
     tip ? (this.tip = this.factory.createTip()) : "";
   }
 
-  public init(state: IVisualModel, anchor: HTMLElement) {
-    this.template.init(state, anchor);
+  public init(state: IVisualModel) {
+    this.template.init(state, this.anchor);
 
     const UIs = Object.keys(this);
     for (const UI of UIs) {
-      if (UI === "factory" || UI === "template" || UI === "tip") continue;
+      if (UI === "factory" || UI === "template" || UI === "tip" || UI === "events" || UI === "anchor") continue;
 
-      this.template.append((this as any)[UI], anchor);
+      this.template.append((this as any)[UI], this.anchor);
     }
 
+    // Коллаборации
     this.tip ? this.handler.append(this.tip) : "";
+    // Коллаборации
+
+    // для правильной отрисовки
+    const edge = this.getEdge(state);
+    const handlers = this.anchor.querySelectorAll(".slider__handler");
+    const wrapper = this.anchor.querySelector(".wrapper-slider") as HTMLElement;
+
+    this.listenUserEvents(wrapper, state);
+    this.emit("finishInit", { handlers, edge });
   }
 
-  public paint(state: {}) {
+  public paint(state: ITemp) {
     const UIs = Object.keys(this);
 
     for (const UI of UIs) {
-      if (UI === "factory" || UI === "template") continue;
+      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor") continue;
 
       (this as any)[UI].paint(state);
     }
+  }
+
+  private getEdge(state: IVisualModel) {
+    const wrapper = this.anchor.querySelector(".wrapper-slider") as HTMLElement;
+    const handlers = this.anchor.querySelectorAll(".slider__handler");
+
+    if (state.direction === constants.DIRECTION_VERTICAL) {
+      return wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
+    } else {
+      return wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
+    }
+  }
+
+  private listenUserEvents(wrapper: HTMLElement, state: IVisualModel) {
+    wrapper.addEventListener("mousedown", e => {
+      e.preventDefault();
+      if ((e.target as HTMLElement).className !== "slider__handler") return;
+
+      const tempTarget = e.target as HTMLElement;
+      const shiftX = e.offsetX;
+      const shiftY = tempTarget.offsetHeight - e.offsetY;
+
+      const onmousemove = _onMouseMove.bind(this);
+      const onmouseup = _onMouseUp;
+
+      document.addEventListener("mousemove", onmousemove);
+      document.addEventListener("mouseup", onmouseup);
+
+      function _onMouseMove(this: Application, e: MouseEvent) {
+        let left;
+        if (state.direction === constants.DIRECTION_VERTICAL) {
+          left = wrapper.offsetHeight - e.clientY - shiftY + wrapper.getBoundingClientRect().top;
+        } else {
+          left = e.clientX - shiftX - wrapper.offsetLeft;
+        }
+
+        this.emit("onUserMove", { left, tempTarget });
+      }
+
+      function _onMouseUp() {
+        document.removeEventListener("mousemove", onmousemove);
+        document.removeEventListener("mouseup", onmouseup);
+      }
+    });
   }
 }
 
@@ -312,25 +369,23 @@ class Application {
  * Application configurator
  */
 
-// TODO Переименовать double в interval
-
 class ApplicationConfigurator {
-  public main({ type, direction }: IOnlyString) {
-    let factory: SingleHorizontalFactory | SingleVerticalFactory;
+  public main({ type, direction }: IOnlyString, anchor: HTMLElement) {
+    let factory;
 
     if (type === "single" && direction === "horizontal") {
       factory = new SingleHorizontalFactory();
     } else if (type === "single" && direction === "vertical") {
       factory = new SingleVerticalFactory();
-    } else if (type === "double" && direction === "horizontal") {
+    } else if (type === "interval" && direction === "horizontal") {
       factory = new IntervalHorizontalFactory();
-    } else if (type === "double" && direction === "vertical") {
+    } else if (type === "interval" && direction === "vertical") {
       factory = new IntervalVerticalFactory();
     } else {
       throw new Error("Error! Unknown " + type + " or " + direction);
     }
 
-    return new Application(factory);
+    return new Application(factory, anchor);
   }
 }
 

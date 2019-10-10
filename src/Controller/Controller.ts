@@ -7,29 +7,25 @@ class Controller {
   private model = new Model();
   private visualModel = new VisualModel();
   private app!: Application;
-  private view: View = new View();
 
-  constructor(anchor: HTMLElement) {
-    this.view = new View(anchor);
-
+  constructor(public anchor: HTMLElement) {
     this.visualModel.setState({
-      direction: "vertical",
+      direction: "horizontal",
       skin: "green",
       bar: true,
       tip: true,
-      type: "double",
+      type: "interval",
     });
 
     this.model.setState({
       min: 10,
       max: 100,
-      values: [50, 100],
+      values: [50, 85],
       step: 2,
     });
 
-    this.app = new ApplicationConfigurator().main(this.visualModel.state);
-    this.app.createUI(this.visualModel.state, anchor);
-    this.app.init(this.visualModel.state as IVisualModel, anchor);
+    this.app = new ApplicationConfigurator().main(this.visualModel.state, anchor);
+    this.app.createUI(this.visualModel.state);
 
     this._bindEvents();
 
@@ -37,10 +33,10 @@ class Controller {
   }
 
   private _bindEvents() {
-    this.visualModel.on("newVisualModel", (state: {}) => this.view.update(state as IVisualModel));
-    this.view.on("finishRenderTemplate", (wrapper: HTMLElement) => this._arrangeHandlers(wrapper));
-    this.model.on("pxValueDone", (obj: {}) => this.app.paint(obj));
-    this.view.on("onUserMove", (obj: {}) => this.model.setState(obj));
+    this.visualModel.on("newVisualModel", (state: {}) => this.app.init(state as IVisualModel));
+    this.app.on("finishInit", (obj: {}) => this._arrangeHandlers(obj));
+    this.model.on("pxValueDone", (obj: ITemp) => this.app.paint(obj));
+    this.app.on("onUserMove", (obj: {}) => this.model.setState(obj));
   }
 
   // Начальная расстановка бегунков
