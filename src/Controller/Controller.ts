@@ -1,6 +1,6 @@
 import { Model } from "../Model/Model";
 import { VisualModel } from "../Model/VisualModel";
-import { ApplicationConfigurator, Application } from "../View/AbstractFactory/AbstractFactory";
+import { ApplicationConfigurator, Application } from "../View/AbstractFactory/Application";
 import { IVisualModel, ITemp } from "../helpers/interfaces";
 
 class Controller {
