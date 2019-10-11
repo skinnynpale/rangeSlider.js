@@ -94,15 +94,13 @@ class Application extends Observer {
 
     this.listenUserEvents(wrapper, state);
     this.emit("finishInit", { handlers, edge });
-
-    state.scale ? this.emit("finishScaleInit", () => {}) : "";
   }
 
   public paint(state: ITemp) {
     const UIs = Object.keys(this);
 
     for (const UI of UIs) {
-      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor" || UI === "scale") continue;
+      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor") continue;
 
       (this as any)[UI].paint(state);
     }

@@ -37,11 +37,7 @@ class Controller {
     this.visualModel.on("newVisualModel", (state: {}) => this.app.init(state as IVisualModel));
     this.app.on("finishInit", (obj: {}) => this._arrangeHandlers(obj));
     this.model.on("pxValueDone", (obj: ITemp) => this.app.paint(obj));
-
     this.app.on("onUserMove", (obj: {}) => this.model.setState(obj));
-
-    this.app.on("finishScaleInit", () => this.model.countScaleValues());
-    this.model.on("newScaleValues", (obj: {}) => this.app.scale && this.app.scale.paint(obj));
   }
 
   // Начальная расстановка бегунков

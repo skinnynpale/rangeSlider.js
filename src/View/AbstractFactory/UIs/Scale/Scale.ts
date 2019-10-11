@@ -3,7 +3,7 @@ import { IOnlyNumbers } from "../../../../helpers/interfaces";
 
 export interface Scale {
   init(anchor: HTMLElement): void;
-  paint({ amount, edge }: IOnlyNumbers): void;
+  paint(state: {}): void;
 }
 
 export class Scale extends Observer implements Scale {
@@ -21,12 +21,15 @@ export class Scale extends Observer implements Scale {
 }
 
 export class HorizontalScale extends Scale implements Scale {
-  public paint({ amount, edge, ratio }: IOnlyNumbers) {
+  public paint({ edge, ratio }: IOnlyNumbers) {
     this.scaleHTML = this.anchor.querySelector(".slider__scale") as HTMLElement;
     const dashTemplate = `<div class="scale__dash"></div>`;
+    const amount = edge / ratio;
 
-    for (let i = 0; i < amount + 1; i++) {
-      this.scaleHTML.insertAdjacentHTML("beforeend", dashTemplate);
+    if (this.scaleHTML.children.length === 0) {
+      for (let i = 0; i < amount + 1; i++) {
+        this.scaleHTML.insertAdjacentHTML("beforeend", dashTemplate);
+      }
     }
 
     this.scaleHTML.style.width = edge + "px";
@@ -36,12 +39,15 @@ export class HorizontalScale extends Scale implements Scale {
 }
 
 export class VerticalScale extends Scale implements Scale {
-  public paint({ amount, edge, ratio }: IOnlyNumbers) {
+  public paint({ edge, ratio }: IOnlyNumbers) {
     this.scaleHTML = this.anchor.querySelector(".slider__scale") as HTMLElement;
     const dashTemplate = `<div class="scale__dash"></div>`;
+    const amount = edge / ratio;
 
-    for (let i = 0; i < amount + 1; i++) {
-      this.scaleHTML.insertAdjacentHTML("beforeend", dashTemplate);
+    if (this.scaleHTML.children.length === 0) {
+      for (let i = 0; i < amount + 1; i++) {
+        this.scaleHTML.insertAdjacentHTML("beforeend", dashTemplate);
+      }
     }
 
     this.scaleHTML.style.height = edge + "px";

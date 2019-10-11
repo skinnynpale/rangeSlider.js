@@ -7,7 +7,6 @@ class Model extends Observer {
 
   constructor(state: IState = {}) {
     super();
-
     this.setState(state);
   }
 
@@ -30,15 +29,6 @@ class Model extends Observer {
     if (state.tempTarget && state.left) {
       this._dynamicCounting(state);
     }
-  }
-
-  public countScaleValues(): void {
-    const state = this.state as IOnlyNumbers;
-
-    const ratio = (state.edge / (state.max - state.min)) * state.step;
-    const amount = state.edge / ratio;
-
-    this.emit("newScaleValues", { amount, edge: state.edge });
   }
 
   private _initialCounting(state: IState) {
@@ -79,18 +69,20 @@ class Model extends Observer {
       tempValue: this.state.tempValue,
       tempPxValue: this.state.tempPxValue,
       tempPxValues,
+      edge: this.state.edge,
+      ratio: this._getRatio(),
     });
   }
 
   private _countValueFromLeft(left: number): number {
     const state = this.state as IOnlyNumbers;
-    const value = (left / ((state.edge / (state.max - state.min)) * state.step)) * state.step + state.min;
+    const value = (left / this._getRatio()) * state.step + state.min;
     return this._correctValue(value);
   }
 
   private _countPxValueFromValue(value: number): number {
     const state = this.state as IOnlyNumbers;
-    return (value - state.min) * (state.edge / (state.max - state.min));
+    return (value - state.min) * (this._getRatio() / state.step);
   }
 
   private _correctValue(value: number): number {
@@ -140,6 +132,11 @@ class Model extends Observer {
     } else {
       return Math.round(value / step) * step;
     }
+  }
+
+  private _getRatio(): number {
+    const state = this.state as IOnlyNumbers;
+    return +(state.edge / (state.max - state.min)) * state.step;
   }
 }
 
