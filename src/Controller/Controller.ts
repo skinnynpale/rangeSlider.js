@@ -16,6 +16,7 @@ class Controller {
       tip: true,
       type: "interval",
       scale: true,
+      settings: true,
     });
 
     this.model.setState({
@@ -36,8 +37,15 @@ class Controller {
   private _bindEvents() {
     this.visualModel.on("newVisualModel", (state: {}) => this.app.init(state as IVisualModel));
     this.app.on("finishInit", (obj: {}) => this._arrangeHandlers(obj));
+
+    this.app.settings && this.app.settings.on("newSettings", (obj: {}) => this.model.setState(obj));
+    this.app.settings && this.app.settings.on("newSettings", (obj: {}) => this._arrangeHandlers(obj));
+    this.app.settings && this.app.settings.on("newSettingsForVisualModel", (obj: {}) => this.visualModel.setState(obj));
+
     this.model.on("pxValueDone", (obj: ITemp) => this.app.paint(obj));
     this.app.on("onUserMove", (obj: {}) => this.model.setState(obj));
+
+    this.model.on("newState", (state: {}) => this.app.settings && this.app.settings.paint(state));
   }
 
   // Начальная расстановка бегунков

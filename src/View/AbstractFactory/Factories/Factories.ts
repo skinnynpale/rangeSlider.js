@@ -15,6 +15,7 @@ import {
 } from "../UIs/Handler/Handler";
 import { Template } from "../UIs/Template/Template";
 import { Scale, HorizontalScale, VerticalScale } from "../UIs/Scale/Scale";
+import { Settings } from "../UIs/Settings/Settings";
 
 export interface GUIFactory {
   createBar(): Bar;
@@ -22,6 +23,7 @@ export interface GUIFactory {
   createHandler(): Handler;
   createTemplate(): Template;
   createScale(): Scale;
+  createSettings(): Settings;
 }
 
 /**
@@ -47,6 +49,10 @@ export class SingleHorizontalFactory implements GUIFactory {
   public createScale(): Scale {
     return new HorizontalScale();
   }
+
+  public createSettings(): Settings {
+    return new Settings();
+  }
 }
 
 export class SingleVerticalFactory implements GUIFactory {
@@ -68,6 +74,10 @@ export class SingleVerticalFactory implements GUIFactory {
 
   public createScale(): Scale {
     return new VerticalScale();
+  }
+
+  public createSettings(): Settings {
+    return new Settings();
   }
 }
 
@@ -91,6 +101,10 @@ export class IntervalHorizontalFactory implements GUIFactory {
   public createScale(): Scale {
     return new HorizontalScale();
   }
+
+  public createSettings(): Settings {
+    return new Settings();
+  }
 }
 
 export class IntervalVerticalFactory implements GUIFactory {
@@ -112,5 +126,9 @@ export class IntervalVerticalFactory implements GUIFactory {
 
   public createScale(): Scale {
     return new VerticalScale();
+  }
+
+  public createSettings(): Settings {
+    return new Settings();
   }
 }

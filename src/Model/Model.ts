@@ -14,7 +14,7 @@ class Model extends Observer {
     Object.assign(this.state, state);
 
     // для корректировки основных значений
-    if (state.min || state.max || state.step) {
+    if (state.min || state.max || state.step || state.values) {
       this._correctMinMaxRange();
       this._correctStep();
       this.state.values = (this.state.values as number[]).map(value => this._correctValue(value)).sort((a, b) => a - b);
@@ -29,6 +29,10 @@ class Model extends Observer {
     if (state.tempTarget && state.left) {
       this._dynamicCounting(state);
     }
+
+    console.log(this.state);
+
+    this.emit("newState", this.state);
   }
 
   private _initialCounting(state: IState) {

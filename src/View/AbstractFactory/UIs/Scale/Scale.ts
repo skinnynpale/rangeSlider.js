@@ -26,8 +26,12 @@ export class HorizontalScale extends Scale implements Scale {
     const dashTemplate = `<div class="scale__dash"></div>`;
     const amount = edge / ratio;
 
+    if (this.scaleHTML.children.length !== amount + 1) {
+      this.scaleHTML.innerHTML = "";
+    }
+
     if (this.scaleHTML.children.length === 0) {
-      for (let i = 0; i < amount + 1; i++) {
+      for (let i = this.scaleHTML.children.length; i < amount + 1; i++) {
         this.scaleHTML.insertAdjacentHTML("beforeend", dashTemplate);
       }
     }

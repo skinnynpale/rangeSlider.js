@@ -8,6 +8,8 @@ class VisualModel extends Observer {
   public setState(state: {} = {}) {
     Object.assign(this.state, state);
 
+    console.log(this.state);
+
     this.emit("newVisualModel", this.state);
   }
 }

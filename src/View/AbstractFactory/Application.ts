@@ -1,3 +1,4 @@
+import { Settings } from "./UIs/Settings/Settings";
 import { Observer } from "../../Observer/Observer";
 import { constants } from "../../helpers/constants";
 import { ITemp, IVisualModel, IOnlyBoolean, IOnlyString } from "../../helpers/interfaces";
@@ -52,7 +53,8 @@ import {
  */
 
 class Application extends Observer {
-  public scale?: Scale;
+  public settings?: Settings;
+  private scale?: Scale;
   private bar?: Bar;
   private tip?: Tip;
   private handler!: Handler;
@@ -62,12 +64,13 @@ class Application extends Observer {
     super();
   }
 
-  public createUI({ bar, scale }: IOnlyBoolean) {
+  public createUI({ bar, scale, settings }: IOnlyBoolean) {
     this.template = this.factory.createTemplate();
     this.handler = this.factory.createHandler();
 
     bar ? (this.bar = this.factory.createBar()) : "";
     scale ? (this.scale = this.factory.createScale()) : "";
+    settings ? (this.settings = this.factory.createSettings()) : "";
   }
 
   public init(state: IVisualModel) {
@@ -100,7 +103,7 @@ class Application extends Observer {
     const UIs = Object.keys(this);
 
     for (const UI of UIs) {
-      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor") continue;
+      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor" || UI === "settings") continue;
 
       (this as any)[UI].paint(state);
     }
