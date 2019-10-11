@@ -1,4 +1,5 @@
 import { Observer } from "../Observer/Observer";
+import { IOnlyString } from "../helpers/interfaces";
 
 class VisualModel extends Observer {
   constructor(public state: {} = {}) {
@@ -12,7 +13,7 @@ class VisualModel extends Observer {
     this.emit("newVisualModel", this.state);
   }
 
-  private correctState(state: {}) {
+  private correctState(state: IOnlyString) {
     state.bar = JSON.parse(state.bar);
     state.scale = JSON.parse(state.scale);
     state.settings = JSON.parse(state.settings);

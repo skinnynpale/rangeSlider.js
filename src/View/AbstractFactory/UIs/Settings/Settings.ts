@@ -2,7 +2,7 @@ import { IState } from "../../../../Model/Model";
 import { Observer } from "../../../../Observer/Observer";
 
 export class Settings extends Observer {
-  private settingsHTML!: HTMLElement;
+  public settingsHTML!: HTMLElement;
   private state!: IState;
   private anchor!: HTMLElement;
 

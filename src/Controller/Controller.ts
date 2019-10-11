@@ -5,8 +5,8 @@ import { IVisualModel, ITemp, IState } from "../helpers/interfaces";
 import { Observer } from "../Observer/Observer";
 
 class Controller {
-  private model = new Model();
-  private visualModel = new VisualModel();
+  private model: Model = new Model();
+  private visualModel: VisualModel = new VisualModel();
   private app!: Application;
 
   constructor(private anchor: HTMLElement, private settingsVisualModel: {}, private settingsModel: {}) {
@@ -55,11 +55,16 @@ class Controller {
     }
   }
 
+  // TODO в идеале реализовать удаление не так
+
   private reCreateApplication(oldModel: IState) {
-    this.model = null;
-    this.visualModel = null;
-    this.app = null;
-    this.anchor.innerHTML = ""; // TODO пофиксить это
+    const settingsHTML = this.app.settings && (this.app.settings.settingsHTML as HTMLElement);
+    const wrapperHTML =
+      this.app.settings &&
+      ((this.app.settings.settingsHTML.parentElement as HTMLElement).querySelector(".wrapper-slider") as HTMLElement);
+
+    this.anchor.removeChild(settingsHTML as HTMLElement);
+    this.anchor.removeChild(wrapperHTML as HTMLElement);
 
     this.model = new Model();
     this.visualModel = new VisualModel();
@@ -72,7 +77,7 @@ class Controller {
     this.app.init(this.visualModel.state as IVisualModel);
   }
 
-  private saveOldModel(target: {}, obj: {}) {
+  private saveOldModel(target: any, obj: any) {
     for (const prompt in target) {
       target[prompt] = obj[prompt];
     }
