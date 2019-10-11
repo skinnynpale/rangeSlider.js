@@ -14,7 +14,8 @@
         "no-shadowed-variable": false,
         "max-classes-per-file": false,
         "interface-name": false,
-        "no-empty": false
+        "no-empty": false,
+        "forin": false
     },
     "rulesDirectory": []
 }

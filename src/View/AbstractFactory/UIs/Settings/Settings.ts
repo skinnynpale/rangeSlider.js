@@ -88,6 +88,11 @@ export class Settings extends Observer {
     for (const input of inputs as any) {
       input.value = state[input.id];
     }
+
+    const selects = this.settingsHTML.querySelectorAll("select");
+    for (const select of selects as any) {
+      select.value = state[select.id];
+    }
   }
 
   private startListenEvents() {
@@ -110,7 +115,7 @@ export class Settings extends Observer {
           });
         }
       } else if (target.tagName === "SELECT") {
-        this.emit("newSettingsForVisualModel", { [target.id]: (target as HTMLSelectElement).value });
+        this.emit("reCreateApp", { [target.id]: (target as HTMLSelectElement).value });
       }
     });
   }

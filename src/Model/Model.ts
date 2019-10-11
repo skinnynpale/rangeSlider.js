@@ -30,8 +30,6 @@ class Model extends Observer {
       this._dynamicCounting(state);
     }
 
-    console.log(this.state);
-
     this.emit("newState", this.state);
   }
 

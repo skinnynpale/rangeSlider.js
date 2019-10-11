@@ -23,6 +23,7 @@
   font-family: monospace;
   font-size: 16px;
   border: 2px dotted green;
+  width: 200px;
 
   &__separation {
     height: 1px;
@@ -31,14 +32,13 @@
   }
 
   &__label {
-    margin: 2px 0;
+    margin: 2px 5px;
   }
 
   &__input {
     width: 90px;
     font-family: monospace;
-    border-radius: 3px;
-    border: 1px solid black;
+    // border-radius: 3px;
   }
 }
 
