@@ -14,6 +14,10 @@
 | ------------------ | ---------------- | ---------------- |
 | `npm run test`     | `npm run dev`    | `npm run prod`   |
 
+| Режим тестирования | Режим разработки | Режим продакшена |
+| ------------------ | ---------------- | ---------------- |
+| `npm run test`     | `npm run dev`    | `npm run prod`   |
+
 ## Использование
 
 1. Подключить jQuery 3.41 `<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>`
