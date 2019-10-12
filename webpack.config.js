@@ -11,10 +11,13 @@ module.exports = {
     clientLogLevel: "silent",
   },
   output: {
-    filename: "build.js",
+    filename: "rangeSlider.js",
   },
   resolve: {
     extensions: [".ts", ".js", ".json"],
+  },
+  externals: {
+    jquery: "$",
   },
   plugins: [
     new MiniCssExtractPlugin({
