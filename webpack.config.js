@@ -5,7 +5,7 @@ const webpack = require("webpack");
 module.exports = {
   entry: "./src/index",
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    contentBase: path.join(__dirname, "docs"),
     compress: true,
     port: 9999,
     clientLogLevel: "silent",
