@@ -8,7 +8,7 @@
 
 ### Клонировать репозиторий
 
-` git clone https://github.com/skinnynpale/rangeSlider`
+` git clone https://github.com/skinnynpale/rangeSlider.js`
 
 Режим тестирования  |  Режим разработки  |  Режим продакшена
 ------------------  | -----------------  | -----------------
