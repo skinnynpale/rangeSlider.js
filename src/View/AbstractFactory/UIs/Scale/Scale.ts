@@ -38,7 +38,7 @@ export class HorizontalScale extends Scale implements Scale {
 
     this.scaleHTML.style.width = edge + "px";
     const handler = this.slider.querySelector(".slider__handler") as HTMLElement;
-    this.scaleHTML.style.marginLeft = `${handler.offsetWidth / 2}px`;
+    this.scaleHTML.style.marginLeft = `11px`;
   }
 }
 
@@ -56,6 +56,6 @@ export class VerticalScale extends Scale implements Scale {
 
     this.scaleHTML.style.height = edge + "px";
     const handler = this.slider.querySelector(".slider__handler") as HTMLElement;
-    this.scaleHTML.style.marginTop = `${handler.offsetWidth / 2}px`;
+    this.scaleHTML.style.marginTop = `11px`;
   }
 }

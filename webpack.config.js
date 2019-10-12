@@ -1,23 +1,29 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   entry: "./src/index",
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
-    port: 5500,
+    port: 9999,
     clientLogLevel: "silent",
   },
   output: {
     filename: "build.js",
   },
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".ts", ".js", ".json"],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name].css",
+      filename: "rangeSlider.css",
+    }),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      "window.jQuery": "jquery",
     }),
   ],
   module: {

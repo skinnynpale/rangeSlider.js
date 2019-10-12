@@ -1,5 +1,6 @@
 import { IState } from "../../../../Model/Model";
 import { Observer } from "../../../../Observer/Observer";
+import { constants } from "../../../../helpers/constants";
 
 export class Settings extends Observer {
   public settingsHTML!: HTMLElement;
@@ -83,6 +84,7 @@ export class Settings extends Observer {
     const inputs = this.settingsHTML.querySelectorAll("input");
 
     const [valueFrom, valueTo] = state.values as number[];
+
     Object.assign(state, { valueFrom, valueTo });
 
     for (const input of inputs as any) {

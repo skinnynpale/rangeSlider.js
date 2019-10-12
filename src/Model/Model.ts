@@ -61,6 +61,10 @@ class Model extends Observer {
       this.state.values.push(handlerObj.tempValue);
     }
     this.state.values.sort((a, b) => a - b);
+
+    if (this.mapOfHandlers.size === 1) {
+      this.state.values[1] = this.state.max as number;
+    }
   }
 
   private _createArrayOfPxValues(array: number[]): void {
