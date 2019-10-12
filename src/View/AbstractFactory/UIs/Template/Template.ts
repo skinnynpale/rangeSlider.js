@@ -5,11 +5,13 @@ import { Handler } from "../Handler/Handler";
 import { Tip } from "../Tip/Tip";
 
 export interface Template {
-  init({ skin, direction }: IVisualModel, anchor: HTMLElement): void;
+  init(obj: IVisualModel, anchor: HTMLElement): void;
   append(component: Handler | Bar | Tip, anchor: HTMLElement): void;
 }
 
 export class Template implements Template {
+  public templateHTML!: HTMLElement;
+
   public init({ skin, direction }: IVisualModel, anchor: HTMLElement) {
     const sliderTemplate = `
       <div class="wrapper-slider wrapper-slider--${direction}">
@@ -18,6 +20,7 @@ export class Template implements Template {
     `;
 
     anchor.insertAdjacentHTML("afterbegin", sliderTemplate);
+    this.templateHTML = anchor.querySelector(".wrapper-slider") as HTMLElement;
   }
 
   public append(component: Handler | Bar, anchor: HTMLElement) {

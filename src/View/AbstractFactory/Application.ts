@@ -109,6 +109,11 @@ class Application extends Observer {
     }
   }
 
+  public removeHTML() {
+    (this.template.templateHTML.parentElement as HTMLElement).removeChild((this.settings as Settings).settingsHTML);
+    (this.template.templateHTML.parentElement as HTMLElement).removeChild(this.template.templateHTML);
+  }
+
   private getEdge(state: IVisualModel) {
     const wrapper = this.anchor.querySelector(".wrapper-slider") as HTMLElement;
     const handlers = this.anchor.querySelectorAll(".slider__handler");

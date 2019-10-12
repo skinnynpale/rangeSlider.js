@@ -2,18 +2,23 @@ import { Model } from "../Model/Model";
 import { VisualModel } from "../Model/VisualModel";
 import { ApplicationConfigurator, Application } from "../View/AbstractFactory/Application";
 import { IVisualModel, ITemp, IState } from "../helpers/interfaces";
-import { Observer } from "../Observer/Observer";
 
 class Controller {
-  private model: Model = new Model();
-  private visualModel: VisualModel = new VisualModel();
+  private model!: Model;
+  private visualModel!: VisualModel;
   private app!: Application;
 
-  constructor(private anchor: HTMLElement, private settingsVisualModel: {}, private settingsModel: {}) {
+  constructor(private anchor: HTMLElement, private settingsVisualModel: IVisualModel, private settingsModel: IState) {
+    this.initMVC(settingsVisualModel, settingsModel);
+  }
+
+  private initMVC(settingsVisualModel: IVisualModel, settingsModel: IState) {
+    this.model = new Model();
+    this.visualModel = new VisualModel();
     this.visualModel.setState(settingsVisualModel);
     this.model.setState(settingsModel);
 
-    this.app = new ApplicationConfigurator().main(this.visualModel.state, anchor);
+    this.app = new ApplicationConfigurator().main(this.visualModel.state, this.anchor);
     this.app.createUI(this.visualModel.state);
     this._bindEvents();
     this.app.init(this.visualModel.state as IVisualModel);
@@ -29,11 +34,7 @@ class Controller {
       });
 
     this.app.settings &&
-      this.app.settings.on("reCreateApp", (state: {}) => Object.assign(this.settingsVisualModel, state));
-    this.app.settings &&
-      this.app.settings.on("reCreateApp", () =>
-        this.reCreateApplication(this.saveOldModel(this.settingsModel, this.model.state)),
-      );
+      this.app.settings.on("reCreateApp", (newVisualModel: IVisualModel) => this.reCreateApplication(newVisualModel));
 
     this.model.on("pxValueDone", (obj: ITemp) => this.app.paint(obj));
     this.app.on("onUserMove", (obj: {}) => this.model.setState(obj));
@@ -55,26 +56,12 @@ class Controller {
     }
   }
 
-  // TODO в идеале реализовать удаление не так
+  private reCreateApplication(newVisualModel: IVisualModel) {
+    const settingsVisualModel = Object.assign(this.settingsVisualModel, newVisualModel);
+    const settingsModel = this.saveOldModel(this.settingsModel, this.model.state);
 
-  private reCreateApplication(oldModel: IState) {
-    const settingsHTML = this.app.settings && (this.app.settings.settingsHTML as HTMLElement);
-    const wrapperHTML =
-      this.app.settings &&
-      ((this.app.settings.settingsHTML.parentElement as HTMLElement).querySelector(".wrapper-slider") as HTMLElement);
-
-    this.anchor.removeChild(settingsHTML as HTMLElement);
-    this.anchor.removeChild(wrapperHTML as HTMLElement);
-
-    this.model = new Model();
-    this.visualModel = new VisualModel();
-    this.visualModel.setState(this.settingsVisualModel);
-    this.model.setState(oldModel);
-
-    this.app = new ApplicationConfigurator().main(this.visualModel.state, this.anchor);
-    this.app.createUI(this.visualModel.state);
-    this._bindEvents();
-    this.app.init(this.visualModel.state as IVisualModel);
+    this.app.removeHTML();
+    this.initMVC(settingsVisualModel, settingsModel);
   }
 
   private saveOldModel(target: any, obj: any) {
