@@ -1,10 +1,8 @@
 # rangeSlider.js
 
-> Плагин для jQuery
+---
 
 ### [Превью плагина](https://skinnynpale.github.io/rangeSlider.js/)
-
-### [UML диаграмма](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=rangeSlider%20Class%20Diagramm#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Xe6DzLpntBZs3fBWXV2PZ_qWj9ztVsGw%26export%3Ddownload)
 
 ### Клонировать репозиторий
 
@@ -18,9 +16,87 @@
 | ------------------ | ---------------- | ---------------- |
 | `npm run test`     | `npm run dev`    | `npm run prod`   |
 
+## Установка плагина
+
+1. Подключить `jQuery 3.41`
+2. Подключить `CSS` стили плагина: `<link rel="stylesheet> href="rangeSlider.css">`
+3. Подключить сам плагин в конце `body` перед `jQuery`: `<script src="rangeSlider.js"></script>`
+
 ## Использование
 
-1. Подключить jQuery 3.41 `<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>`
-2. Подключить CSS стили плагина `<link rel="stylesheet> href="rangeSlider.css">`
-3. Подключить сам плагин в **конце** body перед jQuery `<script src="rangeSlider.js"></script>`
-4. Вызвать `$(#myDIV).rangeSlider()`
+#### `Быстрое`, с настройками по умолчанию
+
+```javascript
+$(#myDiv).rangeSlider();
+```
+
+![](https://downloader.disk.yandex.ru/preview/294d314a05bce6ec94f9ded68b53678131940f91fbe2e7d44234042951834952/5da363a2/oNuZv0OV2qR2VOmsnIAwnIO2ErUSDSoWslvnK1Xmwer1sLA1K6Gg2v6aisOQwyEBPsL0_IT3ElapkSMvAB4c9g%3D%3D?uid=0&filename=2019-10-13_20-48-36.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v2&size=2048x2048)
+
+#### С `кастомными` настройками
+
+```javascript
+$(#myDiv).rangeSlider(
+    {
+        settings: true,
+        skin: "red"
+    },
+    {
+        min: 20,
+        step: 5
+    },
+);
+```
+
+![](https://downloader.disk.yandex.ru/preview/85fbf40c7177919cf3e202d0a78f8f39c240dc7a0fa090a1f97b682f1db48e28/5da36363/xbLpRcZOarLgwD6UB22fXzTRHYJKXPAzwp4Z80OmHhubt1fO-pP_-mFupUrQrxXDhDuS9gpvUipYr430hegn4Q%3D%3D?uid=0&filename=2019-10-13_20-47-40.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v2&size=2048x2048)
+
+### Настройки для первого передаваемого объекта
+
+| Свойство    | Тип     | Все возможные значения    | Описание                                              |
+| ----------- | ------- | ------------------------- | ----------------------------------------------------- |
+| `direction` | string  | "horizontal" и "vertical" | Указывает положение слайдера по горизонтали/вертикали |
+| `type`      | string  | "single" и "interval"     | Позволяет выбрать одиночной значение или интервальное |
+| `skin`      | string  | "green" и "red"           | Выбор рассцветки для слайдера                         |
+| `settings`  | boolean | true / false              | Настройки на лету                                     |
+| `bar`       | boolean | true / false              | Полоса заполнения                                     |
+| `tip`       | boolean | true / false              | Подсказки значений                                    |
+| `scale`     | boolean | true / false              | Линейка                                               |
+
+### Настройки для второго передаваемого объекта
+
+| Свойство | Тип      | Все возможные значения | Описание                                         |
+| -------- | -------- | ---------------------- | ------------------------------------------------ |
+| `min`    | number   | любое                  | Минимальное значение                             |
+| `max`    | number   | любое                  | Максимальное значение                            |
+| `step`   | number   | > 0                    | Шаг                                              |
+| `values` | number[] | Максимум два значения  | Начальные значения для первого и второго бегунка |
+
+# Архитектура
+
+---
+
+### [Полная UML диаграмма](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=rangeSlider%20Class%20Diagramm#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Xe6DzLpntBZs3fBWXV2PZ_qWj9ztVsGw%26export%3Ddownload)
+
+#### Инициализация
+
+![](https://sun9-12.userapi.com/c851016/v851016527/1dc77d/cX5dsrxl45Q.jpg)
+
+При инициализации создаются экземпляры классов:
+
+1. `Model` - отвечает за хранение всех _числовых_ и _временных (temp)_ значений, а так же все рассчеты
+   > Например: Model.state: { step: 5, min: 10, max: 90, tempValue: 13, tempPxValue: 60 ... }
+2. `VisualModel` - отвечает за хранение информации о графическом состоянии слайдера
+   > Например: VisualModel.state: { direction: "vertical", tip: true, bar: true ... }
+3. `Application` - отвечает за создание отображения. С помощью фасада `ApplicationConfigurator` определяется нужная фабрика, на которой будут создаваться все сущности, нужные для пользователя, из одной категории. Здесь использован шаблон проектирования `Абстрактная Фабрика`
+   > Например: определилась фабрика `IntervalHorizontalFactory`, затем создаются `IntervalHorizontalBar`, `IntervalHorizontalScale` и тд..
+
+#### Отвязка слоев приложения
+
+![](https://sun9-8.userapi.com/c851420/v851420527/1e58a5/y7QgIOeIGRk.jpg)
+
+При помощи паттерна `Observer` мы расширяем созданные ранее экземпляры, тем самым обеспечивая такой режим работы приложения когда любой из созданных слоев не знает ни о ком кроме себя, и при важных изменениях он может разослать своим "подписчикам"(в нашем случае `Controller'у`) **имяСобытия** и **данные**. Это позволяет писать **тесты** для каждого из слоев по отдельности, а также повышает устойчивость к изменениям работы приложения.
+
+#### Взаимодействие с пользователем
+
+![](https://sun9-6.userapi.com/c851420/v851420293/1ebdcf/1le7Bipcr2Q.jpg)
+
+> Высокоуровневая диаграмма процесса
