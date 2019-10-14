@@ -13,6 +13,7 @@ interface IVisualModel {
   bar: boolean;
   tip: boolean;
   type: string;
+  settings: boolean;
 }
 
 interface ITemp {

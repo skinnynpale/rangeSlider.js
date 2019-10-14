@@ -6,7 +6,7 @@ import { ITemp, IVisualModel, IOnlyBoolean, IOnlyString } from "../../helpers/in
 /**
  * Bar
  */
-import { Bar, SingleHorizontalBar, SingleVerticalBar, IntervalHorizontalBar, IntervalVerticalBar } from "./UIs/Bar/Bar";
+import { Bar} from "./UIs/Bar/Bar";
 
 /**
  * Tip
@@ -16,13 +16,7 @@ import { Tip } from "./UIs/Tip/Tip";
 /**
  * Handler
  */
-import {
-  Handler,
-  SingleHorizontalHandler,
-  SingleVerticalHandler,
-  IntervalHorizontalHandler,
-  IntervalVerticalHandler,
-} from "./UIs/Handler/Handler";
+import { Handler } from "./UIs/Handler/Handler";
 
 /**
  * Template
