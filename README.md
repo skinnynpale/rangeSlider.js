@@ -1,16 +1,10 @@
 # rangeSlider.js
 
----
-
 ### [Превью плагина](https://skinnynpale.github.io/rangeSlider.js/)
 
 ### Клонировать репозиторий
 
 `git clone https://github.com/skinnynpale/rangeSlider.js`
-
-| Режим тестирования | Режим разработки | Режим продакшена |
-| ------------------ | ---------------- | ---------------- |
-| `npm run test`     | `npm run dev`    | `npm run prod`   |
 
 | Режим тестирования | Режим разработки | Режим продакшена |
 | ------------------ | ---------------- | ---------------- |
@@ -30,8 +24,6 @@
 $(#myDiv).rangeSlider();
 ```
 
-![](https://downloader.disk.yandex.ru/preview/294d314a05bce6ec94f9ded68b53678131940f91fbe2e7d44234042951834952/5da363a2/oNuZv0OV2qR2VOmsnIAwnIO2ErUSDSoWslvnK1Xmwer1sLA1K6Gg2v6aisOQwyEBPsL0_IT3ElapkSMvAB4c9g%3D%3D?uid=0&filename=2019-10-13_20-48-36.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v2&size=2048x2048)
-
 #### С `кастомными` настройками
 
 ```javascript
@@ -46,8 +38,6 @@ $(#myDiv).rangeSlider(
     },
 );
 ```
-
-![](https://downloader.disk.yandex.ru/preview/85fbf40c7177919cf3e202d0a78f8f39c240dc7a0fa090a1f97b682f1db48e28/5da36363/xbLpRcZOarLgwD6UB22fXzTRHYJKXPAzwp4Z80OmHhubt1fO-pP_-mFupUrQrxXDhDuS9gpvUipYr430hegn4Q%3D%3D?uid=0&filename=2019-10-13_20-47-40.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v2&size=2048x2048)
 
 ### Настройки для первого передаваемого объекта
 
@@ -70,9 +60,27 @@ $(#myDiv).rangeSlider(
 | `step`   | number   | > 0                    | Шаг                                              |
 | `values` | number[] | Максимум два значения  | Начальные значения для первого и второго бегунка |
 
-# Архитектура
+### Публичные методы
+Для начала нужно инициализировать плагин
+```javascript
+$("#anchor").rangeSlider();
+```
+Затем, для использования существует три публичных метода
+```javascript
+// Обновление только числовых значений
+$("#anchor").rangeSlider("updateValues", {step: 1, values: [15]}); 
 
----
+// Обновление только визуала
+$("#anchor").rangeSlider("updateVisual", {skin: "red", direction: "vertical"});
+
+// Сброс к первоначальным кастомным настройкам
+$("#anchor").rangeSlider("reset");
+
+// Удаление плагина из HTML
+$("#anchor").rangeSlider("destroy");
+```
+
+# Архитектура
 
 ### [Полная UML диаграмма](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=rangeSlider%20Class%20Diagramm#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Xe6DzLpntBZs3fBWXV2PZ_qWj9ztVsGw%26export%3Ddownload)
 
@@ -83,10 +91,13 @@ $(#myDiv).rangeSlider(
 При инициализации создаются экземпляры классов:
 
 1. `Model` - отвечает за хранение всех _числовых_ и _временных (temp)_ значений, а так же все рассчеты
+
    > Например: Model.state: { step: 5, min: 10, max: 90, tempValue: 13, tempPxValue: 60 ... }
 2. `VisualModel` - отвечает за хранение информации о графическом состоянии слайдера
+
    > Например: VisualModel.state: { direction: "vertical", tip: true, bar: true ... }
 3. `Application` - отвечает за создание отображения. С помощью фасада `ApplicationConfigurator` определяется нужная фабрика, на которой будут создаваться все сущности, нужные для пользователя, из одной категории. Здесь использован шаблон проектирования `Абстрактная Фабрика`
+
    > Например: определилась фабрика `IntervalHorizontalFactory`, затем создаются `IntervalHorizontalBar`, `IntervalHorizontalScale` и тд..
 
 #### Отвязка слоев приложения
