@@ -80,6 +80,15 @@ $("#anchor").rangeSlider("reset");
 $("#anchor").rangeSlider("destroy");
 ```
 
+### Событие `onChange`
+```javascript
+// Есть возможность повесить callback функцию на это событие
+$("#anchor").rangeSlider("onChange", () => 'ваш код');
+
+// Так же можно брать значения слайдера из свойства detail, пример:
+$("#anchor").rangeSlider("onChange", (event) => console.log(event.detail));
+```
+
 # Архитектура
 
 ### [Полная UML диаграмма](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=rangeSlider%20Class%20Diagramm#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Xe6DzLpntBZs3fBWXV2PZ_qWj9ztVsGw%26export%3Ddownload)

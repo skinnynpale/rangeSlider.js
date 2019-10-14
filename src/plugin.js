@@ -3,23 +3,24 @@ import { Controller } from "./Controller/Controller";
 (function($) {
   const methods = {
     init: function(settingsVisualModel = {}, settingsModel = {}) {
-      return this.each(function() {
-        const visualModel = $.extend({
-          direction: "horizontal",
-          skin: "green",
-          bar: true,
-          tip: true,
-          type: "single",
-          scale: false,
-          settings: false,
-        }, settingsVisualModel);
-        const model = $.extend({
-          min: 10,
-          max: 50,
-          values: [20, 40],
-          step: 2,
-        }, settingsModel);
+      if (!!$(this).data("rangeSlider")) return;
+      const visualModel = $.extend({
+        direction: "horizontal",
+        skin: "green",
+        bar: true,
+        tip: true,
+        type: "single",
+        scale: false,
+        settings: false,
+      }, settingsVisualModel);
+      const model = $.extend({
+        min: 10,
+        max: 50,
+        values: [20, 40],
+        step: 2,
+      }, settingsModel);
 
+      return this.each(function() {
         $.data(this, { rangeSlider: new Controller(this, visualModel, model) });
 
         $(this).data().startingVisualModel = visualModel;
@@ -43,7 +44,11 @@ import { Controller } from "./Controller/Controller";
     destroy: function() {
       const rangeSlider = $(this).data("rangeSlider");
       rangeSlider.app.removeHTML();
-    }
+      $(this).off("onChange");
+    },
+    onChange: function(func) {
+      $(this).on("onChange", func);
+    },
   };
 
   $.fn.rangeSlider = function(method) {

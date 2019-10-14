@@ -25,24 +25,34 @@ class Controller {
   }
 
   private _bindEvents() {
+    // Начальная расстановка бегунков
     this.app.on("finishInit", (obj: {}) => this._arrangeHandlers(obj));
 
-    this.app.settings &&
-      this.app.settings.on("newSettings", (obj: {}) => {
-        this.model.setState(obj);
-        this._arrangeHandlers(obj);
-      });
-
-    this.app.settings &&
-      this.app.settings.on("reCreateApp", (newVisualModel: IVisualModel) => this.reCreateApplication(newVisualModel));
-
-    this.model.on("pxValueDone", (obj: ITemp) => this.app.paint(obj));
+    // Основая отрисовка
     this.app.on("onUserMove", (obj: {}) => this.model.setState(obj));
+    this.model.on("pxValueDone", (obj: ITemp) => this.app.paint(obj));
 
+    // События для плагина
+    this.model.on("pxValueDone", (obj: ITemp) => this.anchor.dispatchEvent(
+      new CustomEvent("onChange", {detail: this.model.state}),
+    ));
+
+    // Синхронизация настроек и состояния
+    this.app.settings &&
+    this.app.settings.on("newSettings", (obj: {}) => {
+      this.model.setState(obj);
+      this._arrangeHandlers(obj);
+    });
+
+    // Отрисовка настроек
     this.model.on(
       "newState",
       (state: {}) => this.app.settings && this.app.settings.paint(Object.assign({}, state, this.visualModel.state)),
     );
+
+    // Пересоздать слайдер
+    this.app.settings &&
+    this.app.settings.on("reCreateApp", (newVisualModel: IVisualModel) => this.reCreateApplication(newVisualModel));
   }
 
   // Начальная расстановка бегунков
