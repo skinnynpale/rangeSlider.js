@@ -1,8 +1,8 @@
-import { expect } from "chai";
-import { Model } from "./Model";
+import { expect } from 'chai';
+import Model from './Model';
 
-describe("Model", () => {
-  it("Должен поставить кастомные настройки", () => {
+describe('Model', () => {
+  it('Должен поставить кастомные настройки', () => {
     const model = new Model({
       min: 10,
       max: 80,
@@ -15,7 +15,7 @@ describe("Model", () => {
     expect(model.state.values).to.deep.equal([50]);
     expect(model.state.step).to.equal(2);
   });
-  it("Должен исправить min/max если заходят друг за друга", () => {
+  it('Должен исправить min/max если заходят друг за друга', () => {
     const model = new Model({
       min: 90,
       max: 80,
@@ -30,7 +30,7 @@ describe("Model", () => {
     expect(model.state.min).to.equal(-5);
     expect(model.state.max).to.equal(10);
   });
-  it("Должен исправить шаг", () => {
+  it('Должен исправить шаг', () => {
     const model = new Model({
       step: 90,
       max: 50,
@@ -43,7 +43,7 @@ describe("Model", () => {
 
     expect(model.state.step).to.eq(1);
   });
-  it("Должен откорректировать значение отталкиваясь от шага", () => {
+  it('Должен откорректировать значение отталкиваясь от шага', () => {
     const model = new Model({
       min: 10,
       max: 80,
@@ -53,7 +53,7 @@ describe("Model", () => {
 
     expect(model.state.values).to.deep.eq([48]);
   });
-  it("Должен вернуть откорректированное значение отталкиваясь если оно заходит за min/max", () => {
+  it('Должен вернуть откорректированное значение отталкиваясь если оно заходит за min/max', () => {
     const model = new Model({
       min: 10,
       max: 79,
@@ -75,7 +75,7 @@ describe("Model", () => {
 
     expect(model.state.values).to.deep.eq([12]);
   });
-  it("Должен все сделать в правильном порядке", () => {
+  it('Должен все сделать в правильном порядке', () => {
     const model = new Model({
       min: 50,
       max: -200,
@@ -86,7 +86,7 @@ describe("Model", () => {
     expect(model.state.min).to.eq(-200);
     expect(model.state.max).to.eq(50);
   });
-  it("Должен отсортировать значения", () => {
+  it('Должен отсортировать значения', () => {
     const model = new Model({
       min: 10,
       max: 80,

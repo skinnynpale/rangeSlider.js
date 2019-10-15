@@ -1,7 +1,7 @@
-import { Model } from "../Model/Model";
-import { VisualModel } from "../Model/VisualModel";
-import { ApplicationConfigurator, Application } from "../View/AbstractFactory/Application";
-import { IVisualModel, ITemp, IState } from "../helpers/interfaces";
+import Model from '../Model/Model';
+import VisualModel from '../Model/VisualModel';
+import { ApplicationConfigurator, Application } from '../View/AbstractFactory/Application';
+import { IVisualModel, ITemp, IState } from '../helpers/interfaces';
 
 class Controller {
   private model!: Model;
@@ -20,44 +20,43 @@ class Controller {
 
     this.app = new ApplicationConfigurator().main(this.visualModel.state, this.anchor);
     this.app.createUI(this.visualModel.state);
-    this._bindEvents();
+    this.bindEvents();
     this.app.init(this.visualModel.state as IVisualModel);
   }
 
-  private _bindEvents() {
-    // Начальная расстановка бегунков
-    this.app.on("finishInit", (obj: {}) => this._arrangeHandlers(obj));
+  private bindEvents() {
+    // TODO заменить arrangeHandlers на метод в Model
+    this.app.on('finishInit', (obj: {}) => this.arrangeHandlers(obj));
 
-    // Основая отрисовка
-    this.app.on("onUserMove", (obj: {}) => this.model.setState(obj));
-    this.model.on("pxValueDone", (obj: ITemp) => this.app.paint(obj));
-
-    // События для плагина
-    this.model.on("pxValueDone", (obj: ITemp) => this.anchor.dispatchEvent(
-      new CustomEvent("onChange", { detail: this.model.state }),
-    ));
+    this.model.on('pxValueDone', (obj: ITemp) => this.app.paint(obj));
+    this.app.on('onUserMove', (obj: {}) => this.model.setState(obj));
 
     // Синхронизация настроек и состояния
     this.app.settings &&
-    this.app.settings.on("newSettings", (obj: {}) => {
+    this.app.settings.on('newSettings', (obj: {}) => {
       this.model.setState(obj);
-      this._arrangeHandlers(obj);
+      this.arrangeHandlers(obj);
     });
 
     // Отрисовка настроек
     this.model.on(
-      "newState",
-      (state: {}) => this.app.settings &&
-        this.app.settings.paint({ ...state, ...this.visualModel.state }),
+      'pxValueDone',
+      () => this.app.settings &&
+        this.app.settings.paint({ ...this.model.state, ...this.visualModel.state }),
     );
 
     // Пересоздать слайдер
     this.app.settings &&
-    this.app.settings.on("reCreateApp", (newVisualModel: IVisualModel) => this.reCreateApplication(newVisualModel));
+    this.app.settings.on('reCreateApp', (newVisualModel: IVisualModel) => this.reCreateApplication(newVisualModel));
+
+    // События для плагина
+    this.model.on('pxValueDone', () => this.anchor.dispatchEvent(
+      new CustomEvent('onChange', { detail: this.model.state }),
+    ));
   }
 
   // Начальная расстановка бегунков
-  private _arrangeHandlers({ edge, handlers }: any) {
+  private arrangeHandlers({ edge, handlers }: any) {
     for (let i = 0; i < handlers.length; i += 1) {
       this.model.setState({
         edge,
@@ -83,4 +82,4 @@ class Controller {
   }
 }
 
-export { Controller };
+export default Controller;

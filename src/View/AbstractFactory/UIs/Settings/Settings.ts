@@ -1,5 +1,5 @@
-import { IState } from "../../../../Model/Model";
-import Observer from "../../../../Observer/Observer";
+import { IState } from '../../../../helpers/interfaces';
+import Observer from '../../../../Observer/Observer';
 
 class Settings extends Observer {
   public settingsHTML!: HTMLElement;
@@ -71,16 +71,16 @@ class Settings extends Observer {
                               </div>
                             `;
 
-    anchor.insertAdjacentHTML("beforeend", settingsTemplate);
+    anchor.insertAdjacentHTML('beforeend', settingsTemplate);
 
-    this.settingsHTML = anchor.querySelector(".settings") as HTMLElement;
+    this.settingsHTML = anchor.querySelector('.settings') as HTMLElement;
 
     this.startListenEvents();
   }
 
   public paint(state: IState) {
     this.state = state;
-    const inputs = this.settingsHTML.querySelectorAll("input");
+    const inputs = this.settingsHTML.querySelectorAll('input');
 
     const [valueFrom, valueTo] = state.values as number[];
 
@@ -90,33 +90,33 @@ class Settings extends Observer {
       input.value = state[input.id];
     }
 
-    const selects = this.settingsHTML.querySelectorAll("select");
+    const selects = this.settingsHTML.querySelectorAll('select');
     for (const select of selects as any) {
       select.value = state[select.id];
     }
   }
 
   private startListenEvents() {
-    this.settingsHTML.addEventListener("change", (e) => {
+    this.settingsHTML.addEventListener('change', (e) => {
       const target = e.target as HTMLElement;
 
-      if (target.tagName === "INPUT") {
-        const handlers = this.anchor.querySelectorAll(".slider__handler");
+      if (target.tagName === 'INPUT') {
+        const handlers = this.anchor.querySelectorAll('.slider__handler');
 
-        if (target.id === "valueFrom" || target.id === "valueTo") {
-          const valueFrom = (this.settingsHTML.querySelector("#valueFrom") as HTMLInputElement).value;
-          const valueTo = (this.settingsHTML.querySelector("#valueTo") as HTMLInputElement).value;
+        if (target.id === 'valueFrom' || target.id === 'valueTo') {
+          const valueFrom = (this.settingsHTML.querySelector('#valueFrom') as HTMLInputElement).value;
+          const valueTo = (this.settingsHTML.querySelector('#valueTo') as HTMLInputElement).value;
 
-          this.emit("newSettings", { handlers, edge: this.state.edge, values: [valueFrom, valueTo] });
+          this.emit('newSettings', { handlers, edge: this.state.edge, values: [valueFrom, valueTo] });
         } else {
-          this.emit("newSettings", {
+          this.emit('newSettings', {
             handlers,
             edge: this.state.edge,
             [target.id]: Number((target as HTMLInputElement).value),
           });
         }
-      } else if (target.tagName === "SELECT") {
-        this.emit("reCreateApp", { [target.id]: (target as HTMLSelectElement).value });
+      } else if (target.tagName === 'SELECT') {
+        this.emit('reCreateApp', { [target.id]: (target as HTMLSelectElement).value });
       }
     });
   }

@@ -1,2 +1,2 @@
-import "./plugin.js";
-import "./scss/style.scss";
+import './plugin.js';
+import './scss/style.scss';

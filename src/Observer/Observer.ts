@@ -15,7 +15,7 @@ class Observer {
     };
   }
 
-  public emit(eventName: string, data: any) {
+  public emit(eventName: string, data?: any) {
     const event = this.events[eventName];
 
     if (event) {

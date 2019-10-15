@@ -1,5 +1,5 @@
-import Observer from "../Observer/Observer";
-import { IOnlyString } from "../helpers/interfaces";
+import Observer from '../Observer/Observer';
+import { IOnlyString } from '../helpers/interfaces';
 
 class VisualModel extends Observer {
   constructor(public state: {} = {}) {
@@ -10,7 +10,7 @@ class VisualModel extends Observer {
     this.correctState(state);
     Object.assign(this.state, state);
 
-    this.emit("newVisualModel", this.state);
+    this.emit('newVisualModel', this.state);
   }
 
   private correctState(state: IOnlyString) {
@@ -21,4 +21,4 @@ class VisualModel extends Observer {
   }
 }
 
-export { VisualModel };
+export default VisualModel;

@@ -1,5 +1,5 @@
-import Observer from "../Observer/Observer";
-import { IOnlyNumbers, IState } from "../helpers/interfaces";
+import Observer from '../Observer/Observer';
+import { IOnlyNumbers, IState } from '../helpers/interfaces';
 
 class Model extends Observer {
   public state: IState = {};
@@ -11,15 +11,14 @@ class Model extends Observer {
   }
 
   public setState(state: IState = {}): void {
+    // TODO решить что сделать с этим
     Object.assign(this.state, state);
 
     // для корректировки основных значений
     if (state.min || state.max || state.step || state.values) {
       this.correctMinMaxRange();
       this.correctStep();
-      this.state.values = (this.state.values as number[])
-        .map(value => this.correctValue(value))
-        .sort((a, b) => a - b);
+      this.correctValues();
     }
 
     // для начальной отрисовки
@@ -31,8 +30,12 @@ class Model extends Observer {
     if (state.tempTarget && state.left) {
       this.dynamicCounting(state);
     }
+  }
 
-    this.emit("newState", this.state);
+  private correctValues() {
+    this.state.values = (this.state.values as number[])
+      .map(value => this.correctValueInTheRange(value))
+      .sort((a, b) => a - b);
   }
 
   private initialCounting(state: IState) {
@@ -74,7 +77,7 @@ class Model extends Observer {
       .map(value => this.countPxValueFromValue(value))
       .sort((a, b) => a - b);
 
-    this.emit("pxValueDone", {
+    this.emit('pxValueDone', {
       tempPxValues,
       tempTarget: this.state.tempTarget,
       tempValue: this.state.tempValue,
@@ -87,17 +90,12 @@ class Model extends Observer {
   private countValueFromLeft(left: number): number {
     const state = this.state as IOnlyNumbers;
     const value = (left / this.getRatio()) * state.step + state.min;
-    return this.correctValue(value);
+    return this.correctValueInTheRange(value);
   }
 
   private countPxValueFromValue(value: number): number {
     const state = this.state as IOnlyNumbers;
     return (value - state.min) * (this.getRatio() / state.step);
-  }
-
-  private correctValue(value: number): number {
-    value = this.correctValueInTheRange(value);
-    return value;
   }
 
   private correctMinMaxRange(): void {
@@ -109,35 +107,32 @@ class Model extends Observer {
   }
 
   private correctStep(): void {
-    this.state.step < 1 ? (this.state.step = 1) : "";
-    this.state.step > this.state.max ? (this.state.step = this.state.max) : "";
+    this.state.step < 1 ? (this.state.step = 1) : '';
+    this.state.step > this.state.max ? (this.state.step = this.state.max) : '';
   }
 
   private correctValueInTheRange(value: number): number {
-    return this.isValueInTheRange(value);
-  }
-
-  private isValueInTheRange(value: number): number {
-    const min = this.correctValueByStep(+this.state.min, "ceil");
-    const max = this.correctValueByStep(+this.state.max, "floor");
+    const min = this.correctValueByStep(+this.state.min, 'ceil');
+    const max = this.correctValueByStep(+this.state.max, 'floor');
 
     if (value < min) {
       return min;
     }
+
     if (value > max) {
       return max;
     }
-    return this.correctValueByStep(value);
 
+    return this.correctValueByStep(value);
   }
 
   private correctValueByStep(value: number, how?: string): number {
     const step = this.state.step as number;
 
-    if (how === "ceil") {
+    if (how === 'ceil') {
       return Math.ceil(value / step) * step;
     }
-    if (how === "floor") {
+    if (how === 'floor') {
       return Math.floor(value / step) * step;
     }
     return Math.round(value / step) * step;
@@ -150,4 +145,4 @@ class Model extends Observer {
   }
 }
 
-export { Model, IState };
+export default Model;

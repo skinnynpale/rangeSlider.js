@@ -1,9 +1,9 @@
-import Settings from "./UIs/Settings/Settings";
-import Template from "./UIs/Template/Template";
-import Tip from "./UIs/Tip/Tip";
-import { Bar } from "./UIs/Bar/Bar";
-import { Handler } from "./UIs/Handler/Handler";
-import { Scale } from "./UIs/Scale/Scale";
+import Settings from './UIs/Settings/Settings';
+import Template from './UIs/Template/Template';
+import Tip from './UIs/Tip/Tip';
+import { Bar } from './UIs/Bar/Bar';
+import { Handler } from './UIs/Handler/Handler';
+import { Scale } from './UIs/Scale/Scale';
 
 import {
   GUIFactory,
@@ -11,11 +11,11 @@ import {
   SingleVerticalFactory,
   IntervalHorizontalFactory,
   IntervalVerticalFactory,
-} from "./Factories/Factories";
+} from './Factories/Factories';
 
-import Observer from "../../Observer/Observer";
-import { constants } from "../../helpers/constants";
-import { ITemp, IVisualModel, IOnlyBoolean, IOnlyString } from "../../helpers/interfaces";
+import Observer from '../../Observer/Observer';
+import { constants } from '../../helpers/constants';
+import { ITemp, IVisualModel, IOnlyBoolean, IOnlyString } from '../../helpers/interfaces';
 
 /**
  * Application
@@ -38,9 +38,9 @@ class Application extends Observer {
     this.template = this.factory.createTemplate();
     this.handler = this.factory.createHandler();
 
-    bar ? (this.bar = this.factory.createBar()) : "";
-    scale ? (this.scale = this.factory.createScale()) : "";
-    settings ? (this.settings = this.factory.createSettings()) : "";
+    bar ? (this.bar = this.factory.createBar()) : '';
+    scale ? (this.scale = this.factory.createScale()) : '';
+    settings ? (this.settings = this.factory.createSettings()) : '';
   }
 
   public init(state: IVisualModel) {
@@ -48,7 +48,7 @@ class Application extends Observer {
 
     const gui = Object.keys(this);
     for (const UI of gui) {
-      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor") continue;
+      if (UI === 'factory' || UI === 'template' || UI === 'events' || UI === 'anchor') continue;
 
       this.template.append((this as any)[UI], this.anchor);
     }
@@ -62,18 +62,18 @@ class Application extends Observer {
 
     // для правильной отрисовки
     const edge = this.getEdge(state);
-    const handlers = this.anchor.querySelectorAll(".slider__handler");
-    const wrapper = this.anchor.querySelector(".wrapper-slider") as HTMLElement;
+    const handlers = this.anchor.querySelectorAll('.slider__handler');
+    const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
 
     this.listenUserEvents(wrapper, state);
-    this.emit("finishInit", { handlers, edge });
+    this.emit('finishInit', { handlers, edge });
   }
 
   public paint(state: ITemp) {
     const gui = Object.keys(this);
 
     for (const UI of gui) {
-      if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor" || UI === "settings") continue;
+      if (UI === 'factory' || UI === 'template' || UI === 'events' || UI === 'anchor' || UI === 'settings') continue;
 
       (this as any)[UI].paint(state);
     }
@@ -85,8 +85,8 @@ class Application extends Observer {
   }
 
   private getEdge(state: IVisualModel) {
-    const wrapper = this.anchor.querySelector(".wrapper-slider") as HTMLElement;
-    const handlers = this.anchor.querySelectorAll(".slider__handler");
+    const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
+    const handlers = this.anchor.querySelectorAll('.slider__handler');
 
     if (state.direction === constants.DIRECTION_VERTICAL) {
       return wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
@@ -95,9 +95,9 @@ class Application extends Observer {
   }
 
   private listenUserEvents(wrapper: HTMLElement, state: IVisualModel) {
-    wrapper.addEventListener("mousedown", (e) => {
+    wrapper.addEventListener('mousedown', (e) => {
       e.preventDefault();
-      if ((e.target as HTMLElement).className !== "slider__handler") return;
+      if ((e.target as HTMLElement).className !== 'slider__handler') return;
 
       const tempTarget = e.target as HTMLElement;
       const shiftX = e.offsetX;
@@ -106,8 +106,8 @@ class Application extends Observer {
       const onmousemove = onMouseMove.bind(this);
       const onmouseup = onMouseUp;
 
-      document.addEventListener("mousemove", onmousemove);
-      document.addEventListener("mouseup", onmouseup);
+      document.addEventListener('mousemove', onmousemove);
+      document.addEventListener('mouseup', onmouseup);
 
       function onMouseMove(this: Application, e: MouseEvent) {
         let left;
@@ -117,12 +117,12 @@ class Application extends Observer {
           left = e.clientX - shiftX - wrapper.offsetLeft;
         }
 
-        this.emit("onUserMove", { left, tempTarget });
+        this.emit('onUserMove', { left, tempTarget });
       }
 
       function onMouseUp() {
-        document.removeEventListener("mousemove", onmousemove);
-        document.removeEventListener("mouseup", onmouseup);
+        document.removeEventListener('mousemove', onmousemove);
+        document.removeEventListener('mouseup', onmouseup);
       }
     });
   }
