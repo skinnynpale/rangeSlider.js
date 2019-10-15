@@ -1,10 +1,11 @@
 import { expect } from "chai";
-import { Application } from "./Application";
-
 import jsdom from "jsdom";
+
+import { Application } from "./Application";
 import { IntervalHorizontalFactory } from "./Factories/Factories";
 import { IntervalHorizontalBar } from "./UIs/Bar/Bar";
 import { IntervalHorizontalHandler } from "./UIs/Handler/Handler";
+
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');
 const document = dom.window.document;
@@ -24,11 +25,11 @@ describe("Application", () => {
   it("Должен правильно создать сущности отталкиваясь от заданной фабрики", () => {
     const app = new Application(new IntervalHorizontalFactory(), anchor);
 
-    app.createUI({bar: true});
+    app.createUI({ bar: true });
     // @ts-ignore
     expect(app.bar).to.deep.equal(new IntervalHorizontalBar());
 
-    app.createUI({handler: true});
+    app.createUI({ handler: true });
     // @ts-ignore
     expect(app.bar).to.deep.equal(new IntervalHorizontalBar());
     // @ts-ignore
@@ -37,7 +38,7 @@ describe("Application", () => {
 
   it("Должен отрисовать HTML с заданными настройками", () => {
     let app = new Application(new IntervalHorizontalFactory(), anchor);
-    app.createUI({bar: true, settings: true});
+    app.createUI({ bar: true, settings: true });
     app.init({
       direction: "horizontal",
       skin: "green",
@@ -56,7 +57,7 @@ describe("Application", () => {
     app.removeHTML();
 
     app = new Application(new IntervalHorizontalFactory(), anchor);
-    app.createUI({bar: true, settings: true});
+    app.createUI({ bar: true, settings: true });
     app.init({
       direction: "horizontal",
       skin: "green",
@@ -72,7 +73,7 @@ describe("Application", () => {
 
   it("RemoveHTML", () => {
     const app = new Application(new IntervalHorizontalFactory(), anchor);
-    app.createUI({bar: true, settings: true});
+    app.createUI({ bar: true, settings: true });
     app.init({
       direction: "horizontal",
       skin: "green",

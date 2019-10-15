@@ -1,4 +1,4 @@
-import { Observer } from "../Observer/Observer";
+import Observer from "../Observer/Observer";
 import { IOnlyString } from "../helpers/interfaces";
 
 class VisualModel extends Observer {

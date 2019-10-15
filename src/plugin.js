@@ -3,7 +3,9 @@ import { Controller } from "./Controller/Controller";
 (function($) {
   const methods = {
     init: function(settingsVisualModel = {}, settingsModel = {}) {
-      if (!!$(this).data("rangeSlider")) return;
+      if (!!$(this).data("rangeSlider")) {
+        return;
+      }
       const visualModel = $.extend({
         direction: "horizontal",
         skin: "green",
@@ -27,35 +29,40 @@ import { Controller } from "./Controller/Controller";
         $(this).data().startingModel = model;
       });
     },
+
     updateValues: function(options) {
       const rangeSlider = $(this).data("rangeSlider");
       rangeSlider.model.setState(options);
       rangeSlider.reCreateApplication(rangeSlider.visualModel.state);
     },
+
     updateVisual: function(options) {
       const rangeSlider = $(this).data("rangeSlider");
       rangeSlider.reCreateApplication(Object.assign(rangeSlider.visualModel.state, options));
     },
+
     reset: function() {
       const rangeSlider = $(this).data("rangeSlider");
       rangeSlider.model.setState($(this).data().startingModel);
       rangeSlider.reCreateApplication($(this).data().startingVisualModel);
     },
+
     destroy: function() {
       const rangeSlider = $(this).data("rangeSlider");
       rangeSlider.app.removeHTML();
       $(this).off("onChange");
     },
+
     onChange: function(func) {
       $(this).on("onChange", func);
     },
   };
 
   $.fn.rangeSlider = function(method) {
-    if(methods[method]) {
+    if (methods[method]) {
       return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1));
-    } else if(typeof method === "object") {
-      methods.init.apply(this, arguments)
+    } else if (typeof method === "object") {
+      methods.init.apply(this, arguments);
     }
   };
 })(jQuery);

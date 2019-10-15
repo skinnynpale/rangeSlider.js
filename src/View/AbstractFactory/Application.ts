@@ -1,37 +1,9 @@
-import { Settings } from "./UIs/Settings/Settings";
-import { Observer } from "../../Observer/Observer";
-import { constants } from "../../helpers/constants";
-import { ITemp, IVisualModel, IOnlyBoolean, IOnlyString } from "../../helpers/interfaces";
-
-/**
- * Bar
- */
-import { Bar} from "./UIs/Bar/Bar";
-
-/**
- * Tip
- */
-import { Tip } from "./UIs/Tip/Tip";
-
-/**
- * Handler
- */
+import Settings from "./UIs/Settings/Settings";
+import Template from "./UIs/Template/Template";
+import Tip from "./UIs/Tip/Tip";
+import { Bar } from "./UIs/Bar/Bar";
 import { Handler } from "./UIs/Handler/Handler";
-
-/**
- * Template
- */
-import { Template } from "./UIs/Template/Template";
-
-/**
- * Scale
- */
-
 import { Scale } from "./UIs/Scale/Scale";
-
-/**
- * Factories
- */
 
 import {
   GUIFactory,
@@ -40,6 +12,10 @@ import {
   IntervalHorizontalFactory,
   IntervalVerticalFactory,
 } from "./Factories/Factories";
+
+import Observer from "../../Observer/Observer";
+import { constants } from "../../helpers/constants";
+import { ITemp, IVisualModel, IOnlyBoolean, IOnlyString } from "../../helpers/interfaces";
 
 /**
  * Application
@@ -70,8 +46,8 @@ class Application extends Observer {
   public init(state: IVisualModel) {
     this.template.init(state, this.anchor);
 
-    const UIs = Object.keys(this);
-    for (const UI of UIs) {
+    const gui = Object.keys(this);
+    for (const UI of gui) {
       if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor") continue;
 
       this.template.append((this as any)[UI], this.anchor);
@@ -94,9 +70,9 @@ class Application extends Observer {
   }
 
   public paint(state: ITemp) {
-    const UIs = Object.keys(this);
+    const gui = Object.keys(this);
 
-    for (const UI of UIs) {
+    for (const UI of gui) {
       if (UI === "factory" || UI === "template" || UI === "events" || UI === "anchor" || UI === "settings") continue;
 
       (this as any)[UI].paint(state);
@@ -104,8 +80,8 @@ class Application extends Observer {
   }
 
   public removeHTML() {
-    (this.template.templateHTML.parentElement as HTMLElement).removeChild((this.settings as Settings).settingsHTML);
-    (this.template.templateHTML.parentElement as HTMLElement).removeChild(this.template.templateHTML);
+    this.anchor.removeChild((this.settings as Settings).settingsHTML);
+    this.anchor.removeChild(this.template.templateHTML);
   }
 
   private getEdge(state: IVisualModel) {
@@ -114,13 +90,12 @@ class Application extends Observer {
 
     if (state.direction === constants.DIRECTION_VERTICAL) {
       return wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
-    } else {
-      return wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
     }
+    return wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
   }
 
   private listenUserEvents(wrapper: HTMLElement, state: IVisualModel) {
-    wrapper.addEventListener("mousedown", e => {
+    wrapper.addEventListener("mousedown", (e) => {
       e.preventDefault();
       if ((e.target as HTMLElement).className !== "slider__handler") return;
 
@@ -128,13 +103,13 @@ class Application extends Observer {
       const shiftX = e.offsetX;
       const shiftY = tempTarget.offsetHeight - e.offsetY;
 
-      const onmousemove = _onMouseMove.bind(this);
-      const onmouseup = _onMouseUp;
+      const onmousemove = onMouseMove.bind(this);
+      const onmouseup = onMouseUp;
 
       document.addEventListener("mousemove", onmousemove);
       document.addEventListener("mouseup", onmouseup);
 
-      function _onMouseMove(this: Application, e: MouseEvent) {
+      function onMouseMove(this: Application, e: MouseEvent) {
         let left;
         if (state.direction === constants.DIRECTION_VERTICAL) {
           left = wrapper.offsetHeight - e.clientY - shiftY + wrapper.getBoundingClientRect().top;
@@ -145,7 +120,7 @@ class Application extends Observer {
         this.emit("onUserMove", { left, tempTarget });
       }
 
-      function _onMouseUp() {
+      function onMouseUp() {
         document.removeEventListener("mousemove", onmousemove);
         document.removeEventListener("mouseup", onmouseup);
       }
@@ -161,16 +136,16 @@ class ApplicationConfigurator {
   public main({ type, direction }: IOnlyString, anchor: HTMLElement) {
     let factory;
 
-    if (type === "single" && direction === "horizontal") {
+    if (type === constants.TYPE_SINGLE && direction === constants.DIRECTION_HORIZONTAL) {
       factory = new SingleHorizontalFactory();
-    } else if (type === "single" && direction === "vertical") {
+    } else if (type === constants.TYPE_SINGLE && direction === constants.DIRECTION_VERTICAL) {
       factory = new SingleVerticalFactory();
-    } else if (type === "interval" && direction === "horizontal") {
+    } else if (type === constants.TYPE_INTERVAL && direction === constants.DIRECTION_HORIZONTAL) {
       factory = new IntervalHorizontalFactory();
-    } else if (type === "interval" && direction === "vertical") {
+    } else if (type === constants.TYPE_INTERVAL && direction === constants.DIRECTION_VERTICAL) {
       factory = new IntervalVerticalFactory();
     } else {
-      throw new Error("Error! Unknown " + type + " or " + direction);
+      throw new Error(`Error! Unknown ${type} or ${direction}`);
     }
 
     return new Application(factory, anchor);

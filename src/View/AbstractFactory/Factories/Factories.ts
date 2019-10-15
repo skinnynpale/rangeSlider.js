@@ -1,3 +1,7 @@
+import Template from "../UIs/Template/Template";
+import Settings from "../UIs/Settings/Settings";
+import Tip from "../UIs/Tip/Tip";
+
 import {
   Bar,
   SingleHorizontalBar,
@@ -5,7 +9,6 @@ import {
   IntervalHorizontalBar,
   IntervalVerticalBar,
 } from "../UIs/Bar/Bar";
-import { Tip } from "../UIs/Tip/Tip";
 import {
   Handler,
   SingleHorizontalHandler,
@@ -13,23 +16,26 @@ import {
   IntervalHorizontalHandler,
   IntervalVerticalHandler,
 } from "../UIs/Handler/Handler";
-import { Template } from "../UIs/Template/Template";
 import { Scale, HorizontalScale, VerticalScale } from "../UIs/Scale/Scale";
-import { Settings } from "../UIs/Settings/Settings";
 
-export interface GUIFactory {
+interface GUIFactory {
   createBar(): Bar;
+
   createTip(): Tip;
+
   createHandler(): Handler;
+
   createTemplate(): Template;
+
   createScale(): Scale;
+
   createSettings(): Settings;
 }
 
 /**
  * Factories
  */
-export class SingleHorizontalFactory implements GUIFactory {
+class SingleHorizontalFactory implements GUIFactory {
   public createBar(): Bar {
     return new SingleHorizontalBar();
   }
@@ -55,7 +61,7 @@ export class SingleHorizontalFactory implements GUIFactory {
   }
 }
 
-export class SingleVerticalFactory implements GUIFactory {
+class SingleVerticalFactory implements GUIFactory {
   public createBar(): Bar {
     return new SingleVerticalBar();
   }
@@ -81,7 +87,7 @@ export class SingleVerticalFactory implements GUIFactory {
   }
 }
 
-export class IntervalHorizontalFactory implements GUIFactory {
+class IntervalHorizontalFactory implements GUIFactory {
   public createBar(): Bar {
     return new IntervalHorizontalBar();
   }
@@ -107,7 +113,7 @@ export class IntervalHorizontalFactory implements GUIFactory {
   }
 }
 
-export class IntervalVerticalFactory implements GUIFactory {
+class IntervalVerticalFactory implements GUIFactory {
   public createBar(): Bar {
     return new IntervalVerticalBar();
   }
@@ -132,3 +138,11 @@ export class IntervalVerticalFactory implements GUIFactory {
     return new Settings();
   }
 }
+
+export {
+  GUIFactory,
+  SingleHorizontalFactory,
+  IntervalHorizontalFactory,
+  SingleVerticalFactory,
+  IntervalVerticalFactory,
+};

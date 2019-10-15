@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Settings } from "./Settings";
+import Settings from "./Settings";
 
 import jsdom from "jsdom";
 const { JSDOM } = jsdom;

@@ -1,12 +1,12 @@
-import { Observer } from "../../../../Observer/Observer";
+import Observer from "../../../../Observer/Observer";
 import { IOnlyNumbers } from "../../../../helpers/interfaces";
 
-export interface Scale {
+interface Scale {
   init(anchor: HTMLElement): void;
   paint(state: {}): void;
 }
 
-export class Scale extends Observer implements Scale {
+class Scale extends Observer implements Scale {
   protected slider!: HTMLElement;
   protected scaleHTML!: HTMLElement;
   protected anchor!: HTMLElement;
@@ -15,15 +15,15 @@ export class Scale extends Observer implements Scale {
     this.anchor = anchor;
     this.slider = anchor.querySelector(".slider") as HTMLElement;
 
-    const scaleTemplate = `<div class="slider__scale scale"></div>`;
+    const scaleTemplate = "<div class=\"slider__scale scale\"></div>";
     this.slider.insertAdjacentHTML("afterbegin", scaleTemplate);
   }
 }
 
-export class HorizontalScale extends Scale implements Scale {
+class HorizontalScale extends Scale implements Scale {
   public paint({ edge, ratio }: IOnlyNumbers) {
     this.scaleHTML = this.anchor.querySelector(".slider__scale") as HTMLElement;
-    const dashTemplate = `<div class="scale__dash"></div>`;
+    const dashTemplate = "<div class=\"scale__dash\"></div>";
     const amount = edge / ratio;
 
     if (this.scaleHTML.children.length !== amount + 1) {
@@ -38,14 +38,14 @@ export class HorizontalScale extends Scale implements Scale {
 
     this.scaleHTML.style.width = edge + "px";
     const handler = this.slider.querySelector(".slider__handler") as HTMLElement;
-    this.scaleHTML.style.marginLeft = `11px`;
+    this.scaleHTML.style.marginLeft = "11px";
   }
 }
 
-export class VerticalScale extends Scale implements Scale {
+class VerticalScale extends Scale implements Scale {
   public paint({ edge, ratio }: IOnlyNumbers) {
     this.scaleHTML = this.anchor.querySelector(".slider__scale") as HTMLElement;
-    const dashTemplate = `<div class="scale__dash"></div>`;
+    const dashTemplate = "<div class=\"scale__dash\"></div>";
     const amount = edge / ratio;
 
     if (this.scaleHTML.children.length === 0) {
@@ -56,6 +56,8 @@ export class VerticalScale extends Scale implements Scale {
 
     this.scaleHTML.style.height = edge + "px";
     const handler = this.slider.querySelector(".slider__handler") as HTMLElement;
-    this.scaleHTML.style.marginTop = `11px`;
+    this.scaleHTML.style.marginTop = "11px";
   }
 }
+
+export { Scale, HorizontalScale, VerticalScale };

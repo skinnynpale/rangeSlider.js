@@ -34,7 +34,7 @@ class Controller {
 
     // События для плагина
     this.model.on("pxValueDone", (obj: ITemp) => this.anchor.dispatchEvent(
-      new CustomEvent("onChange", {detail: this.model.state}),
+      new CustomEvent("onChange", { detail: this.model.state }),
     ));
 
     // Синхронизация настроек и состояния
@@ -47,7 +47,8 @@ class Controller {
     // Отрисовка настроек
     this.model.on(
       "newState",
-      (state: {}) => this.app.settings && this.app.settings.paint(Object.assign({}, state, this.visualModel.state)),
+      (state: {}) => this.app.settings &&
+        this.app.settings.paint({ ...state, ...this.visualModel.state }),
     );
 
     // Пересоздать слайдер
@@ -57,7 +58,7 @@ class Controller {
 
   // Начальная расстановка бегунков
   private _arrangeHandlers({ edge, handlers }: any) {
-    for (let i = 0; i < handlers.length; i++) {
+    for (let i = 0; i < handlers.length; i += 1) {
       this.model.setState({
         edge,
         tempTarget: handlers[i],

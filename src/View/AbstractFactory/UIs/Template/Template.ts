@@ -1,15 +1,14 @@
-import { IVisualModel } from "../../../../helpers/interfaces";
-
+import Tip from "../Tip/Tip";
 import { Bar } from "../Bar/Bar";
 import { Handler } from "../Handler/Handler";
-import { Tip } from "../Tip/Tip";
+import { IVisualModel } from "../../../../helpers/interfaces";
 
-export interface Template {
+interface Template {
   init(obj: IVisualModel, anchor: HTMLElement): void;
   append(component: Handler | Bar | Tip, anchor: HTMLElement): void;
 }
 
-export class Template implements Template {
+class Template implements Template {
   public templateHTML!: HTMLElement;
 
   public init({ skin, direction }: IVisualModel, anchor: HTMLElement) {
@@ -27,3 +26,5 @@ export class Template implements Template {
     component.init(anchor);
   }
 }
+
+export default Template;

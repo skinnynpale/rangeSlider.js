@@ -1,8 +1,7 @@
 import { IState } from "../../../../Model/Model";
-import { Observer } from "../../../../Observer/Observer";
-import { constants } from "../../../../helpers/constants";
+import Observer from "../../../../Observer/Observer";
 
-export class Settings extends Observer {
+class Settings extends Observer {
   public settingsHTML!: HTMLElement;
   private state!: IState;
   private anchor!: HTMLElement;
@@ -98,7 +97,7 @@ export class Settings extends Observer {
   }
 
   private startListenEvents() {
-    this.settingsHTML.addEventListener("change", e => {
+    this.settingsHTML.addEventListener("change", (e) => {
       const target = e.target as HTMLElement;
 
       if (target.tagName === "INPUT") {
@@ -113,7 +112,7 @@ export class Settings extends Observer {
           this.emit("newSettings", {
             handlers,
             edge: this.state.edge,
-            [target.id]: +(target as HTMLInputElement).value,
+            [target.id]: Number((target as HTMLInputElement).value),
           });
         }
       } else if (target.tagName === "SELECT") {
@@ -122,3 +121,5 @@ export class Settings extends Observer {
     });
   }
 }
+
+export default Settings;
