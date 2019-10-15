@@ -11,7 +11,6 @@ class Model extends Observer {
   }
 
   public setState(state: IState = {}): void {
-    // TODO решить что сделать с этим
     Object.assign(this.state, state);
 
     // для корректировки основных значений
@@ -30,12 +29,6 @@ class Model extends Observer {
     if (state.tempTarget && state.left) {
       this.dynamicCounting(state);
     }
-  }
-
-  private correctValues() {
-    this.state.values = (this.state.values as number[])
-      .map(value => this.correctValueInTheRange(value))
-      .sort((a, b) => a - b);
   }
 
   private initialCounting(state: IState) {
@@ -58,6 +51,12 @@ class Model extends Observer {
     });
     this.updateArrayOfValues();
     this.createArrayOfPxValues(this.state.values as number[]);
+  }
+
+  private correctValues() {
+    this.state.values = (this.state.values as number[])
+      .map(value => this.correctValueInTheRange(value))
+      .sort((a, b) => a - b);
   }
 
   private updateArrayOfValues(): void {

@@ -1,7 +1,7 @@
-import Tip from "../Tip/Tip";
-import { Bar } from "../Bar/Bar";
-import { Handler } from "../Handler/Handler";
-import { IVisualModel } from "../../../../helpers/interfaces";
+import Tip from '../Tip/Tip';
+import { Bar } from '../Bar/Bar';
+import { Handler } from '../Handler/Handler';
+import { IVisualModel } from '../../../../helpers/interfaces';
 
 interface Template {
   init(obj: IVisualModel, anchor: HTMLElement): void;
@@ -18,8 +18,8 @@ class Template implements Template {
       </div>
     `;
 
-    anchor.insertAdjacentHTML("afterbegin", sliderTemplate);
-    this.templateHTML = anchor.querySelector(".wrapper-slider") as HTMLElement;
+    anchor.insertAdjacentHTML('afterbegin', sliderTemplate);
+    this.templateHTML = anchor.querySelector('.wrapper-slider') as HTMLElement;
   }
 
   public append(component: Handler | Bar, anchor: HTMLElement) {

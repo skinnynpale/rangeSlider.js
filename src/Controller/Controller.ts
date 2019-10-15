@@ -25,7 +25,6 @@ class Controller {
   }
 
   private bindEvents() {
-    // TODO заменить arrangeHandlers на метод в Model
     this.app.on('finishInit', (obj: {}) => this.arrangeHandlers(obj));
 
     this.model.on('pxValueDone', (obj: ITemp) => this.app.paint(obj));
@@ -74,9 +73,9 @@ class Controller {
     this.initMVC(settingsVisualModel, settingsModel);
   }
 
-  private saveOldModel(target: any, obj: any) {
-    for (const prompt in target) {
-      target[prompt] = obj[prompt];
+  private saveOldModel(target: IState, obj: IState) {
+    for (const prop in target) {
+      target[prop] = obj[prop];
     }
     return target;
   }
