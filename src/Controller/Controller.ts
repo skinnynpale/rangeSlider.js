@@ -8,7 +8,11 @@ class Controller {
   private visualModel!: VisualModel;
   private app!: Application;
 
-  constructor(private anchor: HTMLElement, private settingsVisualModel: IVisualModel, private settingsModel: IState) {
+  constructor(
+    private anchor: HTMLElement,
+    private settingsVisualModel: IVisualModel,
+    private settingsModel: IState,
+  ) {
     this.initMVC(settingsVisualModel, settingsModel);
   }
 
@@ -32,26 +36,29 @@ class Controller {
 
     // Синхронизация настроек и состояния
     this.app.settings &&
-    this.app.settings.on('newSettings', (obj: {}) => {
-      this.model.setState(obj);
-      this.arrangeHandlers(obj);
-    });
+      this.app.settings.on('newSettings', (obj: {}) => {
+        this.model.setState(obj);
+        this.arrangeHandlers(obj);
+      });
 
     // Отрисовка настроек
     this.model.on(
       'pxValueDone',
-      () => this.app.settings &&
+      () =>
+        this.app.settings &&
         this.app.settings.paint({ ...this.model.state, ...this.visualModel.state }),
     );
 
     // Пересоздать слайдер
     this.app.settings &&
-    this.app.settings.on('reCreateApp', (newVisualModel: IVisualModel) => this.reCreateApplication(newVisualModel));
+      this.app.settings.on('reCreateApp', (newVisualModel: IVisualModel) =>
+        this.reCreateApplication(newVisualModel),
+      );
 
     // События для плагина
-    this.model.on('pxValueDone', () => this.anchor.dispatchEvent(
-      new CustomEvent('onChange', { detail: this.model.state }),
-    ));
+    this.model.on('pxValueDone', () =>
+      this.anchor.dispatchEvent(new CustomEvent('onChange', { detail: this.model.state })),
+    );
   }
 
   // Начальная расстановка бегунков
