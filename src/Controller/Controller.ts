@@ -35,12 +35,10 @@ class Controller {
     this.app.on('onUserMove', (obj: {}) => this.model.setState(obj));
 
     // Синхронизация настроек и состояния
-    this.app.settings &&
-      this.app.settings.on('newSettings', (obj: IState) => {
+    this.app.UIs.settings &&
+      this.app.UIs.settings.on('newSettings', (obj: IState) => {
         this.model.setState(obj);
         this.arrangeHandlers(obj);
-
-        console.log(obj);
 
         if (obj.step) {
           this.reCreateApplication(this.visualModel.state as IVisualModel);
@@ -51,13 +49,13 @@ class Controller {
     this.model.on(
       'pxValueDone',
       () =>
-        this.app.settings &&
-        this.app.settings.paint({ ...this.model.state, ...this.visualModel.state }),
+        this.app.UIs.settings &&
+        this.app.UIs.settings.paint({ ...this.model.state, ...this.visualModel.state }),
     );
 
     // Пересоздать слайдер
-    this.app.settings &&
-      this.app.settings.on('reCreateApp', (newVisualModel: IVisualModel) =>
+    this.app.UIs.settings &&
+      this.app.UIs.settings.on('reCreateApp', (newVisualModel: IVisualModel) =>
         this.reCreateApplication(newVisualModel),
       );
 
@@ -67,14 +65,10 @@ class Controller {
     );
 
     // Нажатия по значениям на шкале
-    this.app.scale &&
-      this.app.scale.on('newValueFromScale', (obj: IState) => {
+    this.app.UIs.scale &&
+      this.app.UIs.scale.on('newValueFromScale', (obj: IState) => {
         this.model.setState(obj);
         this.arrangeHandlers(obj);
-
-        if (obj.step) {
-          this.reCreateApplication(this.visualModel.state as IVisualModel);
-        }
       });
   }
 

@@ -27,13 +27,13 @@ describe('Application', () => {
 
     app.createUI({ bar: true });
     // @ts-ignore
-    expect(app.bar).to.deep.equal(new IntervalHorizontalBar());
+    expect(app.UIs.bar).to.deep.equal(new IntervalHorizontalBar());
 
     app.createUI({ handler: true });
     // @ts-ignore
-    expect(app.bar).to.deep.equal(new IntervalHorizontalBar());
+    expect(app.UIs.bar).to.deep.equal(new IntervalHorizontalBar());
     // @ts-ignore
-    expect(app.handler).to.deep.equal(new IntervalHorizontalHandler());
+    expect(app.UIs.handler).to.deep.equal(new IntervalHorizontalHandler());
   });
 
   it('Должен отрисовать HTML с заданными настройками', () => {

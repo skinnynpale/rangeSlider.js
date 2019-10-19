@@ -22,12 +22,23 @@ import { IOnlyBoolean, IOnlyString, ITemp, IVisualModel } from '../../helpers/in
  *
  */
 
+interface UIs {
+  handler?: Handler;
+  bar?: Bar;
+  tip?: Tip;
+  scale?: Scale;
+}
+
 class Application extends Observer {
+  // tslint:disable-next-line:variable-name
+  public UIs: {
+    handler?: Handler;
+    bar?: Bar;
+    tip?: Tip;
+    scale?: Scale;
+    settings?: Settings;
+  } = {};
   public settings?: Settings;
-  public scale?: Scale;
-  private bar?: Bar;
-  private tip?: Tip;
-  private handler!: Handler;
   private template!: Template;
 
   constructor(private factory: GUIFactory, private anchor: HTMLElement) {
@@ -36,27 +47,25 @@ class Application extends Observer {
 
   public createUI({ bar, scale, settings }: IOnlyBoolean) {
     this.template = this.factory.createTemplate();
-    this.handler = this.factory.createHandler();
+    this.UIs.handler = this.factory.createHandler();
 
-    bar ? (this.bar = this.factory.createBar()) : '';
-    scale ? (this.scale = this.factory.createScale()) : '';
-    settings ? (this.settings = this.factory.createSettings()) : '';
+    bar ? (this.UIs.bar = this.factory.createBar()) : '';
+    scale ? (this.UIs.scale = this.factory.createScale()) : '';
+    settings ? (this.UIs.settings = this.factory.createSettings()) : '';
   }
 
   public init(state: IVisualModel) {
     this.template.init(state, this.anchor);
 
-    const gui = Object.keys(this);
+    const gui = Object.keys(this.UIs);
     for (const UI of gui) {
-      if (UI === 'factory' || UI === 'template' || UI === 'events' || UI === 'anchor') continue;
-
-      this.template.append((this as any)[UI], this.anchor);
+      this.template.append((this.UIs as any)[UI], this.anchor);
     }
 
     // Коллаборации
-    if (state.tip) {
-      this.tip = this.factory.createTip();
-      this.handler.append(this.tip);
+    if (state.tip && this.UIs.handler) {
+      this.UIs.tip = this.factory.createTip();
+      this.UIs.handler.append(this.UIs.tip);
     }
     // Коллаборации
 
@@ -70,24 +79,17 @@ class Application extends Observer {
   }
 
   public paint(state: ITemp) {
-    const gui = Object.keys(this);
+    const gui = Object.keys(this.UIs);
 
     for (const UI of gui) {
-      if (
-        UI === 'factory' ||
-        UI === 'template' ||
-        UI === 'events' ||
-        UI === 'anchor' ||
-        UI === 'settings'
-      )
-        continue;
+      if (UI === 'settings') continue;
 
-      (this as any)[UI].paint(state);
+      (this.UIs as any)[UI].paint(state);
     }
   }
 
   public removeHTML() {
-    this.anchor.removeChild((this.settings as Settings).settingsHTML);
+    this.anchor.removeChild((this.UIs.settings as Settings).settingsHTML);
     this.anchor.removeChild(this.template.templateHTML);
   }
 
