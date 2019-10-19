@@ -94,7 +94,10 @@ class HorizontalScale extends Scale implements Scale {
 }
 
 class VerticalScale extends Scale implements Scale {
+  protected arrayOfProgression!: number[];
+
   public paint({ ratio, arrayOfProgression }: IState) {
+    this.arrayOfProgression = arrayOfProgression as number[];
     const progression = arrayOfProgression as number[];
     let ratioProgressive = 0;
 
