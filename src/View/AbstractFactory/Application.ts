@@ -24,7 +24,7 @@ import { IOnlyBoolean, IOnlyString, ITemp, IVisualModel } from '../../helpers/in
 
 class Application extends Observer {
   public settings?: Settings;
-  private scale?: Scale;
+  public scale?: Scale;
   private bar?: Bar;
   private tip?: Tip;
   private handler!: Handler;

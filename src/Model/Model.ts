@@ -78,6 +78,7 @@ class Model extends Observer {
 
     this.emit('pxValueDone', {
       tempPxValues,
+      arrayOfProgression: this.countArrayOfProgression(),
       values: this.state.values,
       tempTarget: this.state.tempTarget,
       tempValue: this.state.tempValue,
@@ -127,6 +128,17 @@ class Model extends Observer {
   private getRatio(): number {
     const state = this.state as IOnlyNumbers;
     return +(state.edge / (state.max - state.min)) * state.step;
+  }
+
+  private countArrayOfProgression() {
+    const arrayOfProgression = [this.state.min];
+    let value = this.state.min as number;
+    while (value + +this.state.step <= this.state.max) {
+      value += +this.state.step;
+      arrayOfProgression.push(value);
+    }
+
+    return arrayOfProgression;
   }
 }
 

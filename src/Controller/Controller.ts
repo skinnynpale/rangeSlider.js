@@ -36,9 +36,15 @@ class Controller {
 
     // Синхронизация настроек и состояния
     this.app.settings &&
-      this.app.settings.on('newSettings', (obj: {}) => {
+      this.app.settings.on('newSettings', (obj: IState) => {
         this.model.setState(obj);
         this.arrangeHandlers(obj);
+
+        console.log(obj);
+
+        if (obj.step) {
+          this.reCreateApplication(this.visualModel.state as IVisualModel);
+        }
       });
 
     // Отрисовка настроек
@@ -59,13 +65,24 @@ class Controller {
     this.model.on('pxValueDone', () =>
       this.anchor.dispatchEvent(new CustomEvent('onChange', { detail: this.model.state })),
     );
+
+    // Нажатия по значениям на шкале
+    this.app.scale &&
+      this.app.scale.on('newValueFromScale', (obj: IState) => {
+        this.model.setState(obj);
+        this.arrangeHandlers(obj);
+
+        if (obj.step) {
+          this.reCreateApplication(this.visualModel.state as IVisualModel);
+        }
+      });
   }
 
-  // Начальная расстановка бегунков
+  // Расстановка бегунков
   private arrangeHandlers({ edge, handlers }: any) {
     for (let i = 0; i < handlers.length; i += 1) {
       this.model.setState({
-        edge,
+        edge: edge ? edge : this.model.state.edge,
         tempTarget: handlers[i],
         tempValue: (this.model.state.values as number[])[i],
       });

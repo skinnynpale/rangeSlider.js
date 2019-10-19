@@ -9,11 +9,17 @@
 
 .scale {
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  &__dash {
-    background-color: rgb(41, 41, 41);
-    z-index: 1;
+
+  &__value {
+    position: absolute;
+    font-family: monospace;
+    font-weight: bold;
+    color: #8a8faa;
+    cursor: pointer;
+
+    &:hover {
+      color: lighten(#8a8faa, 10%);
+    }
   }
 }
 
@@ -116,13 +122,8 @@
       transform: rotate(180deg) translate(50%);
     }
     .scale {
+      margin-top: 15px;
       position: absolute;
-      display: flex;
-      justify-content: space-between;
-      &__dash {
-        width: 1px;
-        height: 8px;
-      }
     }
   }
 
@@ -154,13 +155,8 @@
     }
     .scale {
       position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-content: space-between;
-      &__dash {
-        width: 8px;
-        height: 1px;
-      }
+      bottom: 0;
+      left: -30px;
     }
   }
 

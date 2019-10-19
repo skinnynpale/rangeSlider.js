@@ -4,8 +4,10 @@ $('#anchor').rangeSlider(
     scale: true,
   },
   {
-    step: 5,
+    step: 9,
     values: [13, 50],
+    max: 52,
+    min: 10,
   },
 );
 $('#anchor2').rangeSlider({
@@ -19,10 +21,15 @@ $('#anchor3').rangeSlider({
   skin: 'green',
   type: 'single',
 });
-$('#anchor4').rangeSlider({
-  direction: 'vertical',
-  settings: true,
-  skin: 'red',
-  type: 'interval',
-  scale: true,
-});
+$('#anchor4').rangeSlider(
+  {
+    direction: 'vertical',
+    settings: true,
+    skin: 'red',
+    type: 'interval',
+    scale: true,
+  },
+  {
+    step: 5,
+  },
+);

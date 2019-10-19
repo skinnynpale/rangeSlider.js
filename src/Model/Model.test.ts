@@ -96,4 +96,20 @@ describe('Model', () => {
 
     expect(model.state.values).to.deep.eq([10, 60]);
   });
+  it('Должен вернуть правильный массив прогрессии', () => {
+    const model = new Model({
+      min: 10,
+      max: 52,
+      step: 10,
+      values: [13, 50],
+    });
+
+    // @ts-ignore
+    expect(model.countArrayOfProgression()).to.deep.eq([10, 20, 30, 40, 50]);
+
+    model.setState({ step: 3, max: 19, min: 9 });
+
+    // @ts-ignore
+    expect(model.countArrayOfProgression()).to.deep.eq([9, 12, 15, 18]);
+  });
 });

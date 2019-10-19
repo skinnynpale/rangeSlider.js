@@ -103,6 +103,7 @@ class Settings extends Observer {
       if (target.tagName === 'INPUT') {
         const handlers = this.anchor.querySelectorAll('.slider__handler');
 
+        // разбивка на valueFrom и valueTo
         if (target.id === 'valueFrom' || target.id === 'valueTo') {
           const valueFrom = (this.settingsHTML.querySelector('#valueFrom') as HTMLInputElement)
             .value;
@@ -113,14 +114,14 @@ class Settings extends Observer {
             edge: this.state.edge,
             values: [valueFrom, valueTo],
           });
-        } else {
+        } else { // для всех остальных значений
           this.emit('newSettings', {
             handlers,
             edge: this.state.edge,
             [target.id]: Number((target as HTMLInputElement).value),
           });
         }
-      } else if (target.tagName === 'SELECT') {
+      } else if (target.tagName === 'SELECT') { // для второй части настроек
         this.emit('reCreateApp', { [target.id]: (target as HTMLSelectElement).value });
       }
     });
