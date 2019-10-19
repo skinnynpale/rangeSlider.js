@@ -7,15 +7,15 @@ import { Scale } from './UIs/Scale/Scale';
 
 import {
   GUIFactory,
-  SingleHorizontalFactory,
-  SingleVerticalFactory,
   IntervalHorizontalFactory,
   IntervalVerticalFactory,
+  SingleHorizontalFactory,
+  SingleVerticalFactory,
 } from './Factories/Factories';
 
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { ITemp, IVisualModel, IOnlyBoolean, IOnlyString } from '../../helpers/interfaces';
+import { IOnlyBoolean, IOnlyString, ITemp, IVisualModel } from '../../helpers/interfaces';
 
 /**
  * Application
@@ -73,7 +73,14 @@ class Application extends Observer {
     const gui = Object.keys(this);
 
     for (const UI of gui) {
-      if (UI === 'factory' || UI === 'template' || UI === 'events' || UI === 'anchor' || UI === 'settings') continue;
+      if (
+        UI === 'factory' ||
+        UI === 'template' ||
+        UI === 'events' ||
+        UI === 'anchor' ||
+        UI === 'settings'
+      )
+        continue;
 
       (this as any)[UI].paint(state);
     }
@@ -95,7 +102,7 @@ class Application extends Observer {
   }
 
   private listenUserEvents(wrapper: HTMLElement, state: IVisualModel) {
-    wrapper.addEventListener('mousedown', (e) => {
+    wrapper.addEventListener('mousedown', e => {
       e.preventDefault();
       if ((e.target as HTMLElement).className !== 'slider__handler') return;
 

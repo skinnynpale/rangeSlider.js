@@ -1,4 +1,4 @@
-import {Tip} from '../Tip/Tip';
+import { Tip } from '../Tip/Tip';
 import { Bar } from '../Bar/Bar';
 import { Handler } from '../Handler/Handler';
 import { IVisualModel } from '../../../../helpers/interfaces';

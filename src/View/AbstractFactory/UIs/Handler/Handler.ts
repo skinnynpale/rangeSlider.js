@@ -1,5 +1,5 @@
-import {Tip} from "../Tip/Tip";
-import { ITemp } from "../../../../helpers/interfaces";
+import { Tip } from '../Tip/Tip';
+import { ITemp } from '../../../../helpers/interfaces';
 
 interface Handler {
   paint({ tempTarget, tempPxValue }: ITemp): void;
@@ -12,13 +12,13 @@ class Handler implements Handler {
 
   public init(anchor: HTMLElement) {
     this.anchor = anchor;
-    const handlerTemplate = "<div class=\"slider__handler\"></div>";
-    const slider = anchor.querySelector(".slider") as HTMLElement;
-    slider.insertAdjacentHTML("beforeend", handlerTemplate);
+    const handlerTemplate = '<div class="slider__handler"></div>';
+    const slider = anchor.querySelector('.slider') as HTMLElement;
+    slider.insertAdjacentHTML('beforeend', handlerTemplate);
   }
 
   public append(component: Tip) {
-    const handlers = this.anchor.querySelectorAll(".slider__handler");
+    const handlers = this.anchor.querySelectorAll('.slider__handler');
 
     for (const handler of Array.from(handlers)) {
       component.init(handler as HTMLElement);
@@ -41,10 +41,10 @@ class SingleVerticalHandler extends Handler implements Handler {
 class IntervalHorizontalHandler extends Handler implements Handler {
   public init(anchor: HTMLElement) {
     this.anchor = anchor;
-    const handlerTemplate = "<div class=\"slider__handler\"></div>";
-    const slider = anchor.querySelector(".slider") as HTMLElement;
-    slider.insertAdjacentHTML("beforeend", handlerTemplate);
-    slider.insertAdjacentHTML("beforeend", handlerTemplate);
+    const handlerTemplate = '<div class="slider__handler"></div>';
+    const slider = anchor.querySelector('.slider') as HTMLElement;
+    slider.insertAdjacentHTML('beforeend', handlerTemplate);
+    slider.insertAdjacentHTML('beforeend', handlerTemplate);
   }
 
   public paint({ tempTarget, tempPxValue }: ITemp) {
@@ -55,10 +55,10 @@ class IntervalHorizontalHandler extends Handler implements Handler {
 class IntervalVerticalHandler extends Handler implements Handler {
   public init(anchor: HTMLElement) {
     this.anchor = anchor;
-    const handlerTemplate = "<div class=\"slider__handler\"></div>";
-    const slider = anchor.querySelector(".slider") as HTMLElement;
-    slider.insertAdjacentHTML("beforeend", handlerTemplate);
-    slider.insertAdjacentHTML("beforeend", handlerTemplate);
+    const handlerTemplate = '<div class="slider__handler"></div>';
+    const slider = anchor.querySelector('.slider') as HTMLElement;
+    slider.insertAdjacentHTML('beforeend', handlerTemplate);
+    slider.insertAdjacentHTML('beforeend', handlerTemplate);
   }
 
   public paint({ tempTarget, tempPxValue }: ITemp) {

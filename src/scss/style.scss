@@ -64,6 +64,7 @@
     border-radius: 50%;
     position: absolute;
     z-index: 1;
+    cursor: pointer;
   }
 
   &__tip {
@@ -75,6 +76,7 @@
     position: relative;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
     outline: none;
+    cursor: default;
 
     &::before {
       content: attr(data-value);

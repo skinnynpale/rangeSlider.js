@@ -97,17 +97,22 @@ class Settings extends Observer {
   }
 
   private startListenEvents() {
-    this.settingsHTML.addEventListener('change', (e) => {
+    this.settingsHTML.addEventListener('change', e => {
       const target = e.target as HTMLElement;
 
       if (target.tagName === 'INPUT') {
         const handlers = this.anchor.querySelectorAll('.slider__handler');
 
         if (target.id === 'valueFrom' || target.id === 'valueTo') {
-          const valueFrom = (this.settingsHTML.querySelector('#valueFrom') as HTMLInputElement).value;
+          const valueFrom = (this.settingsHTML.querySelector('#valueFrom') as HTMLInputElement)
+            .value;
           const valueTo = (this.settingsHTML.querySelector('#valueTo') as HTMLInputElement).value;
 
-          this.emit('newSettings', { handlers, edge: this.state.edge, values: [valueFrom, valueTo] });
+          this.emit('newSettings', {
+            handlers,
+            edge: this.state.edge,
+            values: [valueFrom, valueTo],
+          });
         } else {
           this.emit('newSettings', {
             handlers,

@@ -1,7 +1,7 @@
 import Model from '../Model/Model';
 import VisualModel from '../Model/VisualModel';
-import { ApplicationConfigurator, Application } from '../View/AbstractFactory/Application';
-import { IVisualModel, ITemp, IState } from '../helpers/interfaces';
+import { Application, ApplicationConfigurator } from '../View/AbstractFactory/Application';
+import { IState, ITemp, IVisualModel } from '../helpers/interfaces';
 
 class Controller {
   private model!: Model;
