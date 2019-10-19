@@ -47,7 +47,7 @@
 
   &__tongue {
     position: absolute;
-    content: "";
+    content: '';
     width: 0;
     height: 0;
     z-index: -1;
@@ -68,14 +68,22 @@
 
   &__tip {
     display: inline-block;
+    white-space: nowrap;
     color: white;
     font-weight: bold;
     border-radius: 3px;
     position: relative;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
     outline: none;
+
     &::before {
       content: attr(data-value);
+    }
+
+    &--extended {
+      &::before {
+        content: attr(data-extendedValue);
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-import Tip from "../Tip/Tip";
+import {Tip} from "../Tip/Tip";
 import { ITemp } from "../../../../helpers/interfaces";
 
 interface Handler {

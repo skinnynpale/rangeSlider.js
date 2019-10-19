@@ -1,6 +1,6 @@
 import Settings from './UIs/Settings/Settings';
 import Template from './UIs/Template/Template';
-import Tip from './UIs/Tip/Tip';
+import { Tip } from './UIs/Tip/Tip';
 import { Bar } from './UIs/Bar/Bar';
 import { Handler } from './UIs/Handler/Handler';
 import { Scale } from './UIs/Scale/Scale';

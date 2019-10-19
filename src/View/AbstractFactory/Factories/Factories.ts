@@ -1,22 +1,23 @@
 import Template from '../UIs/Template/Template';
 import Settings from '../UIs/Settings/Settings';
-import Tip from '../UIs/Tip/Tip';
+
+import { IntervalTip, SingleTip, Tip } from '../UIs/Tip/Tip';
 
 import {
   Bar,
-  SingleHorizontalBar,
-  SingleVerticalBar,
   IntervalHorizontalBar,
   IntervalVerticalBar,
+  SingleHorizontalBar,
+  SingleVerticalBar,
 } from '../UIs/Bar/Bar';
 import {
   Handler,
-  SingleHorizontalHandler,
-  SingleVerticalHandler,
   IntervalHorizontalHandler,
   IntervalVerticalHandler,
+  SingleHorizontalHandler,
+  SingleVerticalHandler,
 } from '../UIs/Handler/Handler';
-import { Scale, HorizontalScale, VerticalScale } from '../UIs/Scale/Scale';
+import { HorizontalScale, Scale, VerticalScale } from '../UIs/Scale/Scale';
 
 interface GUIFactory {
   createBar(): Bar;
@@ -32,10 +33,6 @@ interface GUIFactory {
  */
 
 class Factory {
-  public createTip(): Tip {
-    return new Tip();
-  }
-
   public createTemplate(): Template {
     return new Template();
   }
@@ -54,6 +51,10 @@ class SingleHorizontalFactory extends Factory implements GUIFactory {
     return new SingleHorizontalHandler();
   }
 
+  public createTip(): Tip {
+    return new SingleTip();
+  }
+
   public createScale(): Scale {
     return new HorizontalScale();
   }
@@ -66,6 +67,10 @@ class SingleVerticalFactory extends Factory implements GUIFactory {
 
   public createHandler(): Handler {
     return new SingleVerticalHandler();
+  }
+
+  public createTip(): Tip {
+    return new SingleTip();
   }
 
   public createScale(): Scale {
@@ -82,6 +87,10 @@ class IntervalHorizontalFactory extends Factory implements GUIFactory {
     return new IntervalHorizontalHandler();
   }
 
+  public createTip(): Tip {
+    return new IntervalTip();
+  }
+
   public createScale(): Scale {
     return new HorizontalScale();
   }
@@ -94,6 +103,10 @@ class IntervalVerticalFactory extends Factory implements GUIFactory {
 
   public createHandler(): Handler {
     return new IntervalVerticalHandler();
+  }
+
+  public createTip(): Tip {
+    return new IntervalTip();
   }
 
   public createScale(): Scale {

@@ -78,6 +78,7 @@ class Model extends Observer {
 
     this.emit('pxValueDone', {
       tempPxValues,
+      values: this.state.values,
       tempTarget: this.state.tempTarget,
       tempValue: this.state.tempValue,
       tempPxValue: this.state.tempPxValue,
@@ -88,7 +89,8 @@ class Model extends Observer {
 
   private countValueFromLeft(left: number): number {
     const state = this.state as IOnlyNumbers;
-    const value = (left / this.getRatio()) * state.step + state.min;
+    const value = Math.round(left / this.getRatio()) * state.step + state.min;
+
     return this.correctValueInTheRange(value);
   }
 
@@ -111,31 +113,15 @@ class Model extends Observer {
   }
 
   private correctValueInTheRange(value: number): number {
-    const min = this.correctValueByStep(+this.state.min, 'ceil');
-    const max = this.correctValueByStep(+this.state.max, 'floor');
-
-    if (value < min) {
-      return min;
+    if (value < this.state.min) {
+      return +this.state.min;
     }
 
-    if (value > max) {
-      return max;
+    if (value > this.state.max) {
+      return +this.state.max;
     }
 
-    return this.correctValueByStep(value);
-  }
-
-  private correctValueByStep(value: number, how?: string): number {
-    const step = this.state.step as number;
-
-    if (how === 'ceil') {
-      return Math.ceil(value / step) * step;
-    }
-    if (how === 'floor') {
-      return Math.floor(value / step) * step;
-    }
-    return Math.round(value / step) * step;
-
+    return value;
   }
 
   private getRatio(): number {

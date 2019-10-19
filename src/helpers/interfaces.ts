@@ -21,6 +21,7 @@ interface ITemp {
   tempPxValues: number[];
   tempValue: number;
   tempTarget: HTMLElement;
+  values?: number[];
 }
 
 interface IOnlyBoolean {
