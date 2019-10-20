@@ -1,9 +1,5 @@
 import Settings from './UIs/Settings/Settings';
 import Template from './UIs/Template/Template';
-import { Tip } from './UIs/Tip/Tip';
-import { Bar } from './UIs/Bar/Bar';
-import { Handler } from './UIs/Handler/Handler';
-import { Scale } from './UIs/Scale/Scale';
 
 import {
   GUIFactory,
@@ -15,29 +11,16 @@ import {
 
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { IOnlyBoolean, IOnlyString, ITemp, IVisualModel } from '../../helpers/interfaces';
+import { IOnlyBoolean, IOnlyString, ITemp, IVisualModel, UIs } from '../../helpers/interfaces';
 
 /**
  * Application
  *
  */
 
-interface UIs {
-  handler?: Handler;
-  bar?: Bar;
-  tip?: Tip;
-  scale?: Scale;
-}
-
 class Application extends Observer {
   // tslint:disable-next-line:variable-name
-  public UIs: {
-    handler?: Handler;
-    bar?: Bar;
-    tip?: Tip;
-    scale?: Scale;
-    settings?: Settings;
-  } = {};
+  public UIs: UIs = {};
   public settings?: Settings;
   private template!: Template;
 
