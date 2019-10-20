@@ -49,9 +49,9 @@ class Application extends Observer {
     this.template = this.factory.createTemplate();
     this.UIs.handler = this.factory.createHandler();
 
-    bar ? (this.UIs.bar = this.factory.createBar()) : '';
-    scale ? (this.UIs.scale = this.factory.createScale()) : '';
-    settings ? (this.UIs.settings = this.factory.createSettings()) : '';
+    bar && (this.UIs.bar = this.factory.createBar());
+    scale && (this.UIs.scale = this.factory.createScale());
+    settings && (this.UIs.settings = this.factory.createSettings());
   }
 
   public init(state: IVisualModel) {

@@ -24,6 +24,10 @@ interface ITemp {
   values?: number[];
 }
 
+interface GState {
+  [key: string]: number | string | number[] | HTMLElement;
+}
+
 interface IOnlyBoolean {
   [key: string]: boolean;
 }
@@ -36,4 +40,13 @@ interface IOnlyHTMLElements {
   [key: string]: HTMLElement;
 }
 
-export { IState, IOnlyNumbers, IVisualModel, ITemp, IOnlyBoolean, IOnlyString, IOnlyHTMLElements };
+export {
+  IState,
+  IOnlyNumbers,
+  IVisualModel,
+  ITemp,
+  IOnlyBoolean,
+  IOnlyString,
+  IOnlyHTMLElements,
+  GState,
+};

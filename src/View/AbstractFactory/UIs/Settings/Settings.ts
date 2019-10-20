@@ -1,9 +1,10 @@
-import { IState } from '../../../../helpers/interfaces';
 import Observer from '../../../../Observer/Observer';
+import { constants } from '../../../../helpers/constants';
+import { GState } from '../../../../helpers/interfaces';
 
 class Settings extends Observer {
   public settingsHTML!: HTMLElement;
-  private state!: IState;
+  private state!: GState;
   private anchor!: HTMLElement;
 
   public init(anchor: HTMLElement) {
@@ -78,7 +79,7 @@ class Settings extends Observer {
     this.startListenEvents();
   }
 
-  public paint(state: IState) {
+  public paint(state: GState) {
     this.state = state;
     const inputs = this.settingsHTML.querySelectorAll('input');
 
@@ -93,6 +94,12 @@ class Settings extends Observer {
     const selects = this.settingsHTML.querySelectorAll('select');
     for (const select of selects as any) {
       select.value = state[select.id];
+    }
+
+    if ((state.type as string) === constants.TYPE_SINGLE) {
+      const valueToInput = this.anchor.querySelector('#valueTo');
+      if (valueToInput && valueToInput.getAttribute('disabled') === 'true') return;
+      valueToInput && valueToInput.setAttribute('disabled', 'true');
     }
   }
 
@@ -114,14 +121,16 @@ class Settings extends Observer {
             edge: this.state.edge,
             values: [valueFrom, valueTo],
           });
-        } else { // для всех остальных значений
+        } else {
+          // для всех остальных значений
           this.emit('newSettings', {
             handlers,
             edge: this.state.edge,
             [target.id]: Number((target as HTMLInputElement).value),
           });
         }
-      } else if (target.tagName === 'SELECT') { // для второй части настроек
+      } else if (target.tagName === 'SELECT') {
+        // для второй части настроек
         this.emit('reCreateApp', { [target.id]: (target as HTMLSelectElement).value });
       }
     });
