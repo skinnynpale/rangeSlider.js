@@ -30,15 +30,23 @@ class IntervalTip extends Tip {
 
     if (!anotherTip) return;
 
-    if (tempPxValues[1] - tempPxValues[0] <= anotherTip.offsetWidth) {
-      tip.style.display = 'none';
-      anotherTip.classList.add('slider__tip--extended');
-      anotherTip.setAttribute('data-extendedValue', `${values && values.join(' - ')}`);
-    } else {
-      tip.style.display = 'inline-block';
-      anotherTip.style.display = 'inline-block';
-      anotherTip.classList.remove('slider__tip--extended');
-      tip.classList.remove('slider__tip--extended');
+    const distance = tempPxValues[1] - tempPxValues[0];
+
+    if (distance <= anotherTip.offsetWidth) {
+      if (distance <= tip.offsetWidth) {
+        if (tip.classList.contains('slider__tip--extended')) {
+          tip.classList.remove('slider__tip--extended');
+          anotherTip.classList.remove('slider__tip--extended');
+          anotherTip.style.visibility = 'visible';
+        }
+
+        tip.style.visibility = 'hidden';
+        anotherTip.classList.add('slider__tip--extended');
+        anotherTip.setAttribute('data-extendedValue', `${values && values.join(' - ')}`);
+      } else {
+        tip.style.visibility = 'visible';
+        anotherTip.classList.remove('slider__tip--extended');
+      }
     }
   }
 }
