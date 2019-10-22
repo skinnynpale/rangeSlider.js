@@ -69,7 +69,8 @@ class HorizontalScale extends Scale implements Scale {
     const progression = arrayOfProgression as number[];
     let ratioProgressive = 0;
 
-    if (this.scaleHTML.children.length >= progression.length) {
+    if (this.scaleHTML.childElementCount === progression.length) return;
+    if (this.scaleHTML.childElementCount >= progression.length) {
       this.scaleHTML.innerHTML = '';
     }
 
@@ -101,7 +102,8 @@ class VerticalScale extends Scale implements Scale {
     const progression = arrayOfProgression as number[];
     let ratioProgressive = 0;
 
-    if (this.scaleHTML.children.length >= progression.length) {
+    if (this.scaleHTML.childElementCount === progression.length) return;
+    if (this.scaleHTML.childElementCount >= progression.length) {
       this.scaleHTML.innerHTML = '';
     }
 

@@ -131,8 +131,11 @@ class Model extends Observer {
   }
 
   private countArrayOfProgression() {
+    this.correctStep();
+
     const arrayOfProgression = [this.state.min];
     let value = this.state.min as number;
+
     while (value + +this.state.step <= this.state.max) {
       value += +this.state.step;
       arrayOfProgression.push(value);

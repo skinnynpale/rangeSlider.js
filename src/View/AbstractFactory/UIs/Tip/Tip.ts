@@ -39,7 +39,6 @@ class IntervalTip extends Tip {
           anotherTip.classList.remove('slider__tip--extended');
           anotherTip.style.visibility = 'visible';
         }
-
         tip.style.visibility = 'hidden';
         anotherTip.classList.add('slider__tip--extended');
         anotherTip.setAttribute('data-extendedValue', `${values && values.join(' - ')}`);
@@ -47,6 +46,9 @@ class IntervalTip extends Tip {
         tip.style.visibility = 'visible';
         anotherTip.classList.remove('slider__tip--extended');
       }
+    } else {
+      tip.style.visibility = 'visible';
+      anotherTip.classList.remove('slider__tip--extended');
     }
   }
 }
