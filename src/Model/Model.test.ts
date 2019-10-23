@@ -29,6 +29,11 @@ describe('Model', () => {
 
     expect(model.state.min).to.equal(-5);
     expect(model.state.max).to.equal(10);
+
+    model.setState({ min: 0, max: 0 });
+
+    expect(model.state.min).to.equal(0);
+    expect(model.state.max).to.equal(0);
   });
   it('Должен исправить шаг', () => {
     const model = new Model({
@@ -42,17 +47,11 @@ describe('Model', () => {
     model.setState({ step: -1 });
 
     expect(model.state.step).to.eq(1);
+
+    model.setState({ max: -2 });
+
+    expect(model.state.step).to.eq(1);
   });
-  // it('Должен откорректировать значение отталкиваясь от шага', () => {
-  //   const model = new Model({
-  //     min: 10,
-  //     max: 80,
-  //     values: [47],
-  //     step: 2,
-  //   });
-  //
-  //   expect(model.state.values).to.deep.eq([48]);
-  // });
   it('Должен вернуть откорректированное значение отталкиваясь если оно заходит за min/max', () => {
     const model = new Model({
       min: 10,
@@ -111,5 +110,10 @@ describe('Model', () => {
 
     // @ts-ignore
     expect(model.countArrayOfProgression()).to.deep.eq([9, 12, 15, 18]);
+
+    model.setState({ step: 50, max: -2, min: -1 });
+
+    // @ts-ignore
+    expect(model.countArrayOfProgression()).to.deep.eq([-2, -1]);
   });
 });

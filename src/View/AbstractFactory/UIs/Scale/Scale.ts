@@ -63,6 +63,7 @@ class Scale extends Observer implements Scale {
 
 class HorizontalScale extends Scale implements Scale {
   protected arrayOfProgression!: number[];
+  private ratio!: number;
 
   public paint({ ratio, arrayOfProgression }: IState) {
     this.arrayOfProgression = arrayOfProgression as number[];
@@ -70,9 +71,12 @@ class HorizontalScale extends Scale implements Scale {
     let ratioProgressive = 0;
 
     if (this.scaleHTML.childElementCount === progression.length) {
-      return;
+      if (ratio === this.ratio) {
+        return;
+      }
     }
     this.scaleHTML.innerHTML = '';
+    this.ratio = +ratio;
 
     for (let i = 0; i < progression.length; i += 1) {
       const template = `<div class="scale__value">${progression[i]}</div>`;
@@ -96,16 +100,20 @@ class HorizontalScale extends Scale implements Scale {
 
 class VerticalScale extends Scale implements Scale {
   protected arrayOfProgression!: number[];
+  private ratio!: number;
 
   public paint({ ratio, arrayOfProgression }: IState) {
     this.arrayOfProgression = arrayOfProgression as number[];
     const progression = arrayOfProgression as number[];
     let ratioProgressive = 0;
 
-    if (this.scaleHTML.childElementCount === progression.length) return;
-    if (this.scaleHTML.childElementCount >= progression.length) {
-      this.scaleHTML.innerHTML = '';
+    if (this.scaleHTML.childElementCount === progression.length) {
+      if (ratio === this.ratio) {
+        return;
+      }
     }
+    this.scaleHTML.innerHTML = '';
+    this.ratio = +ratio;
 
     for (let i = 0; i < progression.length; i += 1) {
       const template = `<div class="scale__value">${progression[i]}</div>`;

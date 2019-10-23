@@ -37,6 +37,7 @@ class Controller {
     // Синхронизация настроек и состояния
     this.app.UIs.settings &&
       this.app.UIs.settings.on('newSettings', (obj: IState) => {
+        console.log(obj);
         this.model.setState(obj);
         this.arrangeHandlers(obj);
 

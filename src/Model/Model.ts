@@ -108,8 +108,8 @@ class Model extends Observer {
   }
 
   private correctStep(): void {
-    this.state.step < 1 ? (this.state.step = 1) : '';
     this.state.step > this.state.max ? (this.state.step = this.state.max) : '';
+    this.state.step < 1 ? (this.state.step = 1) : '';
   }
 
   private correctValueInTheRange(value: number): number {
@@ -130,14 +130,15 @@ class Model extends Observer {
   }
 
   private countArrayOfProgression() {
-    this.correctStep();
+    this.correctMainValues(this.state);
 
-    const arrayOfProgression = [this.state.min];
-    let value = this.state.min as number;
+    const min = this.state.min as number;
+    const max = this.state.max as number;
+    const step = this.state.step as number;
+    const arrayOfProgression = [];
 
-    while (value + +this.state.step <= this.state.max) {
-      value += +this.state.step;
-      arrayOfProgression.push(value);
+    for (let i = min; i <= max; i += step) {
+      arrayOfProgression.push(i);
     }
 
     return arrayOfProgression;
