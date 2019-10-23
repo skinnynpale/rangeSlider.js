@@ -2,6 +2,8 @@ $('#anchor').rangeSlider(
   {
     settings: true,
     scale: true,
+    direction: 'vertical',
+    skin: 'red',
   },
   {
     step: 9,
@@ -10,6 +12,8 @@ $('#anchor').rangeSlider(
     min: 10,
   },
 );
+$('#anchor').rangeSlider('updateVisual', { skin: 'green', direction: 'horizontal' });
+
 $('#anchor2').rangeSlider({
   settings: true,
   skin: 'red',
