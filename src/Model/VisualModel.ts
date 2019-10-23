@@ -1,23 +1,16 @@
 import Observer from '../Observer/Observer';
-import { IOnlyString } from '../helpers/interfaces';
+import { IVisualModel } from '../helpers/interfaces';
 
 class VisualModel extends Observer {
-  constructor(public state: {} = {}) {
+  public state: IVisualModel = {};
+  constructor() {
     super();
   }
 
-  public setState(state: {} = {}) {
-    this.correctState(state);
+  public setState(state: IVisualModel = {}) {
     Object.assign(this.state, state);
 
     this.emit('newVisualModel', this.state);
-  }
-
-  private correctState(state: IOnlyString) {
-    state.bar = JSON.parse(state.bar);
-    state.scale = JSON.parse(state.scale);
-    state.settings = JSON.parse(state.settings);
-    state.tip = JSON.parse(state.tip);
   }
 }
 

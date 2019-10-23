@@ -131,7 +131,16 @@ class Settings extends Observer {
         }
       } else if (target.tagName === 'SELECT') {
         // для второй части настроек
-        this.emit('reCreateApp', { [target.id]: (target as HTMLSelectElement).value });
+        const select = target as HTMLSelectElement;
+        let value;
+
+        if (select.value === 'true' || select.value === 'false') {
+          value = JSON.parse(select.value);
+        } else {
+          value = select.value;
+        }
+
+        this.emit('reCreateApp', { [target.id]: value });
       }
     });
   }

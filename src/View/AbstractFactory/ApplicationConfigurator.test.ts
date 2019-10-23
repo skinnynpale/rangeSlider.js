@@ -35,6 +35,7 @@ describe('ApplicationConfigurator', () => {
 
   it('Должен выкинуть исключение на неверные данные', () => {
     const applicationConfigurator = new ApplicationConfigurator();
+    // @ts-ignore
     const func = applicationConfigurator.main.bind(
       applicationConfigurator,
       {

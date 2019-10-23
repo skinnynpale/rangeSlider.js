@@ -13,13 +13,13 @@ interface IOnlyNumbers {
 }
 
 interface IVisualModel {
-  scale: boolean;
-  direction: 'horizontal' | 'vertical';
-  skin: 'green' | 'red';
-  bar: boolean;
-  tip: boolean;
-  type: 'single' | 'interval';
-  settings: boolean;
+  scale?: boolean;
+  direction?: 'horizontal' | 'vertical';
+  skin?: 'green' | 'red';
+  bar?: boolean;
+  tip?: boolean;
+  type?: 'single' | 'interval';
+  settings?: boolean;
 }
 
 interface ITemp {

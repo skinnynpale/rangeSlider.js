@@ -1,7 +1,7 @@
 import Model from '../Model/Model';
 import VisualModel from '../Model/VisualModel';
 import { Application, ApplicationConfigurator } from '../View/AbstractFactory/Application';
-import { IState, ITemp, IVisualModel } from '../helpers/interfaces';
+import { GState, IState, ITemp, IVisualModel } from '../helpers/interfaces';
 
 class Controller {
   private model!: Model;
@@ -50,7 +50,7 @@ class Controller {
       'pxValueDone',
       () =>
         this.app.UIs.settings &&
-        this.app.UIs.settings.paint({ ...this.model.state, ...this.visualModel.state }),
+        this.app.UIs.settings.paint({ ...this.model.state, ...this.visualModel.state } as GState),
     );
 
     // Пересоздать слайдер

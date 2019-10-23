@@ -11,7 +11,7 @@ import {
 
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { IOnlyBoolean, IOnlyString, ITemp, IVisualModel, UIs } from '../../helpers/interfaces';
+import { ITemp, IVisualModel, UIs } from '../../helpers/interfaces';
 
 /**
  * Application
@@ -28,7 +28,7 @@ class Application extends Observer {
     super();
   }
 
-  public createUI({ bar, scale, settings }: IOnlyBoolean) {
+  public createUI({ bar, scale, settings }: IVisualModel) {
     this.template = this.factory.createTemplate();
     this.UIs.handler = this.factory.createHandler();
 
@@ -125,7 +125,7 @@ class Application extends Observer {
  */
 
 class ApplicationConfigurator {
-  public main({ type, direction }: IOnlyString, anchor: HTMLElement) {
+  public main({ type, direction }: IVisualModel, anchor: HTMLElement) {
     let factory;
 
     if (type === constants.TYPE_SINGLE && direction === constants.DIRECTION_HORIZONTAL) {

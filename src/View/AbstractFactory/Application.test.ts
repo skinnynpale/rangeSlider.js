@@ -29,6 +29,7 @@ describe('Application', () => {
     // @ts-ignore
     expect(app.UIs.bar).to.deep.equal(new IntervalHorizontalBar());
 
+    // @ts-ignore
     app.createUI({ handler: true });
     // @ts-ignore
     expect(app.UIs.bar).to.deep.equal(new IntervalHorizontalBar());
