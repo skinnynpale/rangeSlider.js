@@ -13,25 +13,22 @@ class Model extends Observer {
   public setState(state: IState = {}): void {
     Object.assign(this.state, state);
 
-    // для корректировки основных значений
-    if (state.min || state.max || state.step || state.values) {
-      this.correctMinMaxRange();
-      this.correctStep();
-      this.correctValues();
-    }
+    this.correctMainValues(state);
+    this.initialCounting(state);
+    this.dynamicCounting(state);
+  }
 
-    // для начальной отрисовки
-    if (state.tempTarget && state.edge && state.tempValue) {
-      this.initialCounting(state);
-    }
+  private correctMainValues(state: IState) {
+    if (!(state.min || state.max || state.step || state.values)) return;
 
-    // для отрисовки действий пользователя
-    if (state.tempTarget && state.left) {
-      this.dynamicCounting(state);
-    }
+    this.correctMinMaxRange();
+    this.correctStep();
+    this.correctValues();
   }
 
   private initialCounting(state: IState) {
+    if (!(state.tempTarget && state.edge && state.tempValue)) return;
+
     this.state.tempPxValue = this.countPxValueFromValue(state.tempValue as number);
     this.createArrayOfPxValues(this.state.values as number[]);
 
@@ -42,6 +39,8 @@ class Model extends Observer {
   }
 
   private dynamicCounting(state: IState) {
+    if (!(state.tempTarget && state.left)) return;
+
     this.state.tempValue = this.countValueFromLeft(state.left as number);
     this.state.tempPxValue = this.countPxValueFromValue(this.state.tempValue as number);
 
