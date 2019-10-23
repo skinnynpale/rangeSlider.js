@@ -9,10 +9,6 @@ class Observer {
     } else {
       this.events[eventName] = [func];
     }
-
-    return () => {
-      this.events[eventName] = this.events[eventName].filter((eventFn: any) => func !== eventFn);
-    };
   }
 
   public emit(eventName: string, data?: any) {
