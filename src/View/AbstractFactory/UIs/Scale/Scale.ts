@@ -69,10 +69,10 @@ class HorizontalScale extends Scale implements Scale {
     const progression = arrayOfProgression as number[];
     let ratioProgressive = 0;
 
-    if (this.scaleHTML.childElementCount === progression.length) return;
-    if (this.scaleHTML.childElementCount >= progression.length) {
-      this.scaleHTML.innerHTML = '';
+    if (this.scaleHTML.childElementCount === progression.length) {
+      return;
     }
+    this.scaleHTML.innerHTML = '';
 
     for (let i = 0; i < progression.length; i += 1) {
       const template = `<div class="scale__value">${progression[i]}</div>`;
