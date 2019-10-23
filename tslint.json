@@ -14,7 +14,8 @@
     "interface-name": false,
     "no-empty": false,
     "forin": false,
-    "ter-arrow-parens": false
+    "ter-arrow-parens": false,
+    "space-before-function-paren": false
   },
   "rulesDirectory": []
 }

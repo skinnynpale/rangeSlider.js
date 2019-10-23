@@ -4,8 +4,15 @@ import { Tip } from '../View/AbstractFactory/UIs/Tip/Tip';
 import { Scale } from '../View/AbstractFactory/UIs/Scale/Scale';
 import Settings from '../View/AbstractFactory/UIs/Settings/Settings';
 
-interface IState {
-  [key: string]: number | number[] | HTMLElement;
+interface IState extends ITemp {
+  min?: number;
+  max?: number;
+  step?: number;
+  edge?: number;
+  left?: number;
+  handlers?: NodeList[];
+  arrayOfProgression?: number[];
+  ratio?: number;
 }
 
 interface IOnlyNumbers {
@@ -23,10 +30,10 @@ interface IVisualModel {
 }
 
 interface ITemp {
-  tempPxValue: number;
-  tempPxValues: number[];
-  tempValue: number;
-  tempTarget: HTMLElement;
+  tempPxValue?: number;
+  tempPxValues?: number[];
+  tempValue?: number;
+  tempTarget?: HTMLElement;
   values?: number[];
 }
 

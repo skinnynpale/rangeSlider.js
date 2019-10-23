@@ -37,7 +37,6 @@ class Controller {
     // Синхронизация настроек и состояния
     this.app.UIs.settings &&
       this.app.UIs.settings.on('newSettings', (obj: IState) => {
-        console.log(obj);
         this.model.setState(obj);
         this.arrangeHandlers(obj);
 
@@ -92,7 +91,7 @@ class Controller {
     this.initMVC(settingsVisualModel, settingsModel);
   }
 
-  private saveOldModel(target: IState, obj: IState) {
+  private saveOldModel(target: any, obj: any) {
     for (const prop in target) {
       target[prop] = obj[prop];
     }

@@ -19,7 +19,15 @@ class Model extends Observer {
   }
 
   private correctMainValues(state: IState) {
-    if (!(state.min || state.max || state.step || state.values)) return;
+    if (
+      !(
+        state.min !== undefined ||
+        state.max !== undefined ||
+        state.step !== undefined ||
+        state.values
+      )
+    )
+      return;
 
     this.correctMinMaxRange();
     this.correctStep();
@@ -27,13 +35,13 @@ class Model extends Observer {
   }
 
   private initialCounting(state: IState) {
-    if (!(state.tempTarget && state.edge && state.tempValue)) return;
+    if (!(state.tempTarget && state.edge && state.tempValue !== undefined)) return;
 
-    this.state.tempPxValue = this.countPxValueFromValue(state.tempValue as number);
+    this.state.tempPxValue = this.countPxValueFromValue(state.tempValue);
     this.createArrayOfPxValues(this.state.values as number[]);
 
-    this.mapOfHandlers.set(state.tempTarget as HTMLElement, {
-      tempValue: state.tempValue as number,
+    this.mapOfHandlers.set(state.tempTarget, {
+      tempValue: state.tempValue,
       tempPxValue: this.state.tempPxValue,
     });
   }
@@ -41,10 +49,10 @@ class Model extends Observer {
   private dynamicCounting(state: IState) {
     if (!(state.tempTarget && state.left)) return;
 
-    this.state.tempValue = this.countValueFromLeft(state.left as number);
-    this.state.tempPxValue = this.countPxValueFromValue(this.state.tempValue as number);
+    this.state.tempValue = this.countValueFromLeft(state.left);
+    this.state.tempPxValue = this.countPxValueFromValue(this.state.tempValue);
 
-    this.mapOfHandlers.set(state.tempTarget as HTMLElement, {
+    this.mapOfHandlers.set(state.tempTarget, {
       tempValue: this.state.tempValue,
       tempPxValue: this.state.tempPxValue,
     });
@@ -66,7 +74,9 @@ class Model extends Observer {
     this.state.values.sort((a, b) => a - b);
 
     if (this.mapOfHandlers.size === 1) {
-      this.state.values[1] = this.state.max as number;
+      if (this.state.max != null) {
+        this.state.values[1] = this.state.max;
+      }
     }
   }
 
@@ -88,18 +98,20 @@ class Model extends Observer {
   }
 
   private countValueFromLeft(left: number): number {
-    const state = this.state as IOnlyNumbers;
+    const state = (this.state as unknown) as IOnlyNumbers;
     const value = Math.round(left / this.getRatio()) * state.step + state.min;
 
     return this.correctValueInTheRange(value);
   }
 
   private countPxValueFromValue(value: number): number {
-    const state = this.state as IOnlyNumbers;
+    const state = (this.state as unknown) as IOnlyNumbers;
     return (value - state.min) * (this.getRatio() / state.step);
   }
 
   private correctMinMaxRange(): void {
+    if (!(this.state.min !== undefined && this.state.max !== undefined)) return;
+
     if (this.state.min > this.state.max) {
       const temp = this.state.min;
       this.state.min = this.state.max;
@@ -108,36 +120,44 @@ class Model extends Observer {
   }
 
   private correctStep(): void {
+    if (!(this.state.max !== undefined && this.state.step !== undefined)) return;
+
     this.state.step > this.state.max ? (this.state.step = this.state.max) : '';
     this.state.step < 1 ? (this.state.step = 1) : '';
   }
 
   private correctValueInTheRange(value: number): number {
+    if (!(this.state.min !== undefined && this.state.max !== undefined)) return value;
+
     if (value < this.state.min) {
-      return +this.state.min;
+      return this.state.min;
     }
 
     if (value > this.state.max) {
-      return +this.state.max;
+      return this.state.max;
     }
 
     return value;
   }
 
   private getRatio(): number {
-    const state = this.state as IOnlyNumbers;
-    return +(state.edge / (state.max - state.min)) * state.step;
+    const state = (this.state as unknown) as IOnlyNumbers;
+    return (state.edge / (state.max - state.min)) * state.step;
   }
 
   private countArrayOfProgression() {
+    if (
+      !(
+        this.state.min !== undefined &&
+        this.state.max !== undefined &&
+        this.state.step !== undefined
+      )
+    )
+      return;
     this.correctMainValues(this.state);
-
-    const min = this.state.min as number;
-    const max = this.state.max as number;
-    const step = this.state.step as number;
     const arrayOfProgression = [];
 
-    for (let i = min; i <= max; i += step) {
+    for (let i = this.state.min; i <= this.state.max; i += this.state.step) {
       arrayOfProgression.push(i);
     }
 

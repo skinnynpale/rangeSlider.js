@@ -76,7 +76,9 @@ class HorizontalScale extends Scale implements Scale {
       }
     }
     this.scaleHTML.innerHTML = '';
-    this.ratio = +ratio;
+    if (ratio !== undefined) {
+      this.ratio = ratio;
+    }
 
     for (let i = 0; i < progression.length; i += 1) {
       const template = `<div class="scale__value">${progression[i]}</div>`;
@@ -113,7 +115,9 @@ class VerticalScale extends Scale implements Scale {
       }
     }
     this.scaleHTML.innerHTML = '';
-    this.ratio = +ratio;
+    if (ratio !== undefined) {
+      this.ratio = ratio;
+    }
 
     for (let i = 0; i < progression.length; i += 1) {
       const template = `<div class="scale__value">${progression[i]}</div>`;

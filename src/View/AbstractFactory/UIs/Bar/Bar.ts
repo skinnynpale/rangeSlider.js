@@ -15,6 +15,8 @@ class Bar implements Bar {
 
 class SingleHorizontalBar extends Bar implements Bar {
   public paint({ tempPxValue, tempTarget }: ITemp) {
+    if (!(tempTarget !== undefined && tempPxValue !== undefined)) return;
+
     const bar =
       tempTarget.parentElement &&
       (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);
@@ -25,6 +27,8 @@ class SingleHorizontalBar extends Bar implements Bar {
 
 class SingleVerticalBar extends Bar implements Bar {
   public paint({ tempPxValue, tempTarget }: ITemp) {
+    if (!(tempTarget !== undefined && tempPxValue !== undefined)) return;
+
     const bar =
       tempTarget.parentElement &&
       (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);
@@ -35,6 +39,8 @@ class SingleVerticalBar extends Bar implements Bar {
 
 class IntervalHorizontalBar extends Bar implements Bar {
   public paint({ tempPxValues, tempTarget }: ITemp) {
+    if (!(tempTarget !== undefined && tempPxValues !== undefined)) return;
+
     const bar =
       tempTarget.parentElement &&
       (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);
@@ -46,6 +52,8 @@ class IntervalHorizontalBar extends Bar implements Bar {
 
 class IntervalVerticalBar extends Bar implements Bar {
   public paint({ tempPxValues, tempTarget }: ITemp) {
+    if (!(tempTarget !== undefined && tempPxValues !== undefined)) return;
+
     const bar =
       tempTarget.parentElement &&
       (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);

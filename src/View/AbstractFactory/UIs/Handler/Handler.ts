@@ -28,12 +28,16 @@ class Handler implements Handler {
 
 class SingleHorizontalHandler extends Handler implements Handler {
   public paint({ tempTarget, tempPxValue }: ITemp) {
+    if (!tempTarget) return;
+
     tempTarget.style.left = `${tempPxValue}px`;
   }
 }
 
 class SingleVerticalHandler extends Handler implements Handler {
   public paint({ tempTarget, tempPxValue }: ITemp) {
+    if (!tempTarget) return;
+
     tempTarget.style.bottom = `${tempPxValue}px`;
   }
 }
@@ -48,6 +52,8 @@ class IntervalHorizontalHandler extends Handler implements Handler {
   }
 
   public paint({ tempTarget, tempPxValue }: ITemp) {
+    if (!tempTarget) return;
+
     tempTarget.style.left = `${tempPxValue}px`;
   }
 }
@@ -62,6 +68,8 @@ class IntervalVerticalHandler extends Handler implements Handler {
   }
 
   public paint({ tempTarget, tempPxValue }: ITemp) {
+    if (!tempTarget) return;
+
     tempTarget.style.bottom = `${tempPxValue}px`;
   }
 }

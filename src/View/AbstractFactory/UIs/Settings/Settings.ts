@@ -119,7 +119,7 @@ class Settings extends Observer {
           this.emit('newSettings', {
             handlers,
             edge: this.state.edge,
-            values: [valueFrom, valueTo],
+            values: [+valueFrom, +valueTo],
           });
         } else {
           // для всех остальных значений
