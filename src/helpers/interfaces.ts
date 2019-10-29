@@ -49,16 +49,10 @@ interface UIs {
   settings?: Settings;
 }
 
-interface IOnlyBoolean {
-  [key: string]: boolean;
-}
+type func = (data?: {}) => void;
 
-interface IOnlyString {
-  [key: string]: string;
-}
-
-interface IOnlyHTMLElements {
-  [key: string]: HTMLElement;
+interface Events {
+  [key: string]: func[];
 }
 
 export {
@@ -66,9 +60,8 @@ export {
   IOnlyNumbers,
   IVisualModel,
   ITemp,
-  IOnlyBoolean,
-  IOnlyString,
-  IOnlyHTMLElements,
   GState,
   UIs,
+  func,
+  Events,
 };

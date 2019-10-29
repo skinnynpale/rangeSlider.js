@@ -1,8 +1,10 @@
-class Observer {
-  constructor(public events: any = {}) {}
+import { Events, func } from '../helpers/interfaces';
 
-  public on(eventName: string, func: any) {
-    const event = this.events[eventName] as [() => void];
+class Observer {
+  constructor(public events: Events = {}) {}
+
+  public on(eventName: string, func: func) {
+    const event = this.events[eventName];
 
     if (event) {
       event.push(func);
@@ -11,11 +13,11 @@ class Observer {
     }
   }
 
-  public emit(eventName: string, data?: any) {
+  public emit(eventName: string, data?: {}) {
     const event = this.events[eventName];
 
     if (event) {
-      event.forEach((func: (arg0: any) => void) => func(data));
+      event.forEach((func: func) => func(data));
     }
   }
 }
