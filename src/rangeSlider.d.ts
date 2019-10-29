@@ -1,3 +1,3 @@
 interface JQuery {
-  rangeSlider(method: any, data: any): any;
+  rangeSlider(method: string, data: {}): void;
 }
