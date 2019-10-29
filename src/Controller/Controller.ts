@@ -29,18 +29,18 @@ class Controller {
   }
 
   private bindEvents() {
-    this.app.on('finishInit', (obj: {}) => this.arrangeHandlers(obj));
+    this.app.on('finishInit', (obj) => this.arrangeHandlers(obj));
 
-    this.model.on('pxValueDone', (obj: ITemp) => this.app.paint(obj));
-    this.app.on('onUserMove', (obj: {}) => this.model.setState(obj));
+    this.model.on('pxValueDone', (obj) => this.app.paint(obj as ITemp));
+    this.app.on('onUserMove', (obj) => this.model.setState(obj));
 
     // Синхронизация настроек и состояния
     this.app.UIs.settings &&
-      this.app.UIs.settings.on('newSettings', (obj: IState) => {
+      this.app.UIs.settings.on('newSettings', (obj) => {
         this.model.setState(obj);
         this.arrangeHandlers(obj);
 
-        if (obj.step) {
+        if ((obj as IState).step) {
           this.reCreateApplication(this.visualModel.state as IVisualModel);
         }
       });
@@ -55,8 +55,8 @@ class Controller {
 
     // Пересоздать слайдер
     this.app.UIs.settings &&
-      this.app.UIs.settings.on('reCreateApp', (newVisualModel: IVisualModel) =>
-        this.reCreateApplication(newVisualModel),
+      this.app.UIs.settings.on('reCreateApp', (newVisualModel) =>
+        this.reCreateApplication(newVisualModel as IVisualModel),
       );
 
     // События для плагина
@@ -66,7 +66,7 @@ class Controller {
 
     // Нажатия по значениям на шкале
     this.app.UIs.scale &&
-      this.app.UIs.scale.on('newValueFromScale', (obj: IState) => {
+      this.app.UIs.scale.on('newValueFromScale', (obj) => {
         this.model.setState(obj);
         this.arrangeHandlers(obj);
       });
