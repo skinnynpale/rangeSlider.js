@@ -94,14 +94,14 @@ class Model extends Observer {
   }
 
   private countValueFromLeft(left: number): number {
-    const state = (this.state as unknown) as IOnlyNumbers;
+    const state = this.state as IOnlyNumbers;
     const value = Math.round(left / this.getRatio()) * state.step + state.min;
 
     return this.correctValueInTheRange(value);
   }
 
   private countPxValueFromValue(value: number): number {
-    const state = (this.state as unknown) as IOnlyNumbers;
+    const state = this.state as IOnlyNumbers;
     return (value - state.min) * (this.getRatio() / state.step);
   }
 
@@ -137,7 +137,7 @@ class Model extends Observer {
   }
 
   private getRatio(): number {
-    const state = (this.state as unknown) as IOnlyNumbers;
+    const state = this.state as IOnlyNumbers;
     return (state.edge / (state.max - state.min)) * state.step;
   }
 
