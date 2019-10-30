@@ -19,22 +19,19 @@ class Model extends Observer {
   }
 
   private correctMainValues(state: IState) {
-    if (!this.isSendMainValues(state)) return;
+    const isSendMainValues =
+      state.min !== undefined || state.max !== undefined || state.step !== undefined || state.values;
+
+    if (!isSendMainValues) return;
 
     this.correctMinMaxRange();
     this.correctStep();
     this.correctValues();
   }
 
-  private isSendMainValues(state: IState) {
-    return state.min !== undefined
-      || state.max !== undefined
-      || state.step !== undefined
-      || state.values;
-  }
-
   private initialCounting(state: IState) {
-    if (!this.isSendStateForInital(state)) return;
+    const isSendStateForInital = state.tempTarget && state.edge && state.tempValue !== undefined;
+    if (!isSendStateForInital) return;
 
     this.state.tempPxValue = this.countPxValueFromValue(state.tempValue as number);
     this.createArrayOfPxValues(this.state.values as number[]);
@@ -43,10 +40,6 @@ class Model extends Observer {
       tempValue: state.tempValue as number,
       tempPxValue: this.state.tempPxValue,
     });
-  }
-
-  private isSendStateForInital(state: IState) {
-    return state.tempTarget && state.edge && state.tempValue !== undefined;
   }
 
   private dynamicCounting(state: IState) {

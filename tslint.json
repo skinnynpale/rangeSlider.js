@@ -15,7 +15,8 @@
     "no-empty": false,
     "forin": false,
     "ter-arrow-parens": false,
-    "space-before-function-paren": false
+    "space-before-function-paren": false,
+    "max-line-length": [120]
   },
   "rulesDirectory": []
 }
