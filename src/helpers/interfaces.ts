@@ -49,10 +49,10 @@ interface UIs {
   settings?: Settings;
 }
 
-type func = (data?: {}) => void;
+type EventCallback = (data?: {}) => void;
 
 interface Events {
-  [key: string]: func[];
+  [key: string]: EventCallback[];
 }
 
 export {
@@ -62,6 +62,6 @@ export {
   ITemp,
   GState,
   UIs,
-  func,
   Events,
+  EventCallback,
 };

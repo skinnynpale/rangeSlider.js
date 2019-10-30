@@ -1,9 +1,9 @@
-import { Events, func } from '../helpers/interfaces';
+import { Events, EventCallback } from '../helpers/interfaces';
 
 class Observer {
   constructor(public events: Events = {}) {}
 
-  public on(eventName: string, func: func) {
+  public on(eventName: string, func: EventCallback) {
     const event = this.events[eventName];
 
     if (event) {
@@ -17,7 +17,7 @@ class Observer {
     const event = this.events[eventName];
 
     if (event) {
-      event.forEach((func: func) => func(data));
+      event.forEach((func: EventCallback) => func(data));
     }
   }
 }
