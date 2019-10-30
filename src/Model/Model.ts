@@ -105,8 +105,12 @@ class Model extends Observer {
     Object.assign(this.state, { edge: state.edge }); // todo fix
 
     const tempTarget = state.tempTarget as HTMLElement;
-    let tempValue = this.getAvailableValue(state, 'tempValue') as number;
-    tempValue = this.correctValueInTheRange(tempValue, this.state);
+
+    let oldTempValue = this.getAvailableValue(state, 'tempValue') as number;
+    oldTempValue = this.correctValueInTheRange(oldTempValue, this.state);
+    const oldTempPxValue = this.countPxValueFromValue(oldTempValue);
+
+    const tempValue = this.countValueFromLeft(oldTempPxValue as number);
     const tempPxValue = this.countPxValueFromValue(tempValue);
 
     this.mapOfHandlers.set(tempTarget, {
@@ -114,7 +118,7 @@ class Model extends Observer {
       tempValue,
     });
 
-    this.notifyAboutPxValueDone({ tempValue, tempPxValue, tempTarget });
+    this.notifyAboutPxValueDone({ tempTarget, tempValue, tempPxValue  });
   }
 
   private countPxValueFromValue(value: number): number {
