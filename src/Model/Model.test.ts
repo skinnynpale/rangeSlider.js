@@ -39,6 +39,7 @@ describe('Model', () => {
     const model = new Model({
       step: 90,
       max: 50,
+      min: 10,
       values: [60],
     });
 
@@ -104,16 +105,16 @@ describe('Model', () => {
     });
 
     // @ts-ignore
-    expect(model.countArrayOfProgression()).to.deep.eq([10, 20, 30, 40, 50]);
+    expect(model.countArrayOfProgression(model.state)).to.deep.eq([10, 20, 30, 40, 50]);
 
     model.setState({ step: 3, max: 19, min: 9 });
 
     // @ts-ignore
-    expect(model.countArrayOfProgression()).to.deep.eq([9, 12, 15, 18]);
+    expect(model.countArrayOfProgression(model.state)).to.deep.eq([9, 12, 15, 18]);
 
     model.setState({ step: 50, max: -2, min: -1 });
 
     // @ts-ignore
-    expect(model.countArrayOfProgression()).to.deep.eq([-2, -1]);
+    expect(model.countArrayOfProgression(model.state)).to.deep.eq([-2, -1]);
   });
 });
