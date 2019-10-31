@@ -94,7 +94,7 @@ describe('Model', () => {
       step: 3,
     });
 
-    expect(model.state.values).to.deep.eq([10, 60]);
+    expect(model.state.values).to.deep.eq([10, 61]);
   });
   it('Должен вернуть правильный массив прогрессии', () => {
     const model = new Model({

@@ -89,6 +89,17 @@ class Settings extends Observer {
 
     for (const input of inputs as any) {
       input.value = state[input.id];
+
+      if (input.id === 'valueFrom') {
+        input.step = state.step;
+        input.min = state.min;
+        input.max = state.max;
+      }
+      if (input.id === 'valueTo') {
+        input.step = state.step;
+        input.min = state.min;
+        input.max = state.max;
+      }
     }
 
     const selects = this.settingsHTML.querySelectorAll('select');

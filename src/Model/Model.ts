@@ -81,7 +81,10 @@ class Model extends Observer {
       return max;
     }
 
-    return value;
+    const step = this.getAvailableValue(state, 'step') as number;
+    const offset = min - Math.round(min / step) * step;
+
+    return Math.round(value / step) * step + offset;
   }
 
   private countArrayOfProgression(state: IState) {
