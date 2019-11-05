@@ -1,4 +1,6 @@
-export const defaultVisualModel = {
+import { VisualState } from './helpers/interfaces';
+
+export const defaultVisualModel: VisualState = {
   direction: 'horizontal',
   skin: 'green',
   bar: true,

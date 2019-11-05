@@ -1,13 +1,13 @@
 import Observer from '../Observer/Observer';
-import { IVisualModel } from '../helpers/interfaces';
+import { VisualState } from '../helpers/interfaces';
 
 class VisualModel extends Observer {
-  public state: IVisualModel = {};
+  public state: VisualState = {};
   constructor() {
     super();
   }
 
-  public setState(state: IVisualModel = {}) {
+  public setState(state: VisualState = {}): void {
     Object.assign(this.state, state);
 
     this.emit('newVisualModel', this.state);
