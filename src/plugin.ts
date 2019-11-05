@@ -1,10 +1,16 @@
 import Controller from './Controller/Controller';
-import { IState, IVisualModel } from './helpers/interfaces';
+import { EventCallback, ModelState, VisualState } from './helpers/interfaces';
+import { defaultModel } from './defaultModel';
+import { defaultVisualModel } from './defaultVisualModel';
 
-// tslint:disable-next-line:only-arrow-functions
-(function($) {
+(function($): void {
   const methods = {
-    init(settingsVisualModel: IVisualModel = {}, settingsModel: IState = {}): undefined | void {
+
+    init(
+
+      settingsVisualModel: VisualState = defaultVisualModel,
+      settingsModel: ModelState = defaultModel): undefined | void {
+
       if ($(this).data('rangeSlider')) return;
       const visualModel = $.extend(
         {
@@ -22,8 +28,8 @@ import { IState, IVisualModel } from './helpers/interfaces';
         {
           min: 10,
           max: 50,
-          values: [20, 40],
           step: 2,
+          values: [20],
         },
         settingsModel,
       );
@@ -34,38 +40,39 @@ import { IState, IVisualModel } from './helpers/interfaces';
         $(this).data().startingModel = model;
       });
     },
-    updateValues(options: IState) {
+    updateValues(options: ModelState): void {
       const rangeSlider = $(this).data('rangeSlider');
       rangeSlider.model.setState(options);
       rangeSlider.reCreateApplication(rangeSlider.visualModel.state);
     },
-    updateVisual(options: IVisualModel) {
+    updateVisual(options: VisualState): void {
       const rangeSlider = $(this).data('rangeSlider');
       rangeSlider.reCreateApplication(Object.assign(rangeSlider.visualModel.state, options));
     },
-    reset() {
+    reset(): void {
       const rangeSlider = $(this).data('rangeSlider');
       rangeSlider.model.setState($(this).data().startingModel);
       rangeSlider.reCreateApplication($(this).data().startingVisualModel);
     },
-    destroy() {
+    destroy(): void {
       const rangeSlider = $(this).data('rangeSlider');
       rangeSlider.app.removeHTML();
       $(this).off('onChange');
     },
-    onChange(func: () => any) {
+    onChange(func: () => EventCallback): void {
       $(this).on('onChange', func);
     },
   };
 
-  $.fn.rangeSlider = function(method: keyof typeof methods | IVisualModel, ...data) {
+  ($ as any).fn.rangeSlider = function(method: keyof typeof methods | VisualState, ...data: any[]): void {
     if (typeof method === 'string') {
       if (methods[method]) {
         const funcOfMethod = methods[method] as () => void;
+        // @ts-ignore
         return funcOfMethod.bind(this, ...data)();
       }
     } else if (typeof method === 'object') {
-      // @ts-ignore
+      // @ts-ignore // я не знаю как сделать
       methods.init.apply(this, [method, ...data]);
     }
   };

@@ -4,22 +4,19 @@ import { Tip } from '../View/AbstractFactory/UIs/Tip/Tip';
 import { Scale } from '../View/AbstractFactory/UIs/Scale/Scale';
 import Settings from '../View/AbstractFactory/UIs/Settings/Settings';
 
-interface IState extends ITemp {
-  min?: number;
-  max?: number;
-  step?: number;
-  edge?: number;
-  left?: number;
-  handlers?: NodeList[];
-  arrayOfProgression?: number[];
-  ratio?: number;
+interface ModelState {
+  min: number;
+  max: number;
+  step: number;
+  values: number[];
 }
 
-interface IOnlyNumbers {
-  [key: string]: number;
+interface CalculatedFromModelState {
+  ratio: number;
+  arrayOfProgression: number[];
 }
 
-interface IVisualModel {
+interface VisualState {
   scale?: boolean;
   direction?: 'horizontal' | 'vertical';
   skin?: 'green' | 'red';
@@ -29,12 +26,20 @@ interface IVisualModel {
   settings?: boolean;
 }
 
-interface ITemp {
+interface Temp {
   tempPxValue?: number;
-  tempPxValues?: number[];
   tempValue?: number;
+  tempEdge?: number;
+  left?: number;
   tempTarget?: HTMLElement;
+  tempPxValues?: number[];
   values?: number[];
+
+}
+
+
+interface OnlyNumbers {
+  [key: string]: number;
 }
 
 interface GState {
@@ -56,12 +61,13 @@ interface Events {
 }
 
 export {
-  IState,
-  IOnlyNumbers,
-  IVisualModel,
-  ITemp,
+  OnlyNumbers,
+  VisualState,
   GState,
   UIs,
   Events,
   EventCallback,
+  ModelState,
+  Temp,
+  CalculatedFromModelState
 };
