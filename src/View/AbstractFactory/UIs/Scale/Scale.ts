@@ -1,4 +1,4 @@
-import { IState } from '../../../../helpers/interfaces';
+import { CalculatedFromModelState } from '../../../../helpers/interfaces';
 import Observer from '../../../../Observer/Observer';
 
 interface Scale {
@@ -12,7 +12,7 @@ class Scale extends Observer implements Scale {
   protected anchor!: HTMLElement;
   protected arrayOfProgression!: number[];
 
-  public init(anchor: HTMLElement) {
+  public init(anchor: HTMLElement): void {
     this.anchor = anchor;
     this.slider = anchor.querySelector('.slider') as HTMLElement;
 
@@ -38,9 +38,7 @@ class Scale extends Observer implements Scale {
     const handlers = anchor.querySelectorAll('.slider__handler');
     const tips = anchor.querySelectorAll('.slider__tip');
 
-    const values = (Array.from(tips).map(
-      item => (item as HTMLElement).dataset.value,
-    ) as unknown) as number[];
+    const values = (Array.from(tips).map(item => (item as HTMLElement).dataset.value) as unknown) as number[];
 
     if (handlers.length === 2) {
       const first = Math.abs(values[0] - value);
@@ -65,9 +63,9 @@ class HorizontalScale extends Scale implements Scale {
   protected arrayOfProgression!: number[];
   private ratio!: number;
 
-  public paint({ ratio, arrayOfProgression }: IState) {
-    this.arrayOfProgression = arrayOfProgression as number[];
-    const progression = arrayOfProgression as number[];
+  public paint({ ratio, arrayOfProgression }: CalculatedFromModelState): void {
+    this.arrayOfProgression = arrayOfProgression;
+    const progression = arrayOfProgression;
     let ratioProgressive = 0;
 
     if (this.scaleHTML.childElementCount === progression.length) {
@@ -89,7 +87,7 @@ class HorizontalScale extends Scale implements Scale {
       if (i === 0) {
         currentCreatedValue.style.left = `${0}px`;
       } else {
-        ratioProgressive += ratio as number;
+        ratioProgressive += ratio;
         const offset = currentCreatedValue.clientWidth / 8;
         currentCreatedValue.style.left = `${ratioProgressive - offset}px`;
       }
@@ -104,9 +102,9 @@ class VerticalScale extends Scale implements Scale {
   protected arrayOfProgression!: number[];
   private ratio!: number;
 
-  public paint({ ratio, arrayOfProgression }: IState) {
-    this.arrayOfProgression = arrayOfProgression as number[];
-    const progression = arrayOfProgression as number[];
+  public paint({ ratio, arrayOfProgression }: CalculatedFromModelState): void {
+    this.arrayOfProgression = arrayOfProgression;
+    const progression = arrayOfProgression;
     let ratioProgressive = 0;
 
     if (this.scaleHTML.childElementCount === progression.length) {
@@ -128,7 +126,7 @@ class VerticalScale extends Scale implements Scale {
       if (i === 0) {
         currentCreatedValue.style.bottom = `${0}px`;
       } else {
-        ratioProgressive += ratio as number;
+        ratioProgressive += ratio;
         const offset = currentCreatedValue.clientWidth / 8;
         currentCreatedValue.style.bottom = `${ratioProgressive - offset}px`;
       }

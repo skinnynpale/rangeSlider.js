@@ -1,7 +1,7 @@
-import { ITemp } from '../../../../helpers/interfaces';
+import { Temp } from '../../../../helpers/interfaces';
 
 interface Bar {
-  paint({ tempPxValue, tempPxValues, tempValue, tempTarget }: ITemp): void;
+  paint({ tempPxValue, tempPxValues, tempValue, tempTarget }: Temp): void;
   init(anchor: HTMLElement): void;
 }
 
@@ -14,7 +14,7 @@ class Bar implements Bar {
 }
 
 class SingleHorizontalBar extends Bar implements Bar {
-  public paint({ tempPxValue, tempTarget }: ITemp) {
+  public paint({ tempPxValue, tempTarget }: Temp) {
     if (!(tempTarget !== undefined && tempPxValue !== undefined)) return;
 
     const bar =
@@ -26,7 +26,7 @@ class SingleHorizontalBar extends Bar implements Bar {
 }
 
 class SingleVerticalBar extends Bar implements Bar {
-  public paint({ tempPxValue, tempTarget }: ITemp) {
+  public paint({ tempPxValue, tempTarget }: Temp) {
     if (!(tempTarget !== undefined && tempPxValue !== undefined)) return;
 
     const bar =
@@ -38,7 +38,7 @@ class SingleVerticalBar extends Bar implements Bar {
 }
 
 class IntervalHorizontalBar extends Bar implements Bar {
-  public paint({ tempPxValues, tempTarget }: ITemp) {
+  public paint({ tempPxValues, tempTarget }: Temp) {
     if (!(tempTarget !== undefined && tempPxValues !== undefined)) return;
 
     const bar =
@@ -51,7 +51,7 @@ class IntervalHorizontalBar extends Bar implements Bar {
 }
 
 class IntervalVerticalBar extends Bar implements Bar {
-  public paint({ tempPxValues, tempTarget }: ITemp) {
+  public paint({ tempPxValues, tempTarget }: Temp) {
     if (!(tempTarget !== undefined && tempPxValues !== undefined)) return;
 
     const bar =

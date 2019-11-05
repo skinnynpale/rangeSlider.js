@@ -1,23 +1,24 @@
 $('#anchor').rangeSlider(
   {
     settings: true,
-    scale: true,
     direction: 'vertical',
     skin: 'red',
+    type: 'single',
+    scale: true
   },
   {
     step: 9,
-    values: [13, 50],
+    values: [15],
     max: 52,
     min: 10,
   },
 );
 $('#anchor').rangeSlider('updateVisual', { skin: 'green', direction: 'horizontal' });
-
 $('#anchor2').rangeSlider({
   settings: true,
   skin: 'red',
   type: 'interval',
+  scale: true
 });
 $('#anchor3').rangeSlider({
   direction: 'vertical',
@@ -31,7 +32,7 @@ $('#anchor4').rangeSlider(
     settings: true,
     skin: 'red',
     type: 'interval',
-    scale: true,
+    scale: true
   },
   {
     step: 5,

@@ -1,8 +1,8 @@
 import { Tip } from '../Tip/Tip';
-import { ITemp } from '../../../../helpers/interfaces';
+import { Temp } from '../../../../helpers/interfaces';
 
 interface Handler {
-  paint({ tempTarget, tempPxValue }: ITemp): void;
+  paint({ tempTarget, tempPxValue }: Temp): void;
   init(anchor: HTMLElement): void;
   append(component: Tip): void;
 }
@@ -27,7 +27,7 @@ class Handler implements Handler {
 }
 
 class SingleHorizontalHandler extends Handler implements Handler {
-  public paint({ tempTarget, tempPxValue }: ITemp) {
+  public paint({ tempTarget, tempPxValue }: Temp) {
     if (!tempTarget) return;
 
     tempTarget.style.left = `${tempPxValue}px`;
@@ -35,7 +35,7 @@ class SingleHorizontalHandler extends Handler implements Handler {
 }
 
 class SingleVerticalHandler extends Handler implements Handler {
-  public paint({ tempTarget, tempPxValue }: ITemp) {
+  public paint({ tempTarget, tempPxValue }: Temp) {
     if (!tempTarget) return;
 
     tempTarget.style.bottom = `${tempPxValue}px`;
@@ -51,7 +51,7 @@ class IntervalHorizontalHandler extends Handler implements Handler {
     slider.insertAdjacentHTML('beforeend', handlerTemplate);
   }
 
-  public paint({ tempTarget, tempPxValue }: ITemp) {
+  public paint({ tempTarget, tempPxValue }: Temp) {
     if (!tempTarget) return;
 
     tempTarget.style.left = `${tempPxValue}px`;
@@ -67,7 +67,7 @@ class IntervalVerticalHandler extends Handler implements Handler {
     slider.insertAdjacentHTML('beforeend', handlerTemplate);
   }
 
-  public paint({ tempTarget, tempPxValue }: ITemp) {
+  public paint({ tempTarget, tempPxValue }: Temp) {
     if (!tempTarget) return;
 
     tempTarget.style.bottom = `${tempPxValue}px`;

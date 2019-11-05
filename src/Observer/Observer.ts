@@ -3,7 +3,7 @@ import { Events, EventCallback } from '../helpers/interfaces';
 class Observer {
   constructor(public events: Events = {}) {}
 
-  public on(eventName: string, func: EventCallback) {
+  public on(eventName: string, func: EventCallback): void {
     const event = this.events[eventName];
 
     if (event) {
@@ -13,7 +13,7 @@ class Observer {
     }
   }
 
-  public emit(eventName: string, data?: {}) {
+  public emit(eventName: string, data?: {}): void {
     const event = this.events[eventName];
 
     if (event) {

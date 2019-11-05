@@ -45,7 +45,6 @@ describe('ApplicationConfigurator', () => {
       anchor,
     );
 
-    // @ts-ignore
     expect(func).to.throw('Error! Unknown okay or bro');
   });
 });

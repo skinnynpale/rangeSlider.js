@@ -11,7 +11,7 @@ import {
 
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { ITemp, IVisualModel, UIs } from '../../helpers/interfaces';
+import { Temp, UIs, VisualState } from '../../helpers/interfaces';
 
 /**
  * Application
@@ -27,7 +27,7 @@ class Application extends Observer {
     super();
   }
 
-  public createUI({ bar, scale, settings }: IVisualModel): void {
+  public createUI({ bar, scale, settings }: VisualState): void {
     this.template = this.factory.createTemplate();
     this.UIs.handler = this.factory.createHandler();
 
@@ -36,7 +36,7 @@ class Application extends Observer {
     settings && (this.UIs.settings = this.factory.createSettings());
   }
 
-  public init(state: IVisualModel): void {
+  public init(state: VisualState): void {
     this.template.init(state, this.anchor);
 
     const gui = Object.keys(this.UIs);
@@ -60,7 +60,7 @@ class Application extends Observer {
     this.emit('finishInit', { handlers, edge });
   }
 
-  public paint(state: ITemp): void {
+  public paint(state: Temp): void {
     const gui = Object.keys(this.UIs);
 
     for (const UI of gui) {
@@ -75,7 +75,7 @@ class Application extends Observer {
     this.anchor.removeChild(this.template.templateHTML);
   }
 
-  private getEdge(state: IVisualModel): number {
+  private getEdge(state: VisualState): number {
     const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
     const handlers = this.anchor.querySelectorAll('.slider__handler');
 
@@ -86,7 +86,7 @@ class Application extends Observer {
     return wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
   }
 
-  private listenUserEvents(wrapper: HTMLElement, state: IVisualModel): void {
+  private listenUserEvents(wrapper: HTMLElement, state: VisualState): void {
     wrapper.addEventListener('mousedown', e => {
       e.preventDefault();
       if ((e.target as HTMLElement).className !== 'slider__handler') return;
@@ -125,7 +125,7 @@ class Application extends Observer {
  */
 
 class ApplicationConfigurator {
-  public main({ type, direction }: IVisualModel, anchor: HTMLElement): Application {
+  public main({ type, direction }: VisualState, anchor: HTMLElement): Application {
     let factory;
 
     if (type === constants.TYPE_SINGLE && direction === constants.DIRECTION_HORIZONTAL) {
