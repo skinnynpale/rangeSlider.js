@@ -21,12 +21,13 @@ class Model extends Observer {
     this.dynamicCounting(state);
 
     Object.assign(this.state, tempState);
+    console.log(this.state);
   }
 
   private getAvailableValue(obj: IState, prop: keyof typeof state) {
     const state = this.state;
 
-    return (obj[prop] === undefined ? this.state[prop] : obj[prop]);
+    return (obj[prop] === undefined ? state[prop] : obj[prop]);
   }
 
   private correctMinMaxRange(state: IState): {} | undefined {
@@ -62,7 +63,7 @@ class Model extends Observer {
   private correctValues(state: IState): {} | undefined {
     if (!(state.values)) return;
 
-    const values = (state.values as number[])
+    const values = (state.values)
       .map(value => this.correctValueInTheRange(value, state))
       .sort((a, b) => a - b);
 
@@ -87,7 +88,7 @@ class Model extends Observer {
     return Math.round(value / step) * step + offset;
   }
 
-  private countArrayOfProgression(state: IState) {
+  private countArrayOfProgression(state: IState): number[] {
     const max = this.getAvailableValue(state, 'max') as number;
     const min = this.getAvailableValue(state, 'min') as number;
     const step = this.getAvailableValue(state, 'step') as number;
@@ -101,11 +102,11 @@ class Model extends Observer {
     return arrayOfProgression;
   }
 
-  private initialCounting(state: IState) {
+  private initialCounting(state: IState): void {
     const isSendStateForInital = state.tempTarget && state.edge && state.tempValue !== undefined;
     if (!isSendStateForInital) return;
 
-    Object.assign(this.state, { edge: state.edge }); // todo fix
+    Object.assign(this.state, { edge: state.edge });
 
     const tempTarget = state.tempTarget as HTMLElement;
 
@@ -113,7 +114,7 @@ class Model extends Observer {
     oldTempValue = this.correctValueInTheRange(oldTempValue, this.state);
     const oldTempPxValue = this.countPxValueFromValue(oldTempValue);
 
-    const tempValue = this.countValueFromLeft(oldTempPxValue as number);
+    const tempValue = this.countValueFromLeft(oldTempPxValue);
     const tempPxValue = this.countPxValueFromValue(tempValue);
 
     this.mapOfHandlers.set(tempTarget, {
@@ -140,9 +141,10 @@ class Model extends Observer {
     return values
       .map(value => this.countPxValueFromValue(value))
       .sort((a, b) => a - b);
+
   }
 
-  private dynamicCounting(state: IState) {
+  private dynamicCounting(state: IState): void {
     const isSendForDynamicCounting = state.tempTarget && state.left;
     if (!isSendForDynamicCounting) return;
 
@@ -155,7 +157,7 @@ class Model extends Observer {
       tempPxValue,
     });
 
-    Object.assign(this.state, this.updateArrayOfValues()); // todo fix
+    Object.assign(this.state, this.updateArrayOfValues());
 
     this.notifyAboutPxValueDone({ tempValue, tempPxValue, tempTarget });
   }
@@ -185,7 +187,7 @@ class Model extends Observer {
     return { values };
   }
 
-  private notifyAboutPxValueDone(state: ITemp) {
+  private notifyAboutPxValueDone(state: ITemp): void {
     this.emit('pxValueDone', {
       tempValue: state.tempValue,
       tempPxValue: state.tempPxValue,

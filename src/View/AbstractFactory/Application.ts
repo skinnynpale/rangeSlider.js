@@ -19,7 +19,6 @@ import { ITemp, IVisualModel, UIs } from '../../helpers/interfaces';
  */
 
 class Application extends Observer {
-  // tslint:disable-next-line:variable-name
   public UIs: UIs = {};
   public settings?: Settings;
   private template!: Template;
@@ -28,7 +27,7 @@ class Application extends Observer {
     super();
   }
 
-  public createUI({ bar, scale, settings }: IVisualModel) {
+  public createUI({ bar, scale, settings }: IVisualModel): void {
     this.template = this.factory.createTemplate();
     this.UIs.handler = this.factory.createHandler();
 
@@ -37,7 +36,7 @@ class Application extends Observer {
     settings && (this.UIs.settings = this.factory.createSettings());
   }
 
-  public init(state: IVisualModel) {
+  public init(state: IVisualModel): void {
     this.template.init(state, this.anchor);
 
     const gui = Object.keys(this.UIs);
@@ -61,7 +60,7 @@ class Application extends Observer {
     this.emit('finishInit', { handlers, edge });
   }
 
-  public paint(state: ITemp) {
+  public paint(state: ITemp): void {
     const gui = Object.keys(this.UIs);
 
     for (const UI of gui) {
@@ -71,22 +70,23 @@ class Application extends Observer {
     }
   }
 
-  public removeHTML() {
+  public removeHTML(): void {
     this.anchor.removeChild((this.UIs.settings as Settings).settingsHTML);
     this.anchor.removeChild(this.template.templateHTML);
   }
 
-  private getEdge(state: IVisualModel) {
+  private getEdge(state: IVisualModel): number {
     const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
     const handlers = this.anchor.querySelectorAll('.slider__handler');
 
     if (state.direction === constants.DIRECTION_VERTICAL) {
       return wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
     }
+
     return wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
   }
 
-  private listenUserEvents(wrapper: HTMLElement, state: IVisualModel) {
+  private listenUserEvents(wrapper: HTMLElement, state: IVisualModel): void {
     wrapper.addEventListener('mousedown', e => {
       e.preventDefault();
       if ((e.target as HTMLElement).className !== 'slider__handler') return;
@@ -95,13 +95,7 @@ class Application extends Observer {
       const shiftX = e.offsetX;
       const shiftY = tempTarget.offsetHeight - e.offsetY;
 
-      const onmousemove = onMouseMove.bind(this);
-      const onmouseup = onMouseUp;
-
-      document.addEventListener('mousemove', onmousemove);
-      document.addEventListener('mouseup', onmouseup);
-
-      function onMouseMove(this: Application, e: MouseEvent) {
+      function onMouseMove(this: Application, e: MouseEvent): void {
         let left;
         if (state.direction === constants.DIRECTION_VERTICAL) {
           left = wrapper.offsetHeight - e.clientY - shiftY + wrapper.getBoundingClientRect().top;
@@ -112,10 +106,16 @@ class Application extends Observer {
         this.emit('onUserMove', { left, tempTarget });
       }
 
-      function onMouseUp() {
+      const onmousemove = onMouseMove.bind(this);
+
+
+      function onMouseUp(): void {
         document.removeEventListener('mousemove', onmousemove);
-        document.removeEventListener('mouseup', onmouseup);
+        document.removeEventListener('mouseup', onMouseUp);
       }
+
+      document.addEventListener('mousemove', onmousemove);
+      document.addEventListener('mouseup', onMouseUp);
     });
   }
 }
@@ -125,7 +125,7 @@ class Application extends Observer {
  */
 
 class ApplicationConfigurator {
-  public main({ type, direction }: IVisualModel, anchor: HTMLElement) {
+  public main({ type, direction }: IVisualModel, anchor: HTMLElement): Application {
     let factory;
 
     if (type === constants.TYPE_SINGLE && direction === constants.DIRECTION_HORIZONTAL) {

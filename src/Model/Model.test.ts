@@ -14,6 +14,18 @@ describe('Model', () => {
     expect(model.state.max).to.equal(80);
     expect(model.state.values).to.deep.equal([50]);
     expect(model.state.step).to.equal(2);
+
+    model.setState({
+      min: 10,
+      max: 51,
+      step: 2,
+      values: [20, 60]
+    });
+
+    expect(model.state.min).to.equal(10);
+    expect(model.state.max).to.equal(51);
+    expect(model.state.values).to.deep.equal([20, 51]);
+    expect(model.state.step).to.equal(2);
   });
   it('Должен исправить min/max если заходят друг за друга', () => {
     const model = new Model({

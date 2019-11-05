@@ -16,7 +16,7 @@ class Controller {
     this.initMVC(settingsVisualModel, settingsModel);
   }
 
-  private initMVC(settingsVisualModel: IVisualModel, settingsModel: IState) {
+  private initMVC(settingsVisualModel: IVisualModel, settingsModel: IState): void {
     this.model = new Model();
     this.visualModel = new VisualModel();
     this.visualModel.setState(settingsVisualModel);
@@ -25,10 +25,10 @@ class Controller {
     this.app = new ApplicationConfigurator().main(this.visualModel.state, this.anchor);
     this.app.createUI(this.visualModel.state);
     this.bindEvents();
-    this.app.init(this.visualModel.state as IVisualModel);
+    this.app.init(this.visualModel.state);
   }
 
-  private bindEvents() {
+  private bindEvents(): void {
     this.app.on('finishInit', (obj) => this.arrangeHandlers(obj));
 
     this.model.on('pxValueDone', (obj) => this.app.paint(obj as ITemp));
@@ -41,7 +41,7 @@ class Controller {
         this.arrangeHandlers(obj);
 
         if ((obj as IState).step) {
-          this.reCreateApplication(this.visualModel.state as IVisualModel);
+          this.reCreateApplication(this.visualModel.state);
         }
       });
 
@@ -73,7 +73,7 @@ class Controller {
   }
 
   // Расстановка бегунков
-  private arrangeHandlers({ edge, handlers }: any) {
+  private arrangeHandlers({ edge, handlers }: any): void {
     for (let i = 0; i < handlers.length; i += 1) {
       this.model.setState({
         edge: edge ? edge : this.model.state.edge,
@@ -83,7 +83,7 @@ class Controller {
     }
   }
 
-  private reCreateApplication(newVisualModel: IVisualModel) {
+  private reCreateApplication(newVisualModel: IVisualModel): void {
     const settingsVisualModel = Object.assign(this.settingsVisualModel, newVisualModel);
     const settingsModel = this.saveOldModel(this.settingsModel, this.model.state);
 
