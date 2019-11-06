@@ -8,7 +8,7 @@
     "eslint:dump": "eslint --print-config ./.eslintrc.json",
     "test": "mocha -w",
     "dev": "webpack-dev-server --open",
-    "prod": "webpack --mode production"
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
