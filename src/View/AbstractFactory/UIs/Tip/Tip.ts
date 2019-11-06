@@ -1,14 +1,14 @@
 import { Temp } from '../../../../helpers/interfaces';
 
 interface Tip {
-  init(handler: HTMLElement): void;
+  init(handle: HTMLElement): void;
   paint(state: {}): void;
 }
 
 class Tip implements Tip {
-  public init(handler: HTMLElement) {
+  public init(handle: HTMLElement) {
     const tipTemplate = '<div class="slider__tip"><div class="slider__tongue"></div></div>';
-    handler.insertAdjacentHTML('beforeend', tipTemplate);
+    handle.insertAdjacentHTML('beforeend', tipTemplate);
   }
 }
 

@@ -63,7 +63,7 @@
     border-radius: 3px;
   }
 
-  &__handler {
+  &__handle {
     width: 23px;
     height: 23px;
     border-radius: 50%;
@@ -102,7 +102,7 @@
       height: 8px;
       bottom: 30px;
     }
-    .slider__handler {
+    .slider__handle {
       bottom: 23px;
       left: 135px;
     }
@@ -135,7 +135,7 @@
       height: 150px;
       bottom: 0;
     }
-    .slider__handler {
+    .slider__handle {
       bottom: 135px;
       left: -8px;
     }
@@ -163,7 +163,7 @@
     .slider__bar {
       background-color: rgb(58, 190, 140);
     }
-    .slider__handler {
+    .slider__handle {
       background-color: rgb(58, 190, 140);
     }
     .slider__tip {
@@ -178,7 +178,7 @@
     .slider__bar {
       background-color: rgb(216, 77, 77);
     }
-    .slider__handler {
+    .slider__handle {
       background-color: rgb(216, 77, 77);
     }
     .slider__tip {

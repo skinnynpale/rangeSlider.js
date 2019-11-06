@@ -11,18 +11,18 @@ import {
   SingleVerticalBar,
 } from '../UIs/Bar/Bar';
 import {
-  Handler,
-  IntervalHorizontalHandler,
-  IntervalVerticalHandler,
-  SingleHorizontalHandler,
-  SingleVerticalHandler,
-} from '../UIs/Handler/Handler';
+  Handle,
+  IntervalHorizontalHandle,
+  IntervalVerticalHandle,
+  SingleHorizontalHandle,
+  SingleVerticalHandle,
+} from '../UIs/Handle/Handle';
 import { HorizontalScale, Scale, VerticalScale } from '../UIs/Scale/Scale';
 
 interface GUIFactory {
   createBar(): Bar;
   createTip(): Tip;
-  createHandler(): Handler;
+  createHandle(): Handle;
   createTemplate(): Template;
   createScale(): Scale;
   createSettings(): Settings;
@@ -47,8 +47,8 @@ class SingleHorizontalFactory extends Factory implements GUIFactory {
     return new SingleHorizontalBar();
   }
 
-  public createHandler(): Handler {
-    return new SingleHorizontalHandler();
+  public createHandle(): Handle {
+    return new SingleHorizontalHandle();
   }
 
   public createTip(): Tip {
@@ -65,8 +65,8 @@ class SingleVerticalFactory extends Factory implements GUIFactory {
     return new SingleVerticalBar();
   }
 
-  public createHandler(): Handler {
-    return new SingleVerticalHandler();
+  public createHandle(): Handle {
+    return new SingleVerticalHandle();
   }
 
   public createTip(): Tip {
@@ -83,8 +83,8 @@ class IntervalHorizontalFactory extends Factory implements GUIFactory {
     return new IntervalHorizontalBar();
   }
 
-  public createHandler(): Handler {
-    return new IntervalHorizontalHandler();
+  public createHandle(): Handle {
+    return new IntervalHorizontalHandle();
   }
 
   public createTip(): Tip {
@@ -101,8 +101,8 @@ class IntervalVerticalFactory extends Factory implements GUIFactory {
     return new IntervalVerticalBar();
   }
 
-  public createHandler(): Handler {
-    return new IntervalVerticalHandler();
+  public createHandle(): Handle {
+    return new IntervalVerticalHandle();
   }
 
   public createTip(): Tip {

@@ -119,7 +119,7 @@ class Settings extends Observer {
       const target = e.target as HTMLInputElement;
 
       if (target.tagName === 'INPUT') {
-        const handlers = this.anchor.querySelectorAll('.slider__handler');
+        const handles = this.anchor.querySelectorAll('.slider__handle');
 
         // разбивка на valueFrom и valueTo
         if (target.name === 'valueFrom' || target.name === 'valueTo') {
@@ -127,14 +127,14 @@ class Settings extends Observer {
           const valueTo = Number(this.settingsHTML.valueTo.value);
 
           this.emit('newSettings', {
-            handlers,
+            handles,
             edge: this.state.edge,
             values: [valueFrom, valueTo],
           });
         } else {
           // для всех остальных значений
           this.emit('newSettings', {
-            handlers,
+            handles,
             edge: this.state.edge,
             [target.name]: Number(target.value),
           });

@@ -29,7 +29,7 @@ class Application extends Observer {
 
   public createUI({ bar, scale, settings }: VisualState): void {
     this.template = this.factory.createTemplate();
-    this.UIs.handler = this.factory.createHandler();
+    this.UIs.handle = this.factory.createHandle();
 
     bar && (this.UIs.bar = this.factory.createBar());
     scale && (this.UIs.scale = this.factory.createScale());
@@ -45,19 +45,19 @@ class Application extends Observer {
     }
 
     // Коллаборации
-    if (state.tip && this.UIs.handler) {
+    if (state.tip && this.UIs.handle) {
       this.UIs.tip = this.factory.createTip();
-      this.UIs.handler.append(this.UIs.tip);
+      this.UIs.handle.append(this.UIs.tip);
     }
     // Коллаборации
 
     // для правильной отрисовки
     const edge = this.getEdge(state);
-    const handlers = this.anchor.querySelectorAll('.slider__handler');
+    const handles = this.anchor.querySelectorAll('.slider__handle');
     const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
 
     this.bindUserEvents({ wrapper, state });
-    this.emit('finishInit', { handlers, edge });
+    this.emit('finishInit', { handles, edge });
   }
 
   public paint(state: Temp): void {
@@ -77,13 +77,13 @@ class Application extends Observer {
 
   private getEdge(state: VisualState): number {
     const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
-    const handlers = this.anchor.querySelectorAll('.slider__handler');
+    const handles = this.anchor.querySelectorAll('.slider__handle');
 
     if (state.direction === constants.DIRECTION_VERTICAL) {
-      return wrapper.clientHeight - (handlers[0] as HTMLElement).offsetHeight;
+      return wrapper.clientHeight - (handles[0] as HTMLElement).offsetHeight;
     }
 
-    return wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
+    return wrapper.offsetWidth - (handles[0] as HTMLElement).offsetWidth;
   }
 
   private bindUserEvents(data: { wrapper: HTMLElement; state: VisualState }): void {
@@ -92,7 +92,7 @@ class Application extends Observer {
 
   private startListenMove(data: { wrapper: HTMLElement; state: VisualState }, e: MouseEvent): void {
     e.preventDefault();
-    if ((e.target as HTMLElement).className !== 'slider__handler') return;
+    if ((e.target as HTMLElement).className !== 'slider__handle') return;
 
     const tempTarget = e.target as HTMLElement;
     const shiftX = e.offsetX;

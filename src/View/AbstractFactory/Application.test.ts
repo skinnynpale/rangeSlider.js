@@ -4,7 +4,7 @@ import jsdom from 'jsdom';
 import { Application } from './Application';
 import { IntervalHorizontalFactory } from './Factories/Factories';
 import { IntervalHorizontalBar } from './UIs/Bar/Bar';
-import { IntervalHorizontalHandler } from './UIs/Handler/Handler';
+import { IntervalHorizontalHandle } from './UIs/Handle/Handle';
 
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');
@@ -30,11 +30,11 @@ describe('Application', () => {
     expect(app.UIs.bar).to.deep.equal(new IntervalHorizontalBar());
 
     // @ts-ignore
-    app.createUI({ handler: true });
+    app.createUI({ handle: true });
     // @ts-ignore
     expect(app.UIs.bar).to.deep.equal(new IntervalHorizontalBar());
     // @ts-ignore
-    expect(app.UIs.handler).to.deep.equal(new IntervalHorizontalHandler());
+    expect(app.UIs.handle).to.deep.equal(new IntervalHorizontalHandle());
   });
 
   it('Должен отрисовать HTML с заданными настройками', () => {
@@ -69,7 +69,7 @@ describe('Application', () => {
       settings: true,
     });
 
-    expect(anchor.querySelectorAll('.slider__handler').length).to.eq(2);
+    expect(anchor.querySelectorAll('.slider__handle').length).to.eq(2);
   });
 
   it('RemoveHTML', () => {

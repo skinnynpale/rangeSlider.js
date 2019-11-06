@@ -6,7 +6,7 @@ import { OnlyNumbers, ModelState, Temp } from '../helpers/interfaces';
 
 class Model extends Observer{
   public state: ModelState = defaultModel;
-  private mapOfHandlers: Map<HTMLElement, OnlyNumbers> = new Map();
+  private mapOfHandless: Map<HTMLElement, OnlyNumbers> = new Map();
   private temp: Temp = {};
 
   constructor(state: ModelState) {
@@ -37,7 +37,7 @@ class Model extends Observer{
     const tempPxValue = this.countPxValueFromValue(tempValue);
 
     const tempTarget = temp.tempTarget as HTMLElement;
-    this.mapOfHandlers.set(tempTarget, {
+    this.mapOfHandless.set(tempTarget, {
       tempPxValue,
       tempValue,
     });
@@ -51,7 +51,7 @@ class Model extends Observer{
     const tempPxValue = this.countPxValueFromValue(tempValue);
 
     const tempTarget = temp.tempTarget as HTMLElement;
-    this.mapOfHandlers.set(tempTarget, {
+    this.mapOfHandless.set(tempTarget, {
       tempValue,
       tempPxValue,
     });
@@ -68,13 +68,13 @@ class Model extends Observer{
   private updateArrayOfValues(): {} {
     const values = [];
 
-    for (const handlerObj of Array.from(this.mapOfHandlers.values())) {
-      values.push(handlerObj.tempValue);
+    for (const handleObj of Array.from(this.mapOfHandless.values())) {
+      values.push(handleObj.tempValue);
     }
 
     values.sort((a, b) => a - b);
 
-    if (this.mapOfHandlers.size === 1) {
+    if (this.mapOfHandless.size === 1) {
       if (this.state.max != null) {
         values[1] = this.state.max;
       }

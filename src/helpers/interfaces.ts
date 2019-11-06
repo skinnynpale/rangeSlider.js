@@ -1,4 +1,4 @@
-import { Handler } from '../View/AbstractFactory/UIs/Handler/Handler';
+import { Handle } from '../View/AbstractFactory/UIs/Handle/Handle';
 import { Bar } from '../View/AbstractFactory/UIs/Bar/Bar';
 import { Tip } from '../View/AbstractFactory/UIs/Tip/Tip';
 import { Scale } from '../View/AbstractFactory/UIs/Scale/Scale';
@@ -47,7 +47,7 @@ interface GState {
 }
 
 interface UIs {
-  handler?: Handler;
+  handle?: Handle;
   bar?: Bar;
   tip?: Tip;
   scale?: Scale;

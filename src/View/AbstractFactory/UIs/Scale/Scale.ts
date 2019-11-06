@@ -25,22 +25,22 @@ class Scale extends Observer implements Scale {
       if (valueHTML.className !== 'scale__value') return;
 
       const value = Number(valueHTML && valueHTML.textContent);
-      const { handlers, values } = this.findClosestHandler(anchor, value);
+      const { handles, values } = this.findClosestHandle(anchor, value);
 
       this.emit('newValueFromScale', {
-        handlers,
+        handles,
         values,
       });
     });
   }
 
-  private findClosestHandler(anchor: HTMLElement, value: number) {
-    const handlers = anchor.querySelectorAll('.slider__handler');
+  private findClosestHandle(anchor: HTMLElement, value: number) {
+    const handles = anchor.querySelectorAll('.slider__handle');
     const tips = anchor.querySelectorAll('.slider__tip');
 
     const values = (Array.from(tips).map(item => (item as HTMLElement).dataset.value) as unknown) as number[];
 
-    if (handlers.length === 2) {
+    if (handles.length === 2) {
       const first = Math.abs(values[0] - value);
       const second = Math.abs(values[1] - value);
       const arr = [first, second];
@@ -55,7 +55,7 @@ class Scale extends Observer implements Scale {
       values[0] = value;
       values[1] = this.steps[this.steps.length - 1];
     }
-    return { handlers, values };
+    return { handles, values };
   }
 }
 
@@ -93,8 +93,8 @@ class HorizontalScale extends Scale implements Scale {
       }
     }
 
-    const handler = this.slider.querySelector('.slider__handler') as HTMLElement;
-    this.scaleHTML.style.marginLeft = `${handler.offsetWidth / 4 - 1}px`;
+    const handle = this.slider.querySelector('.slider__handle') as HTMLElement;
+    this.scaleHTML.style.marginLeft = `${handle.offsetWidth / 4 - 1}px`;
   }
 }
 
@@ -132,8 +132,8 @@ class VerticalScale extends Scale implements Scale {
       }
     }
 
-    const handler = this.slider.querySelector('.slider__handler') as HTMLElement;
-    this.scaleHTML.style.marginBottom = `${handler.offsetWidth / 4 - 1}px`;
+    const handle = this.slider.querySelector('.slider__handle') as HTMLElement;
+    this.scaleHTML.style.marginBottom = `${handle.offsetWidth / 4 - 1}px`;
   }
 }
 

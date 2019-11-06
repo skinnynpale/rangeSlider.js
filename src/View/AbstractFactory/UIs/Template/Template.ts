@@ -1,11 +1,11 @@
 import { Tip } from '../Tip/Tip';
 import { Bar } from '../Bar/Bar';
-import { Handler } from '../Handler/Handler';
+import { Handle } from '../Handle/Handle';
 import { VisualState } from '../../../../helpers/interfaces';
 
 interface Template {
   init(obj: VisualState, anchor: HTMLElement): void;
-  append(component: Handler | Bar | Tip, anchor: HTMLElement): void;
+  append(component: Handle | Bar | Tip, anchor: HTMLElement): void;
 }
 
 class Template implements Template {
@@ -22,7 +22,7 @@ class Template implements Template {
     this.templateHTML = anchor.querySelector('.wrapper-slider') as HTMLElement;
   }
 
-  public append(component: Handler | Bar, anchor: HTMLElement) {
+  public append(component: Handle | Bar, anchor: HTMLElement) {
     component.init(anchor);
   }
 }

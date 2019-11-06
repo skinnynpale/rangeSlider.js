@@ -1,32 +1,32 @@
 import { Tip } from '../Tip/Tip';
 import { Temp } from '../../../../helpers/interfaces';
 
-interface Handler {
+interface Handle {
   paint({ tempTarget, tempPxValue }: Temp): void;
   init(anchor: HTMLElement): void;
   append(component: Tip): void;
 }
 
-class Handler implements Handler {
+class Handle implements Handle {
   protected anchor!: HTMLElement;
 
   public init(anchor: HTMLElement) {
     this.anchor = anchor;
-    const handlerTemplate = '<div class="slider__handler"></div>';
+    const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
-    slider.insertAdjacentHTML('beforeend', handlerTemplate);
+    slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
   public append(component: Tip) {
-    const handlers = this.anchor.querySelectorAll('.slider__handler');
+    const handles = this.anchor.querySelectorAll('.slider__handle');
 
-    for (const handler of Array.from(handlers)) {
-      component.init(handler as HTMLElement);
+    for (const handle of Array.from(handles)) {
+      component.init(handle as HTMLElement);
     }
   }
 }
 
-class SingleHorizontalHandler extends Handler implements Handler {
+class SingleHorizontalHandle extends Handle  {
   public paint({ tempTarget, tempPxValue }: Temp) {
     if (!tempTarget) return;
 
@@ -34,7 +34,7 @@ class SingleHorizontalHandler extends Handler implements Handler {
   }
 }
 
-class SingleVerticalHandler extends Handler implements Handler {
+class SingleVerticalHandle extends Handle {
   public paint({ tempTarget, tempPxValue }: Temp) {
     if (!tempTarget) return;
 
@@ -42,13 +42,13 @@ class SingleVerticalHandler extends Handler implements Handler {
   }
 }
 
-class IntervalHorizontalHandler extends Handler implements Handler {
+class IntervalHorizontalHandle extends Handle {
   public init(anchor: HTMLElement) {
     this.anchor = anchor;
-    const handlerTemplate = '<div class="slider__handler"></div>';
+    const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
-    slider.insertAdjacentHTML('beforeend', handlerTemplate);
-    slider.insertAdjacentHTML('beforeend', handlerTemplate);
+    slider.insertAdjacentHTML('beforeend', handleTemplate);
+    slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
   public paint({ tempTarget, tempPxValue }: Temp) {
@@ -58,13 +58,13 @@ class IntervalHorizontalHandler extends Handler implements Handler {
   }
 }
 
-class IntervalVerticalHandler extends Handler implements Handler {
+class IntervalVerticalHandle extends Handle {
   public init(anchor: HTMLElement) {
     this.anchor = anchor;
-    const handlerTemplate = '<div class="slider__handler"></div>';
+    const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
-    slider.insertAdjacentHTML('beforeend', handlerTemplate);
-    slider.insertAdjacentHTML('beforeend', handlerTemplate);
+    slider.insertAdjacentHTML('beforeend', handleTemplate);
+    slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
   public paint({ tempTarget, tempPxValue }: Temp) {
@@ -75,9 +75,9 @@ class IntervalVerticalHandler extends Handler implements Handler {
 }
 
 export {
-  Handler,
-  IntervalHorizontalHandler,
-  IntervalVerticalHandler,
-  SingleHorizontalHandler,
-  SingleVerticalHandler,
+  Handle,
+  IntervalHorizontalHandle,
+  IntervalVerticalHandle,
+  SingleHorizontalHandle,
+  SingleVerticalHandle,
 };
