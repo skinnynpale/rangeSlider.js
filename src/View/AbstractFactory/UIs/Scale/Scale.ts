@@ -16,9 +16,9 @@ class Scale extends Observer implements Scale {
     this.anchor = anchor;
     this.slider = anchor.querySelector('.slider') as HTMLElement;
 
-    const scaleTemplate = '<div class="slider__scale scale"></div>';
+    const scaleTemplate = '<div class="scale"></div>';
     this.slider.insertAdjacentHTML('afterbegin', scaleTemplate);
-    this.scaleHTML = this.anchor.querySelector('.slider__scale') as HTMLElement;
+    this.scaleHTML = this.anchor.querySelector('.scale') as HTMLElement;
 
     this.scaleHTML.addEventListener('click', e => {
       const valueHTML = e.target as HTMLElement;

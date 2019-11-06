@@ -37,10 +37,10 @@ describe('Settings', () => {
 
     const settingsHTML = anchor.querySelector('.settings') as HTMLElement;
 
-    expect((settingsHTML.querySelector('#min') as HTMLInputElement).value).to.eq('10');
-    expect((settingsHTML.querySelector('#max') as HTMLInputElement).value).to.eq('50');
-    expect((settingsHTML.querySelector('#step') as HTMLInputElement).value).to.eq('5');
-    expect((settingsHTML.querySelector('#valueFrom') as HTMLInputElement).value).to.eq('20');
-    expect((settingsHTML.querySelector('#valueTo') as HTMLInputElement).value).to.eq('40');
+    expect((settingsHTML.querySelector('input[name="min"]') as HTMLInputElement).value).to.eq('10');
+    expect((settingsHTML.querySelector('input[name="max"]') as HTMLInputElement).value).to.eq('50');
+    expect((settingsHTML.querySelector('input[name="step"]') as HTMLInputElement).value).to.eq('5');
+    expect((settingsHTML.querySelector('input[name="valueFrom"]') as HTMLInputElement).value).to.eq('20');
+    expect((settingsHTML.querySelector('input[name="valueTo"]') as HTMLInputElement).value).to.eq('40');
   });
 });

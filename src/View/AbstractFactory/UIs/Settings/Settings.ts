@@ -3,99 +3,99 @@ import { constants } from '../../../../helpers/constants';
 import { GState } from '../../../../helpers/interfaces';
 
 class Settings extends Observer {
-  public settingsHTML!: HTMLElement;
+  public settingsHTML!: HTMLFormElement;
   private state!: GState;
   private anchor!: HTMLElement;
 
   public init(anchor: HTMLElement) {
     this.anchor = anchor;
 
-    const settingsTemplate = `<div class="settings">
-                                <label class="settings__label"><input id="min" class="settings__input" type="number">
+    const settingsTemplate = `<form class="settings">
+                                <label class="settings__label"><input name="min" class="settings__input" type="number">
                                   <b class="settings__option">min</b>
                                 </label>
-                                <label class="settings__label"><input id="max" class="settings__input" type="number">
+                                <label class="settings__label"><input name="max" class="settings__input" type="number">
                                   <b class="settings__option">max</b>
                                 </label>
-                                <label class="settings__label"><input id="step" class="settings__input" type="number">
+                                <label class="settings__label"><input name="step" class="settings__input" type="number">
                                   <b class="settings__option">step</b>
                                 </label>
-                                <label class="settings__label"><input id="valueFrom" class="settings__input" type="number">
+                                <label class="settings__label"><input name="valueFrom" class="settings__input" type="number">
                                   <b class="settings__option">valueFrom</b>
                                 </label>
-                                <label class="settings__label"><input id="valueTo" class="settings__input" type="number">
+                                <label class="settings__label"><input name="valueTo" class="settings__input" type="number">
                                   <b class="settings__option">valueTo</b>
                                 </label>
                                 <div class="settings__separation"></div>
                                 <label class="settings__label">
-                                  <select id="skin">
+                                  <select name="skin">
                                     <option>green</option>
                                     <option>red</option>
                                   </select>
                                   <b class="settings__option">skin</b>
                                 </label>
                                 <label class="settings__label">
-                                  <select id="direction">
+                                  <select name="direction">
                                     <option>horizontal</option>
                                     <option>vertical</option>
                                   </select>
                                   <b class="settings__option">direction</b>
                                 </label>
                                 <label class="settings__label">
-                                  <select id="type">
+                                  <select name="type">
                                     <option>single</option>
                                     <option>interval</option>
                                   </select>
                                   <b class="settings__option">type</b>
                                 </label>
                                 <label class="settings__label">
-                                  <select id="scale">
+                                  <select name="scale">
                                     <option>true</option>
                                     <option>false</option>
                                   </select>
                                   <b class="settings__option">scale</b>
                                 </label>
                                 <label class="settings__label">
-                                  <select id="bar">
+                                  <select name="bar">
                                     <option>true</option>
                                     <option>false</option>
                                   </select>
                                   <b class="settings__option">bar</b>
                                 </label>
                                 <label class="settings__label">
-                                  <select id="tip">
+                                  <select name="tip">
                                     <option>true</option>
                                     <option>false</option>
                                   </select>
                                   <b class="settings__option">tip</b>
                                 </label>
-                              </div>
+                              </form>
                             `;
 
     anchor.insertAdjacentHTML('beforeend', settingsTemplate);
 
-    this.settingsHTML = anchor.querySelector('.settings') as HTMLElement;
+    this.settingsHTML = anchor.querySelector('.settings') as HTMLFormElement;
 
     this.startListenEvents();
   }
 
   public paint(state: GState) {
     this.state = state;
-    const inputs = this.settingsHTML.querySelectorAll('input');
+    const inputs = this.settingsHTML.elements;
 
     const [valueFrom, valueTo] = state.values as number[];
 
     Object.assign(state, { valueFrom, valueTo });
 
     for (const input of inputs as any) {
-      input.value = state[input.id];
+      input.value = state[input.name];
 
-      if (input.id === 'valueFrom') {
+      if (input.name === 'valueFrom') {
         input.step = state.step;
         input.min = state.min;
         input.max = state.max;
       }
-      if (input.id === 'valueTo') {
+      if (input.name === 'valueTo') {
         input.step = state.step;
         input.min = state.min;
         input.max = state.max;
@@ -104,11 +104,11 @@ class Settings extends Observer {
 
     const selects = this.settingsHTML.querySelectorAll('select');
     for (const select of selects as any) {
-      select.value = state[select.id];
+      select.value = state[select.name];
     }
 
     if ((state.type as string) === constants.TYPE_SINGLE) {
-      const valueToInput = this.anchor.querySelector('#valueTo');
+      const valueToInput = this.settingsHTML.valueTo;
       if (valueToInput && valueToInput.getAttribute('disabled') === 'true') return;
       valueToInput && valueToInput.setAttribute('disabled', 'true');
     }
@@ -116,33 +116,32 @@ class Settings extends Observer {
 
   private startListenEvents() {
     this.settingsHTML.addEventListener('change', e => {
-      const target = e.target as HTMLElement;
+      const target = e.target as HTMLInputElement;
 
       if (target.tagName === 'INPUT') {
         const handlers = this.anchor.querySelectorAll('.slider__handler');
 
         // разбивка на valueFrom и valueTo
-        if (target.id === 'valueFrom' || target.id === 'valueTo') {
-          const valueFrom = (this.settingsHTML.querySelector('#valueFrom') as HTMLInputElement)
-            .value;
-          const valueTo = (this.settingsHTML.querySelector('#valueTo') as HTMLInputElement).value;
+        if (target.name === 'valueFrom' || target.name === 'valueTo') {
+          const valueFrom = Number(this.settingsHTML.valueFrom.value);
+          const valueTo = Number(this.settingsHTML.valueTo.value);
 
           this.emit('newSettings', {
             handlers,
             edge: this.state.edge,
-            values: [+valueFrom, +valueTo],
+            values: [valueFrom, valueTo],
           });
         } else {
           // для всех остальных значений
           this.emit('newSettings', {
             handlers,
             edge: this.state.edge,
-            [target.id]: Number((target as HTMLInputElement).value),
+            [target.name]: Number(target.value),
           });
         }
       } else if (target.tagName === 'SELECT') {
         // для второй части настроек
-        const select = target as HTMLSelectElement;
+        const select = target;
         let value;
 
         if (select.value === 'true' || select.value === 'false') {
@@ -151,7 +150,7 @@ class Settings extends Observer {
           value = select.value;
         }
 
-        this.emit('reCreateApp', { [target.id]: value });
+        this.emit('reCreateApp', { [target.name]: value });
       }
     });
   }
