@@ -60,6 +60,13 @@ interface Events {
   [key: string]: EventCallback[];
 }
 
+type forMouseMove = {
+  shiftX: number;
+  shiftY: number;
+  data: { wrapper: HTMLElement; state: VisualState };
+  tempTarget: HTMLElement;
+};
+
 export {
   OnlyNumbers,
   VisualState,
@@ -69,5 +76,6 @@ export {
   EventCallback,
   ModelState,
   Temp,
-  CalculatedFromModelState
+  CalculatedFromModelState,
+  forMouseMove
 };

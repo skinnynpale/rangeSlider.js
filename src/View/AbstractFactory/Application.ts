@@ -11,7 +11,7 @@ import {
 
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { Temp, UIs, VisualState } from '../../helpers/interfaces';
+import { Temp, UIs, VisualState, forMouseMove } from '../../helpers/interfaces';
 
 /**
  * Application
@@ -56,7 +56,7 @@ class Application extends Observer {
     const handlers = this.anchor.querySelectorAll('.slider__handler');
     const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
 
-    this.listenUserEvents(wrapper, state);
+    this.bindUserEvents({ wrapper, state });
     this.emit('finishInit', { handlers, edge });
   }
 
@@ -86,37 +86,51 @@ class Application extends Observer {
     return wrapper.offsetWidth - (handlers[0] as HTMLElement).offsetWidth;
   }
 
-  private listenUserEvents(wrapper: HTMLElement, state: VisualState): void {
-    wrapper.addEventListener('mousedown', e => {
-      e.preventDefault();
-      if ((e.target as HTMLElement).className !== 'slider__handler') return;
+  private bindUserEvents(data: { wrapper: HTMLElement; state: VisualState }): void {
+    data.wrapper.addEventListener('mousedown', this.startListenMove.bind(this, data));
+  }
 
-      const tempTarget = e.target as HTMLElement;
-      const shiftX = e.offsetX;
-      const shiftY = tempTarget.offsetHeight - e.offsetY;
+  private startListenMove(data: { wrapper: HTMLElement; state: VisualState }, e: MouseEvent): void {
+    e.preventDefault();
+    if ((e.target as HTMLElement).className !== 'slider__handler') return;
 
-      function onMouseMove(this: Application, e: MouseEvent): void {
-        let left;
-        if (state.direction === constants.DIRECTION_VERTICAL) {
-          left = wrapper.offsetHeight - e.clientY - shiftY + wrapper.getBoundingClientRect().top;
-        } else {
-          left = e.clientX - shiftX - wrapper.offsetLeft;
-        }
+    const tempTarget = e.target as HTMLElement;
+    const shiftX = e.offsetX;
+    const shiftY = tempTarget.offsetHeight - e.offsetY;
 
-        this.emit('onUserMove', { left, tempTarget });
-      }
+    const forMouseMove: forMouseMove = {
+      shiftX,
+      shiftY,
+      tempTarget,
+      data,
+    };
 
-      const onmousemove = onMouseMove.bind(this);
+    const onmousemove = this.listenMouseMove.bind(this, forMouseMove);
 
+    document.addEventListener('mousemove', onmousemove);
 
-      function onMouseUp(): void {
-        document.removeEventListener('mousemove', onmousemove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
+    function listenMouseUp(): void {
+      document.removeEventListener('mousemove', onmousemove);
+      document.removeEventListener('mouseup', listenMouseUp);
+    }
 
-      document.addEventListener('mousemove', onmousemove);
-      document.addEventListener('mouseup', onMouseUp);
-    });
+    document.addEventListener('mouseup', listenMouseUp);
+  }
+
+  private listenMouseMove(this: Application, forMouseMove: forMouseMove, e: MouseEvent): void {
+    const shiftY = forMouseMove.shiftY;
+    const shiftX = forMouseMove.shiftX;
+    const data = forMouseMove.data;
+    const tempTarget = forMouseMove.tempTarget;
+
+    let left;
+    if (data.state.direction === constants.DIRECTION_VERTICAL) {
+      left = data.wrapper.offsetHeight - e.clientY - shiftY + data.wrapper.getBoundingClientRect().top;
+    } else {
+      left = e.clientX - shiftX - data.wrapper.offsetLeft;
+    }
+
+    this.emit('onUserMove', { left, tempTarget });
   }
 }
 
