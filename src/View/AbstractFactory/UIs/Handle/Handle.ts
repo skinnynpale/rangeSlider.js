@@ -1,5 +1,6 @@
 import { Tip } from '../Tip/Tip';
 import { Temp } from '../../../../helpers/interfaces';
+import { constants } from '../../../../helpers/constants';
 
 interface Handle {
   paint({ tempTarget, tempPxValue }: Temp): void;
@@ -10,14 +11,16 @@ interface Handle {
 class Handle implements Handle {
   protected anchor!: HTMLElement;
 
-  public init(anchor: HTMLElement) {
+  constructor(protected direction: string) {}
+
+  public init(anchor: HTMLElement): void {
     this.anchor = anchor;
     const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
-  public append(component: Tip) {
+  public append(component: Tip): void {
     const handles = this.anchor.querySelectorAll('.slider__handle');
 
     for (const handle of Array.from(handles)) {
@@ -26,24 +29,20 @@ class Handle implements Handle {
   }
 }
 
-class SingleHorizontalHandle extends Handle  {
-  public paint({ tempTarget, tempPxValue }: Temp) {
+class SingleHandle extends Handle  {
+  public paint({ tempTarget, tempPxValue }: Temp): void {
     if (!tempTarget) return;
 
-    tempTarget.style.left = `${tempPxValue}px`;
+    if (this.direction === constants.DIRECTION_HORIZONTAL) {
+      tempTarget.style.left = `${tempPxValue}px`;
+    } else if (this.direction === constants.DIRECTION_VERTICAL) {
+      tempTarget.style.bottom = `${tempPxValue}px`;
+    }
   }
 }
 
-class SingleVerticalHandle extends Handle {
-  public paint({ tempTarget, tempPxValue }: Temp) {
-    if (!tempTarget) return;
-
-    tempTarget.style.bottom = `${tempPxValue}px`;
-  }
-}
-
-class IntervalHorizontalHandle extends Handle {
-  public init(anchor: HTMLElement) {
+class IntervalHandle extends Handle {
+  public init(anchor: HTMLElement): void {
     this.anchor = anchor;
     const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
@@ -51,33 +50,19 @@ class IntervalHorizontalHandle extends Handle {
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
-  public paint({ tempTarget, tempPxValue }: Temp) {
+  public paint({ tempTarget, tempPxValue }: Temp): void {
     if (!tempTarget) return;
 
-    tempTarget.style.left = `${tempPxValue}px`;
-  }
-}
-
-class IntervalVerticalHandle extends Handle {
-  public init(anchor: HTMLElement) {
-    this.anchor = anchor;
-    const handleTemplate = '<div class="slider__handle"></div>';
-    const slider = anchor.querySelector('.slider') as HTMLElement;
-    slider.insertAdjacentHTML('beforeend', handleTemplate);
-    slider.insertAdjacentHTML('beforeend', handleTemplate);
-  }
-
-  public paint({ tempTarget, tempPxValue }: Temp) {
-    if (!tempTarget) return;
-
-    tempTarget.style.bottom = `${tempPxValue}px`;
+    if (this.direction === constants.DIRECTION_HORIZONTAL) {
+      tempTarget.style.left = `${tempPxValue}px`;
+    } else if (this.direction === constants.DIRECTION_VERTICAL) {
+      tempTarget.style.bottom = `${tempPxValue}px`;
+    }
   }
 }
 
 export {
   Handle,
-  IntervalHorizontalHandle,
-  IntervalVerticalHandle,
-  SingleHorizontalHandle,
-  SingleVerticalHandle,
+  IntervalHandle,
+  SingleHandle
 };

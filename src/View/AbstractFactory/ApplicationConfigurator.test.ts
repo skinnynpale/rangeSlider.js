@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import jsdom from 'jsdom';
 
 import { ApplicationConfigurator } from './Application';
-import { IntervalHorizontalFactory } from './Factories/Factories';
+import { IntervalFactory } from './Factories/Factories';
 
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');
@@ -30,7 +30,7 @@ describe('ApplicationConfigurator', () => {
     );
 
     // @ts-ignore
-    expect(applicationConfigurator.factory).to.deep.equal(new IntervalHorizontalFactory());
+    expect(applicationConfigurator.factory).to.deep.equal(new IntervalFactory('horizontal'));
   });
 
   it('Должен выкинуть исключение на неверные данные', () => {

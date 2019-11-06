@@ -1,5 +1,5 @@
-import { CalculatedFromModelState } from '../../../../helpers/interfaces';
 import Observer from '../../../../Observer/Observer';
+import { constants } from '../../../../helpers/constants';
 
 interface Scale {
   init(anchor: HTMLElement): void;
@@ -11,6 +11,11 @@ class Scale extends Observer implements Scale {
   protected scaleHTML!: HTMLElement;
   protected anchor!: HTMLElement;
   protected steps!: number[];
+  private ratio!: number;
+
+  constructor(protected direction: string) {
+    super();
+  }
 
   public init(anchor: HTMLElement): void {
     this.anchor = anchor;
@@ -32,6 +37,67 @@ class Scale extends Observer implements Scale {
         values,
       });
     });
+  }
+
+  public paint({ ratio, steps }: {ratio: number; steps: number[] }): void {
+    this.steps = steps;
+    const progression = steps;
+    let ratioProgressive = 0;
+
+    if (this.scaleHTML.childElementCount === progression.length) {
+      if (ratio === this.ratio) {
+        return;
+      }
+    }
+
+    this.scaleHTML.innerHTML = '';
+    if (ratio !== undefined) {
+      this.ratio = ratio;
+    }
+
+
+    if (this.direction === constants.DIRECTION_HORIZONTAL) {
+      for (let i = 0; i < progression.length; i += 1) {
+        const template = `<div class="scale__value">${progression[i]}</div>`;
+        this.scaleHTML.insertAdjacentHTML('beforeend', template);
+
+        const currentCreatedValue = this.scaleHTML.children[i] as HTMLElement;
+
+        if (i === 0) {
+          switch (this.direction) {
+            case constants.DIRECTION_HORIZONTAL:
+              currentCreatedValue.style.left = `${0}px`;
+              break;
+            case constants.DIRECTION_VERTICAL:
+              currentCreatedValue.style.bottom = `${0}px`;
+              break;
+          }
+        } else {
+          ratioProgressive += ratio;
+          const offset = currentCreatedValue.clientWidth / 8;
+
+          switch (this.direction) {
+            case constants.DIRECTION_HORIZONTAL:
+              currentCreatedValue.style.left = `${ratioProgressive - offset}px`;
+              break;
+            case constants.DIRECTION_VERTICAL:
+              currentCreatedValue.style.bottom = `${ratioProgressive - offset}px`;
+              break;
+          }
+        }
+      }
+
+      const handle = this.slider.querySelector('.slider__handle') as HTMLElement;
+
+      switch (this.direction) {
+        case constants.DIRECTION_HORIZONTAL:
+          this.scaleHTML.style.marginLeft = `${handle.offsetWidth / 4 - 1}px`;
+          break;
+        case constants.DIRECTION_VERTICAL:
+          this.scaleHTML.style.marginBottom = `${handle.offsetWidth / 4 - 1}px`;
+          break;
+      }
+    }
   }
 
   private findClosestHandle(anchor: HTMLElement, value: number) {
@@ -59,82 +125,4 @@ class Scale extends Observer implements Scale {
   }
 }
 
-class HorizontalScale extends Scale implements Scale {
-  protected steps!: number[];
-  private ratio!: number;
-
-  public paint({ ratio, steps }: CalculatedFromModelState): void {
-    this.steps = steps;
-    const progression = steps;
-    let ratioProgressive = 0;
-
-    if (this.scaleHTML.childElementCount === progression.length) {
-      if (ratio === this.ratio) {
-        return;
-      }
-    }
-    this.scaleHTML.innerHTML = '';
-    if (ratio !== undefined) {
-      this.ratio = ratio;
-    }
-
-    for (let i = 0; i < progression.length; i += 1) {
-      const template = `<div class="scale__value">${progression[i]}</div>`;
-      this.scaleHTML.insertAdjacentHTML('beforeend', template);
-
-      const currentCreatedValue = this.scaleHTML.children[i] as HTMLElement;
-
-      if (i === 0) {
-        currentCreatedValue.style.left = `${0}px`;
-      } else {
-        ratioProgressive += ratio;
-        const offset = currentCreatedValue.clientWidth / 8;
-        currentCreatedValue.style.left = `${ratioProgressive - offset}px`;
-      }
-    }
-
-    const handle = this.slider.querySelector('.slider__handle') as HTMLElement;
-    this.scaleHTML.style.marginLeft = `${handle.offsetWidth / 4 - 1}px`;
-  }
-}
-
-class VerticalScale extends Scale implements Scale {
-  protected steps!: number[];
-  private ratio!: number;
-
-  public paint({ ratio, steps }: CalculatedFromModelState): void {
-    this.steps = steps;
-    const progression = steps;
-    let ratioProgressive = 0;
-
-    if (this.scaleHTML.childElementCount === progression.length) {
-      if (ratio === this.ratio) {
-        return;
-      }
-    }
-    this.scaleHTML.innerHTML = '';
-    if (ratio !== undefined) {
-      this.ratio = ratio;
-    }
-
-    for (let i = 0; i < progression.length; i += 1) {
-      const template = `<div class="scale__value">${progression[i]}</div>`;
-      this.scaleHTML.insertAdjacentHTML('beforeend', template);
-
-      const currentCreatedValue = this.scaleHTML.children[i] as HTMLElement;
-
-      if (i === 0) {
-        currentCreatedValue.style.bottom = `${0}px`;
-      } else {
-        ratioProgressive += ratio;
-        const offset = currentCreatedValue.clientWidth / 8;
-        currentCreatedValue.style.bottom = `${ratioProgressive - offset}px`;
-      }
-    }
-
-    const handle = this.slider.querySelector('.slider__handle') as HTMLElement;
-    this.scaleHTML.style.marginBottom = `${handle.offsetWidth / 4 - 1}px`;
-  }
-}
-
-export { Scale, HorizontalScale, VerticalScale };
+export { Scale };

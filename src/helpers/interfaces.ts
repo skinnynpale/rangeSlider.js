@@ -11,18 +11,16 @@ interface ModelState {
   values: number[];
 }
 
-interface CalculatedFromModelState {
-  ratio: number;
-  steps: number[];
-}
+type directions = 'horizontal' | 'vertical';
+type types = 'single' | 'interval';
 
 interface VisualState {
   scale?: boolean;
-  direction?: 'horizontal' | 'vertical';
+  direction?: directions;
   skin?: 'green' | 'red';
   bar?: boolean;
   tip?: boolean;
-  type?: 'single' | 'interval';
+  type?: types;
   settings?: boolean;
 }
 
@@ -36,7 +34,6 @@ interface Temp {
   values?: number[];
 
 }
-
 
 interface OnlyNumbers {
   [key: string]: number;
@@ -76,6 +73,7 @@ export {
   EventCallback,
   ModelState,
   Temp,
-  CalculatedFromModelState,
-  forMouseMove
+  forMouseMove,
+  directions,
+  types
 };

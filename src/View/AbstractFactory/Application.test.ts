@@ -2,9 +2,9 @@ import { expect } from 'chai';
 import jsdom from 'jsdom';
 
 import { Application } from './Application';
-import { IntervalHorizontalFactory } from './Factories/Factories';
-import { IntervalHorizontalBar } from './UIs/Bar/Bar';
-import { IntervalHorizontalHandle } from './UIs/Handle/Handle';
+import { IntervalFactory } from './Factories/Factories';
+import { IntervalBar } from './UIs/Bar/Bar';
+import { IntervalHandle } from './UIs/Handle/Handle';
 
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');
@@ -23,22 +23,22 @@ describe('Application', () => {
   });
 
   it('Должен правильно создать сущности отталкиваясь от заданной фабрики', () => {
-    const app = new Application(new IntervalHorizontalFactory(), anchor);
+    const app = new Application(new IntervalFactory('horizontal'), anchor);
 
     app.createUI({ bar: true });
     // @ts-ignore
-    expect(app.UIs.bar).to.deep.equal(new IntervalHorizontalBar());
+    expect(app.UIs.bar).to.deep.equal(new IntervalBar('horizontal'));
 
     // @ts-ignore
     app.createUI({ handle: true });
     // @ts-ignore
-    expect(app.UIs.bar).to.deep.equal(new IntervalHorizontalBar());
+    expect(app.UIs.bar).to.deep.equal(new IntervalBar('horizontal'));
     // @ts-ignore
-    expect(app.UIs.handle).to.deep.equal(new IntervalHorizontalHandle());
+    expect(app.UIs.handle).to.deep.equal(new IntervalHandle('horizontal'));
   });
 
   it('Должен отрисовать HTML с заданными настройками', () => {
-    let app = new Application(new IntervalHorizontalFactory(), anchor);
+    let app = new Application(new IntervalFactory('horizontal'), anchor);
     app.createUI({ bar: true, settings: true });
     app.init({
       direction: 'horizontal',
@@ -57,7 +57,7 @@ describe('Application', () => {
 
     app.removeHTML();
 
-    app = new Application(new IntervalHorizontalFactory(), anchor);
+    app = new Application(new IntervalFactory('horizontal'), anchor);
     app.createUI({ bar: true, settings: true });
     app.init({
       direction: 'horizontal',
@@ -73,7 +73,7 @@ describe('Application', () => {
   });
 
   it('RemoveHTML', () => {
-    const app = new Application(new IntervalHorizontalFactory(), anchor);
+    const app = new Application(new IntervalFactory('horizontal'), anchor);
     app.createUI({ bar: true, settings: true });
     app.init({
       direction: 'horizontal',

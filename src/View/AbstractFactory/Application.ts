@@ -3,15 +3,13 @@ import Template from './UIs/Template/Template';
 
 import {
   GUIFactory,
-  IntervalHorizontalFactory,
-  IntervalVerticalFactory,
-  SingleHorizontalFactory,
-  SingleVerticalFactory,
+  SingleFactory,
+  IntervalFactory
 } from './Factories/Factories';
 
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { Temp, UIs, VisualState, forMouseMove } from '../../helpers/interfaces';
+import { directions, forMouseMove, Temp, types, UIs, VisualState } from '../../helpers/interfaces';
 
 /**
  * Application
@@ -142,14 +140,10 @@ class ApplicationConfigurator {
   public main({ type, direction }: VisualState, anchor: HTMLElement): Application {
     let factory;
 
-    if (type === constants.TYPE_SINGLE && direction === constants.DIRECTION_HORIZONTAL) {
-      factory = new SingleHorizontalFactory();
-    } else if (type === constants.TYPE_SINGLE && direction === constants.DIRECTION_VERTICAL) {
-      factory = new SingleVerticalFactory();
-    } else if (type === constants.TYPE_INTERVAL && direction === constants.DIRECTION_HORIZONTAL) {
-      factory = new IntervalHorizontalFactory();
-    } else if (type === constants.TYPE_INTERVAL && direction === constants.DIRECTION_VERTICAL) {
-      factory = new IntervalVerticalFactory();
+    if (type === constants.TYPE_SINGLE) {
+      factory = new SingleFactory(direction as directions);
+    } else if (type === constants.TYPE_INTERVAL) {
+      factory = new IntervalFactory(direction as directions);
     } else {
       throw new Error(`Error! Unknown ${type} or ${direction}`);
     }
