@@ -112,21 +112,11 @@ class Model extends Observer{
   }
 
   private notifyAboutPxValueDone(state: Temp): void {
-    console.log('То что отдаем pxValueDone', {
-      tempValue: state.tempValue,
-      tempPxValue: state.tempPxValue,
-      tempPxValues: this.createArrayOfPxValues(),
-      arrayOfProgression: this.countArrayOfProgression(this.state),
-      values: this.state.values,
-      tempTarget: state.tempTarget,
-      edge: this.temp.tempEdge,
-      ratio: this.getRatio(),
-    });
     this.emit('pxValueDone', {
       tempValue: state.tempValue,
       tempPxValue: state.tempPxValue,
       tempPxValues: this.createArrayOfPxValues(),
-      arrayOfProgression: this.countArrayOfProgression(this.state),
+      steps: this.createSteps(this.state),
       values: this.state.values,
       tempTarget: state.tempTarget,
       edge: this.temp.tempEdge,
@@ -201,18 +191,18 @@ class Model extends Observer{
     return newValue;
   }
 
-  private countArrayOfProgression(state: ModelState): number[] {
+  private createSteps(state: ModelState): number[] {
     const max = this.getAvailableValue(state, 'max') as number;
     const min = this.getAvailableValue(state, 'min') as number;
     const step = this.getAvailableValue(state, 'step') as number;
 
-    const arrayOfProgression = [];
+    const steps = [];
 
     for (let i = min; i <= max; i += step) {
-      arrayOfProgression.push(i);
+      steps.push(i);
     }
 
-    return arrayOfProgression;
+    return steps;
   }
 }
 

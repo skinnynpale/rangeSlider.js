@@ -10,7 +10,7 @@ class Scale extends Observer implements Scale {
   protected slider!: HTMLElement;
   protected scaleHTML!: HTMLElement;
   protected anchor!: HTMLElement;
-  protected arrayOfProgression!: number[];
+  protected steps!: number[];
 
   public init(anchor: HTMLElement): void {
     this.anchor = anchor;
@@ -53,19 +53,19 @@ class Scale extends Observer implements Scale {
       values[desiredIndex[0]] = value;
     } else {
       values[0] = value;
-      values[1] = this.arrayOfProgression[this.arrayOfProgression.length - 1];
+      values[1] = this.steps[this.steps.length - 1];
     }
     return { handlers, values };
   }
 }
 
 class HorizontalScale extends Scale implements Scale {
-  protected arrayOfProgression!: number[];
+  protected steps!: number[];
   private ratio!: number;
 
-  public paint({ ratio, arrayOfProgression }: CalculatedFromModelState): void {
-    this.arrayOfProgression = arrayOfProgression;
-    const progression = arrayOfProgression;
+  public paint({ ratio, steps }: CalculatedFromModelState): void {
+    this.steps = steps;
+    const progression = steps;
     let ratioProgressive = 0;
 
     if (this.scaleHTML.childElementCount === progression.length) {
@@ -99,12 +99,12 @@ class HorizontalScale extends Scale implements Scale {
 }
 
 class VerticalScale extends Scale implements Scale {
-  protected arrayOfProgression!: number[];
+  protected steps!: number[];
   private ratio!: number;
 
-  public paint({ ratio, arrayOfProgression }: CalculatedFromModelState): void {
-    this.arrayOfProgression = arrayOfProgression;
-    const progression = arrayOfProgression;
+  public paint({ ratio, steps }: CalculatedFromModelState): void {
+    this.steps = steps;
+    const progression = steps;
     let ratioProgressive = 0;
 
     if (this.scaleHTML.childElementCount === progression.length) {

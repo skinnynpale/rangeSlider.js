@@ -13,7 +13,7 @@ interface ModelState {
 
 interface CalculatedFromModelState {
   ratio: number;
-  arrayOfProgression: number[];
+  steps: number[];
 }
 
 interface VisualState {
