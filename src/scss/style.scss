@@ -79,7 +79,7 @@
     font-weight: bold;
     border-radius: 3px;
     position: relative;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
     outline: none;
     cursor: default;
 
@@ -133,7 +133,7 @@
     .slider__bar {
       width: 8px;
       height: 150px;
-      bottom: 0px;
+      bottom: 0;
     }
     .slider__handler {
       bottom: 135px;
@@ -141,7 +141,7 @@
     }
     .slider__tip {
       padding: 2px 5px;
-      top: 0px;
+      top: 0;
       left: 40px;
     }
     .slider__tongue {

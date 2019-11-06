@@ -34,7 +34,6 @@ class Model extends Observer{
     this.temp.tempEdge = temp.tempEdge || this.temp.tempEdge;
 
     const tempValue = this.correctValueInTheRange(temp.tempValue as number, this.state);
-    console.log(tempValue);
     const tempPxValue = this.countPxValueFromValue(tempValue);
 
     const tempTarget = temp.tempTarget as HTMLElement;
