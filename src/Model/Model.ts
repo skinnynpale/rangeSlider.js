@@ -15,8 +15,6 @@ class Model extends Observer{
   }
 
   public setState(state: ModelState): void {
-    console.log('То что приходит в setState' + JSON.stringify(state));
-
     let tempState = {};
 
     tempState = {...tempState, ...this.correctMinMax(state)};
@@ -24,13 +22,9 @@ class Model extends Observer{
     tempState = {...tempState, ...this.correctValues(state)};
 
     this.state = {...this.state, ...tempState };
-
-    console.log('После обработок в setState' + JSON.stringify(this.state));
   }
 
   public initialCounting(temp: Temp): void {
-    console.log('Пришел initial temp' + JSON.stringify(temp));
-
     this.temp.tempEdge = temp.tempEdge || this.temp.tempEdge;
 
     const tempValue = this.correctValueInTheRange(temp.tempValue as number, this.state);
@@ -45,7 +39,6 @@ class Model extends Observer{
   }
 
   public dynamicCounting(temp: Temp): void {
-    console.log('Пришел dynamic temp' + JSON.stringify(temp));
 
     const tempValue = this.countValueFromLeft(temp.left as number);
     const tempPxValue = this.countPxValueFromValue(tempValue);
@@ -166,7 +159,6 @@ class Model extends Observer{
       .sort((a, b) => a - b);
 
     if (values.length === 1) {
-      console.log(state.max);
       values.push(state.max);
     }
 

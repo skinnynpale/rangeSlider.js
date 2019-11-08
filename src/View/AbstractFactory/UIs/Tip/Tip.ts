@@ -6,14 +6,14 @@ interface Tip {
 }
 
 class Tip implements Tip {
-  public init(handle: HTMLElement) {
+  public init(handle: HTMLElement): void {
     const tipTemplate = '<div class="slider__tip"><div class="slider__tongue"></div></div>';
     handle.insertAdjacentHTML('beforeend', tipTemplate);
   }
 }
 
 class SingleTip extends Tip {
-  public paint({ tempTarget, tempValue, tempPxValues }: Temp) {
+  public paint({ tempTarget, tempValue }: Temp): void {
     if (!(tempTarget !== undefined)) return;
 
     const tip = tempTarget.querySelector('.slider__tip') as HTMLElement;
@@ -21,7 +21,7 @@ class SingleTip extends Tip {
   }
 }
 class IntervalTip extends Tip {
-  public paint({ tempTarget, tempValue, tempPxValues, values }: Temp) {
+  public paint({ tempTarget, tempValue, tempPxValues, values }: Temp): void {
     if (!(tempTarget !== undefined && tempPxValues !== undefined)) return;
 
     const tip = tempTarget.querySelector('.slider__tip') as HTMLElement;
@@ -36,20 +36,15 @@ class IntervalTip extends Tip {
 
     const distance = tempPxValues[1] - tempPxValues[0];
 
-    if (distance <= anotherTip.offsetWidth) {
-      if (distance <= tip.offsetWidth) {
-        if (tip.classList.contains('slider__tip--extended')) {
-          tip.classList.remove('slider__tip--extended');
-          anotherTip.classList.remove('slider__tip--extended');
-          anotherTip.style.visibility = 'visible';
-        }
-        tip.style.visibility = 'hidden';
-        anotherTip.classList.add('slider__tip--extended');
-        anotherTip.setAttribute('data-extendedValue', `${values && values.join(' - ')}`);
-      } else {
-        tip.style.visibility = 'visible';
+    if (distance <= anotherTip.offsetWidth && distance <= tip.offsetWidth) {
+      if (tip.classList.contains('slider__tip--extended')) {
+        tip.classList.remove('slider__tip--extended');
         anotherTip.classList.remove('slider__tip--extended');
+        anotherTip.style.visibility = 'visible';
       }
+      tip.style.visibility = 'hidden';
+      anotherTip.classList.add('slider__tip--extended');
+      anotherTip.setAttribute('data-extendedValue', `${values && values.join(' - ')}`);
     } else {
       tip.style.visibility = 'visible';
       anotherTip.classList.remove('slider__tip--extended');
