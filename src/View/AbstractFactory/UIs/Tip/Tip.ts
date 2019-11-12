@@ -14,7 +14,7 @@ class Tip implements Tip {
 
 class SingleTip extends Tip {
   public paint({ tempTarget, tempValue }: Temp): void {
-    if (!(tempTarget !== undefined)) return;
+    if (tempTarget === undefined) return;
 
     const tip = tempTarget.querySelector('.slider__tip') as HTMLElement;
     tip.setAttribute('data-value', `${tempValue}`);
@@ -22,15 +22,13 @@ class SingleTip extends Tip {
 }
 class IntervalTip extends Tip {
   public paint({ tempTarget, tempValue, tempPxValues, values }: Temp): void {
-    if (!(tempTarget !== undefined && tempPxValues !== undefined)) return;
+    if (tempTarget === undefined || tempPxValues === undefined) return;
 
     const tip = tempTarget.querySelector('.slider__tip') as HTMLElement;
     tip.setAttribute('data-value', `${tempValue}`);
 
-    const allTips =
-      tempTarget.parentElement && tempTarget.parentElement.querySelectorAll('.slider__tip');
-    const anotherTip =
-      allTips && (Array.from(allTips).find((item: Element) => item !== tip) as HTMLElement);
+    const allTips = tempTarget.parentElement && tempTarget.parentElement.querySelectorAll('.slider__tip');
+    const anotherTip = allTips && (Array.from(allTips).find((item: Element) => item !== tip) as HTMLElement);
 
     if (!anotherTip) return;
 

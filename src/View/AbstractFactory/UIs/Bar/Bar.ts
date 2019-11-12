@@ -17,16 +17,13 @@ class Bar implements Bar {
 
 class SingleBar extends Bar {
   public paint({ tempPxValue, tempTarget }: Temp): void {
-    if (!(tempTarget !== undefined && tempPxValue !== undefined)) return;
+    if (tempPxValue === undefined || tempTarget === undefined) return;
 
-    const bar =
-      tempTarget.parentElement &&
-      (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);
+    const bar = tempTarget.parentElement && (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
       bar && (bar.style.width = `${tempPxValue + 10}px`);
-    }
-    else if (this.direction === constants.DIRECTION_VERTICAL) {
+    } else if (this.direction === constants.DIRECTION_VERTICAL) {
       bar && (bar.style.height = `${tempPxValue + 10}px`);
     }
   }
@@ -34,17 +31,14 @@ class SingleBar extends Bar {
 
 class IntervalBar extends Bar {
   public paint({ tempPxValues, tempTarget }: Temp): void {
-    if (!(tempTarget !== undefined && tempPxValues !== undefined)) return;
+    if (tempPxValues === undefined || tempTarget === undefined) return;
 
-    const bar =
-      tempTarget.parentElement &&
-      (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);
+    const bar = tempTarget.parentElement && (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
       bar && (bar.style.left = `${tempPxValues[0]}px`);
       bar && (bar.style.width = `${tempPxValues[1] - tempPxValues[0] + 10}px`);
-    }
-    else if (this.direction === constants.DIRECTION_VERTICAL) {
+    } else if (this.direction === constants.DIRECTION_VERTICAL) {
       bar && (bar.style.bottom = `${tempPxValues[0]}px`);
       bar && (bar.style.height = `${tempPxValues[1] - tempPxValues[0] + 10}px`);
     }
