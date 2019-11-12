@@ -39,7 +39,7 @@ class Scale extends Observer implements Scale {
     });
   }
 
-  public paint({ ratio, steps }: {ratio: number; steps: number[] }): void {
+  public paint({ ratio, steps }: { ratio: number; steps: number[] }): void {
     this.steps = steps;
     const progression = steps;
     let ratioProgressive = 0;
@@ -55,48 +55,45 @@ class Scale extends Observer implements Scale {
       this.ratio = ratio;
     }
 
+    for (let i = 0; i < progression.length; i += 1) {
+      const template = `<div class="scale__value">${progression[i]}</div>`;
+      this.scaleHTML.insertAdjacentHTML('beforeend', template);
 
-    if (this.direction === constants.DIRECTION_HORIZONTAL) {
-      for (let i = 0; i < progression.length; i += 1) {
-        const template = `<div class="scale__value">${progression[i]}</div>`;
-        this.scaleHTML.insertAdjacentHTML('beforeend', template);
+      const currentCreatedValue = this.scaleHTML.children[i] as HTMLElement;
 
-        const currentCreatedValue = this.scaleHTML.children[i] as HTMLElement;
+      if (i === 0) {
+        switch (this.direction) {
+          case constants.DIRECTION_HORIZONTAL:
+            currentCreatedValue.style.left = `${0}px`;
+            break;
+          case constants.DIRECTION_VERTICAL:
+            currentCreatedValue.style.bottom = `${0}px`;
+            break;
+        }
+      } else {
+        ratioProgressive += ratio;
+        const offset = currentCreatedValue.clientWidth / 8;
 
-        if (i === 0) {
-          switch (this.direction) {
-            case constants.DIRECTION_HORIZONTAL:
-              currentCreatedValue.style.left = `${0}px`;
-              break;
-            case constants.DIRECTION_VERTICAL:
-              currentCreatedValue.style.bottom = `${0}px`;
-              break;
-          }
-        } else {
-          ratioProgressive += ratio;
-          const offset = currentCreatedValue.clientWidth / 8;
-
-          switch (this.direction) {
-            case constants.DIRECTION_HORIZONTAL:
-              currentCreatedValue.style.left = `${ratioProgressive - offset}px`;
-              break;
-            case constants.DIRECTION_VERTICAL:
-              currentCreatedValue.style.bottom = `${ratioProgressive - offset}px`;
-              break;
-          }
+        switch (this.direction) {
+          case constants.DIRECTION_HORIZONTAL:
+            currentCreatedValue.style.left = `${ratioProgressive - offset}px`;
+            break;
+          case constants.DIRECTION_VERTICAL:
+            currentCreatedValue.style.bottom = `${ratioProgressive - offset}px`;
+            break;
         }
       }
+    }
 
-      const handle = this.slider.querySelector('.slider__handle') as HTMLElement;
+    const handle = this.slider.querySelector('.slider__handle') as HTMLElement;
 
-      switch (this.direction) {
-        case constants.DIRECTION_HORIZONTAL:
-          this.scaleHTML.style.marginLeft = `${handle.offsetWidth / 4 - 1}px`;
-          break;
-        case constants.DIRECTION_VERTICAL:
-          this.scaleHTML.style.marginBottom = `${handle.offsetWidth / 4 - 1}px`;
-          break;
-      }
+    switch (this.direction) {
+      case constants.DIRECTION_HORIZONTAL:
+        this.scaleHTML.style.marginLeft = `${handle.offsetWidth / 4 - 1}px`;
+        break;
+      case constants.DIRECTION_VERTICAL:
+        this.scaleHTML.style.marginBottom = `${handle.offsetWidth / 4 - 1}px`;
+        break;
     }
   }
 
