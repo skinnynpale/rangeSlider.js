@@ -159,32 +159,32 @@
     }
   }
 
-  &--green {
-    .slider__bar {
+  &--green & {
+    &__bar {
       background-color: rgb(58, 190, 140);
     }
-    .slider__handle {
+    &__handle {
       background-color: rgb(58, 190, 140);
     }
-    .slider__tip {
+    &__tip {
       background-color: rgb(58, 190, 140);
     }
-    .slider__tongue {
+    &__tongue {
       border-bottom: 14px solid rgb(58, 190, 140);
     }
   }
 
-  &--red {
-    .slider__bar {
+  &--red & {
+    &__bar {
       background-color: rgb(216, 77, 77);
     }
-    .slider__handle {
+    &__handle {
       background-color: rgb(216, 77, 77);
     }
-    .slider__tip {
+    &__tip {
       background-color: rgb(216, 77, 77);
     }
-    .slider__tongue {
+    &__tongue {
       border-bottom: 14px solid rgb(216, 77, 77);
     }
   }
