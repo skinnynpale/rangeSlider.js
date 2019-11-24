@@ -8,3 +8,7 @@ div[id^='anchor'] {
   align-items: center;
   flex-direction: column;
 }
+
+body {
+  font-family: -apple-system, Roboto, 'Segoe UI', sans-serif;
+}

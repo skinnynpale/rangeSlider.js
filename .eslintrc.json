@@ -29,6 +29,7 @@
   // Плагин с наборами правил для TypeScript
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "@typescript-eslint/ban-ts-ignore": 0
+    "@typescript-eslint/ban-ts-ignore": 0,
+    "@typescript-eslint/explicit-function-return-type": 0
   }
 }

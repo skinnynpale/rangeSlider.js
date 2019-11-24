@@ -28,10 +28,13 @@ $(#myDiv).rangeSlider();
 
 ```javascript
 $(#myDiv).rangeSlider(
+    'init',
+    // тут настройки для первого передаваемого объекта (подробнее ниже)
     {
         settings: true,
         skin: "red"
     },
+    // а тут для второго
     {
         min: 20,
         step: 5
@@ -68,7 +71,7 @@ $("#anchor").rangeSlider();
 Затем, для использования существует 4 публичных метода
 ```javascript
 // Обновление только числовых значений
-$("#anchor").rangeSlider("updateValues", {step: 1, values: [15]}); 
+$("#anchor").rangeSlider("updateValues", null, {step: 1, values: [15]}); 
 
 // Обновление только визуала
 $("#anchor").rangeSlider("updateVisual", {skin: "red", direction: "vertical"});

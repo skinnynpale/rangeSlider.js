@@ -1,38 +1,48 @@
-$('#anchor').rangeSlider(
+// Test Destroy Slider
+$('#anchorDestroy').rangeSlider(
+  'init',
   {
-    settings: true,
     direction: 'vertical',
-    skin: 'red',
-    type: 'single',
-    scale: true
+    settings: true,
+    skin: 'green',
+    type: 'interval',
+    scale: true,
   },
   {
-    step: 9,
-    values: [15],
-    max: 52,
-    min: 10,
+    step: 5,
   },
 );
-$('#anchor').rangeSlider('updateVisual', { skin: 'green', direction: 'horizontal' });
-$('#anchor2').rangeSlider({
+$('#anchorDestroy').rangeSlider('destroy');
+
+$('#anchor').rangeSlider();
+
+// Test Methods
+$('#anchor').rangeSlider('updateVisual', { skin: 'red', direction: 'vertical' });
+$('#anchor').rangeSlider('reset');
+$('#anchor').rangeSlider('updateVisual', { skin: 'red', direction: 'horizontal', settings: true, scale: true });
+$('#anchor').rangeSlider('updateValues', null, { step: 20 });
+$('#anchor').rangeSlider('onChange', null, null, event => console.log(event.detail));
+
+$('#anchor2').rangeSlider('init', {
   settings: true,
   skin: 'red',
   type: 'interval',
-  scale: true
+  scale: true,
 });
-$('#anchor3').rangeSlider({
+$('#anchor3').rangeSlider('init', {
   direction: 'vertical',
   settings: true,
   skin: 'green',
   type: 'single',
 });
 $('#anchor4').rangeSlider(
+  'init',
   {
     direction: 'vertical',
     settings: true,
-    skin: 'red',
+    skin: 'green',
     type: 'interval',
-    scale: true
+    scale: true,
   },
   {
     step: 5,

@@ -15,7 +15,7 @@ class Settings extends Observer {
                                   <b class="settings__option">min</b>
                                 </label>
                                 <label class="settings__label"><input name="max" class="settings__input" type="number">
-                                  <b class="settings__option">max</b>
+                                  <b class="settings__option">max🔥</b>
                                 </label>
                                 <label class="settings__label"><input name="step" class="settings__input" type="number">
                                   <b class="settings__option">step</b>
