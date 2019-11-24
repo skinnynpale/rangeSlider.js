@@ -1,15 +1,11 @@
 import Settings from './UIs/Settings/Settings';
 import Template from './UIs/Template/Template';
 
-import {
-  GUIFactory,
-  SingleFactory,
-  IntervalFactory
-} from './Factories/Factories';
+import { GUIFactory, IntervalFactory, SingleFactory } from './Factories/Factories';
 
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { directions, forMouseMove, Temp, types, UIs, VisualState } from '../../helpers/interfaces';
+import { directions, forMouseMove, Temp, UIs, VisualState } from '../../helpers/interfaces';
 
 /**
  * Application
@@ -69,7 +65,9 @@ class Application extends Observer {
   }
 
   public removeHTML(): void {
-    this.anchor.removeChild((this.UIs.settings as Settings).settingsHTML);
+    if (this.UIs.settings) {
+      this.anchor.removeChild(this.UIs.settings.settingsHTML);
+    }
     this.anchor.removeChild(this.template.templateHTML);
   }
 

@@ -1,3 +1,3 @@
 interface JQuery {
-  rangeSlider(method: string | {}, data: []): void;
+  rangeSlider(method: string, visualState: {}, modelState: {}, callback: Function): void;
 }
