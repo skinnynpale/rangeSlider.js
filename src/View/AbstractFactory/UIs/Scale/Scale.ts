@@ -17,7 +17,7 @@ class Scale extends Observer implements Scale {
     super();
   }
 
-  public init(anchor: HTMLElement): void {
+  public init(anchor: HTMLElement) {
     this.anchor = anchor;
     this.slider = anchor.querySelector('.slider') as HTMLElement;
 
@@ -25,21 +25,10 @@ class Scale extends Observer implements Scale {
     this.slider.insertAdjacentHTML('afterbegin', scaleWrapper);
     this.scaleHTML = this.anchor.querySelector('.scale') as HTMLElement;
 
-    this.scaleHTML.addEventListener('click', e => {
-      const valueHTML = e.target as HTMLElement;
-      if (valueHTML.className !== 'scale__value') return;
-
-      const value = Number(valueHTML && valueHTML.textContent);
-      const { handles, values } = this.findClosestHandle(anchor, value);
-
-      this.emit('newValueFromScale', {
-        handles,
-        values,
-      });
-    });
+    this.scaleHTML.addEventListener('click', this.handleScaleValue.bind(this));
   }
 
-  public paint({ ratio, steps }: { ratio: number; steps: number[] }): void {
+  public paint({ ratio, steps }: { ratio: number; steps: number[] }) {
     this.steps = steps;
     const progression = steps;
     let ratioProgressive = 0;
@@ -119,6 +108,19 @@ class Scale extends Observer implements Scale {
       values[1] = this.steps[this.steps.length - 1];
     }
     return { handles, values };
+  }
+
+  private handleScaleValue(e: MouseEvent) {
+    const valueHTML = e.target as HTMLElement;
+    if (valueHTML.className !== 'scale__value') return;
+
+    const value = Number(valueHTML && valueHTML.textContent);
+    const { handles, values } = this.findClosestHandle(this.anchor, value);
+
+    this.emit('newValueFromScale', {
+      handles,
+      values,
+    });
   }
 }
 

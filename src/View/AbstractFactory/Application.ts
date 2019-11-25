@@ -50,7 +50,7 @@ class Application extends Observer {
     const handles = this.anchor.querySelectorAll('.slider__handle');
     const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
 
-    this.bindUserEvents({ wrapper, state });
+    this.bindEventListeners({ wrapper, state });
     this.emit('finishInit', { handles, edge });
   }
 
@@ -82,11 +82,11 @@ class Application extends Observer {
     return wrapper.offsetWidth - (handles[0] as HTMLElement).offsetWidth;
   }
 
-  private bindUserEvents(data: { wrapper: HTMLElement; state: VisualState }): void {
-    data.wrapper.addEventListener('mousedown', this.startListenMove.bind(this, data));
+  private bindEventListeners(data: { wrapper: HTMLElement; state: VisualState }) {
+    data.wrapper.addEventListener('mousedown', this.handleStartMove.bind(this, data));
   }
 
-  private startListenMove(data: { wrapper: HTMLElement; state: VisualState }, e: MouseEvent): void {
+  private handleStartMove(data: { wrapper: HTMLElement; state: VisualState }, e: MouseEvent) {
     e.preventDefault();
     if ((e.target as HTMLElement).className !== 'slider__handle') return;
 
@@ -101,19 +101,19 @@ class Application extends Observer {
       data,
     };
 
-    const onmousemove = this.listenMouseMove.bind(this, forMouseMove);
+    const handleMouseMove = this.handleMouseMove.bind(this, forMouseMove);
 
-    document.addEventListener('mousemove', onmousemove);
+    document.addEventListener('mousemove', handleMouseMove);
 
-    function listenMouseUp(): void {
-      document.removeEventListener('mousemove', onmousemove);
-      document.removeEventListener('mouseup', listenMouseUp);
+    function handleFinishMove() {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleFinishMove);
     }
 
-    document.addEventListener('mouseup', listenMouseUp);
+    document.addEventListener('mouseup', handleFinishMove);
   }
 
-  private listenMouseMove(this: Application, forMouseMove: forMouseMove, e: MouseEvent): void {
+  private handleMouseMove(this: Application, forMouseMove: forMouseMove, e: MouseEvent) {
     const shiftY = forMouseMove.shiftY;
     const shiftX = forMouseMove.shiftX;
     const data = forMouseMove.data;

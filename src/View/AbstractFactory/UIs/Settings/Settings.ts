@@ -15,7 +15,7 @@ class Settings extends Observer {
                                   <b class="settings__option">min</b>
                                 </label>
                                 <label class="settings__label"><input name="max" class="settings__input" type="number">
-                                  <b class="settings__option">max🔥</b>
+                                  <b class="settings__option">max</b>
                                 </label>
                                 <label class="settings__label"><input name="step" class="settings__input" type="number">
                                   <b class="settings__option">step</b>
@@ -76,7 +76,7 @@ class Settings extends Observer {
 
     this.settingsHTML = anchor.querySelector('.settings') as HTMLFormElement;
 
-    this.startListenEvents();
+    this.settingsHTML.addEventListener('change', this.handleChangeSettings.bind(this));
   }
 
   public paint(state: GState) {
@@ -114,45 +114,43 @@ class Settings extends Observer {
     }
   }
 
-  private startListenEvents() {
-    this.settingsHTML.addEventListener('change', e => {
-      const target = e.target as HTMLInputElement;
+  private handleChangeSettings(e: Event) {
+    const target = e.target as HTMLInputElement;
 
-      if (target.tagName === 'INPUT') {
-        const handles = this.anchor.querySelectorAll('.slider__handle');
+    if (target.tagName === 'INPUT') {
+      const handles = this.anchor.querySelectorAll('.slider__handle');
 
-        // разбивка на valueFrom и valueTo
-        if (target.name === 'valueFrom' || target.name === 'valueTo') {
-          const valueFrom = Number(this.settingsHTML.valueFrom.value);
-          const valueTo = Number(this.settingsHTML.valueTo.value);
+      // разбивка на valueFrom и valueTo
+      if (target.name === 'valueFrom' || target.name === 'valueTo') {
+        const valueFrom = Number(this.settingsHTML.valueFrom.value);
+        const valueTo = Number(this.settingsHTML.valueTo.value);
 
-          this.emit('newSettings', {
-            handles,
-            edge: this.state.edge,
-            values: [valueFrom, valueTo],
-          });
-        } else {
-          // для всех остальных значений
-          this.emit('newSettings', {
-            handles,
-            edge: this.state.edge,
-            [target.name]: Number(target.value),
-          });
-        }
-      } else if (target.tagName === 'SELECT') {
-        // для второй части настроек
-        const select = target;
-        let value;
-
-        if (select.value === 'true' || select.value === 'false') {
-          value = JSON.parse(select.value);
-        } else {
-          value = select.value;
-        }
-
-        this.emit('reCreateApp', { [target.name]: value });
+        this.emit('newSettings', {
+          handles,
+          edge: this.state.edge,
+          values: [valueFrom, valueTo],
+        });
+      } else {
+        // для всех остальных значений
+        this.emit('newSettings', {
+          handles,
+          edge: this.state.edge,
+          [target.name]: Number(target.value),
+        });
       }
-    });
+    } else if (target.tagName === 'SELECT') {
+      // для второй части настроек
+      const select = target;
+      let value;
+
+      if (select.value === 'true' || select.value === 'false') {
+        value = JSON.parse(select.value);
+      } else {
+        value = select.value;
+      }
+
+      this.emit('reCreateApp', { [target.name]: value });
+    }
   }
 }
 
