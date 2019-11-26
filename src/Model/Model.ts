@@ -1,10 +1,8 @@
 import Observer from '../Observer/Observer';
 import { defaultModel } from '../defaultModel';
-import { OnlyNumbers, ModelState, Temp } from '../helpers/interfaces';
+import { ModelState, OnlyNumbers, Temp } from '../helpers/interfaces';
 
-
-
-class Model extends Observer{
+class Model extends Observer {
   public state: ModelState = defaultModel;
   private mapOfHandless: Map<HTMLElement, OnlyNumbers> = new Map();
   private temp: Temp = {};
@@ -17,11 +15,11 @@ class Model extends Observer{
   public setState(state: ModelState): void {
     let tempState = {};
 
-    tempState = {...tempState, ...this.correctMinMax(state)};
-    tempState = {...tempState, ...this.correctStep(state)};
-    tempState = {...tempState, ...this.correctValues(state)};
+    tempState = { ...tempState, ...this.correctMinMax(state) };
+    tempState = { ...tempState, ...this.correctStep(state) };
+    tempState = { ...tempState, ...this.correctValues(state) };
 
-    this.state = {...this.state, ...tempState };
+    this.state = { ...this.state, ...tempState };
   }
 
   public initialCounting(temp: Temp): void {
@@ -35,11 +33,10 @@ class Model extends Observer{
       tempPxValue,
       tempValue,
     });
-    this.notifyAboutPxValueDone({ tempTarget, tempValue, tempPxValue  });
+    this.notifyAboutPxValueDone({ tempTarget, tempValue, tempPxValue });
   }
 
   public dynamicCounting(temp: Temp): void {
-
     const tempValue = this.countValueFromLeft(temp.left as number);
     const tempPxValue = this.countPxValueFromValue(tempValue);
 
@@ -55,7 +52,7 @@ class Model extends Observer{
   private getAvailableValue(obj: ModelState, prop: keyof typeof state): number | number[] {
     const state = this.state;
 
-    return (obj[prop] === undefined ? state[prop] : obj[prop]);
+    return obj[prop] === undefined ? state[prop] : obj[prop];
   }
 
   private updateArrayOfValues(): {} {
@@ -91,10 +88,7 @@ class Model extends Observer{
   private createArrayOfPxValues(): {} {
     const values = this.state.values;
 
-    return values
-      .map(value => this.countPxValueFromValue(value))
-      .sort((a, b) => a - b);
-
+    return values.map(value => this.countPxValueFromValue(value)).sort((a, b) => a - b);
   }
 
   private countValueFromLeft(left: number): number {
@@ -118,8 +112,8 @@ class Model extends Observer{
   }
 
   private correctMinMax(state: ModelState): {} {
-    let max = this.getAvailableValue(state, "max");
-    let min = this.getAvailableValue(state, "min");
+    let max = this.getAvailableValue(state, 'max');
+    let min = this.getAvailableValue(state, 'min');
 
     if (min > max) {
       const temp = min;
@@ -131,9 +125,9 @@ class Model extends Observer{
   }
 
   private correctStep(state: ModelState): {} {
-    let step = this.getAvailableValue(state, "step");
-    const max = this.getAvailableValue(state, "max") as number;
-    const min = this.getAvailableValue(state, "min") as number;
+    let step = this.getAvailableValue(state, 'step');
+    const max = this.getAvailableValue(state, 'max') as number;
+    const min = this.getAvailableValue(state, 'min') as number;
 
     if (step > max) {
       step = max;
@@ -153,22 +147,21 @@ class Model extends Observer{
 
   private correctValues(state: ModelState): {} {
     let values = this.getAvailableValue(state, 'values') as number[];
+    const max = this.getAvailableValue(state, 'max') as number;
 
-    values = values
-      .map(value => this.correctValueInTheRange(value, state))
-      .sort((a, b) => a - b);
+    values = values.map(value => this.correctValueInTheRange(value, state)).sort((a, b) => a - b);
 
     if (values.length === 1) {
-      values.push(state.max);
+      values.push(max);
     }
 
     return { values };
   }
 
   private correctValueInTheRange(value: number, state: ModelState): number {
-    const max = this.getAvailableValue(state, "max") as number;
-    const min = this.getAvailableValue(state, "min") as number;
-    const step = this.getAvailableValue(state, "step") as number;
+    const max = this.getAvailableValue(state, 'max') as number;
+    const min = this.getAvailableValue(state, 'min') as number;
+    const step = this.getAvailableValue(state, 'step') as number;
     const offset = min - Math.round(min / step) * step;
     const newValue = Math.round(value / step) * step + offset;
 

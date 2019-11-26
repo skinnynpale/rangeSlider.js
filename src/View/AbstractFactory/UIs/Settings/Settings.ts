@@ -7,6 +7,11 @@ class Settings extends Observer {
   private state!: GState;
   private anchor!: HTMLElement;
 
+  constructor() {
+    super();
+    this.handleChangeSettings = this.handleChangeSettings.bind(this);
+  }
+
   public init(anchor: HTMLElement) {
     this.anchor = anchor;
 
@@ -76,7 +81,7 @@ class Settings extends Observer {
 
     this.settingsHTML = anchor.querySelector('.settings') as HTMLFormElement;
 
-    this.settingsHTML.addEventListener('change', this.handleChangeSettings.bind(this));
+    this.settingsHTML.addEventListener('change', this.handleChangeSettings);
   }
 
   public paint(state: GState) {

@@ -20,7 +20,7 @@ $('#anchor').rangeSlider();
 $('#anchor').rangeSlider('updateVisual', { skin: 'red', direction: 'vertical' });
 $('#anchor').rangeSlider('reset');
 $('#anchor').rangeSlider('updateVisual', { skin: 'red', direction: 'horizontal', settings: true, scale: true });
-$('#anchor').rangeSlider('updateValues', null, { step: 20 });
+$('#anchor').rangeSlider('updateValues', null, { step: 20, values: [30] });
 $('#anchor').rangeSlider('onChange', null, null, event => console.log(event.detail));
 
 $('#anchor2').rangeSlider('init', {

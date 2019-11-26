@@ -15,6 +15,7 @@ class Scale extends Observer implements Scale {
 
   constructor(protected direction: string) {
     super();
+    this.handleScaleValue = this.handleScaleValue.bind(this);
   }
 
   public init(anchor: HTMLElement) {
@@ -25,7 +26,7 @@ class Scale extends Observer implements Scale {
     this.slider.insertAdjacentHTML('afterbegin', scaleWrapper);
     this.scaleHTML = this.anchor.querySelector('.scale') as HTMLElement;
 
-    this.scaleHTML.addEventListener('click', this.handleScaleValue.bind(this));
+    this.scaleHTML.addEventListener('click', this.handleScaleValue);
   }
 
   public paint({ ratio, steps }: { ratio: number; steps: number[] }) {
