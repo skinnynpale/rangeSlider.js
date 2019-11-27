@@ -125,21 +125,18 @@ class Model extends Observer {
   }
 
   private correctStep(state: ModelState): {} {
-    let step = this.getAvailableValue(state, 'step');
+    const step = this.getAvailableValue(state, 'step');
     const max = this.getAvailableValue(state, 'max') as number;
     const min = this.getAvailableValue(state, 'min') as number;
 
-    if (step > max) {
-      step = max;
-    }
+    const diff = Math.abs(max - min);
 
-    const diff = max - min;
     if (step > diff) {
-      step = diff;
+      return { step: diff };
     }
 
     if (step < 1) {
-      step = 1;
+      return { step: 1 };
     }
 
     return { step };
@@ -161,7 +158,7 @@ class Model extends Observer {
   private correctValueInTheRange(value: number, state: ModelState): number {
     const max = this.getAvailableValue(state, 'max') as number;
     const min = this.getAvailableValue(state, 'min') as number;
-    const step = this.getAvailableValue(state, 'step') as number;
+    const step = (this.getAvailableValue(state, 'step') as number) || 1;
     const offset = min - Math.round(min / step) * step;
     const newValue = Math.round(value / step) * step + offset;
 
