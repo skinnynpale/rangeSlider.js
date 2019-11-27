@@ -77,6 +77,14 @@ describe('Model', () => {
       values: [60],
     });
     expect(model.state.step).to.eq(1);
+
+    model = new Model({
+      step: 2,
+      max: 10,
+      min: 10,
+      values: [60],
+    });
+    expect(model.state.step).to.eq(1);
   });
   it('Должен вернуть откорректированное значение', () => {
     let model = new Model({

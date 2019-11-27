@@ -8,7 +8,11 @@ class Controller {
   private visualModel!: VisualModel;
   private app!: Application;
 
-  constructor(private anchor: HTMLElement, private settingsVisualModel: VisualState, private settingsModel: ModelState) {
+  constructor(
+    private anchor: HTMLElement,
+    private settingsVisualModel: VisualState,
+    private settingsModel: ModelState,
+  ) {
     this.initMVC(settingsVisualModel, settingsModel);
   }
 
@@ -27,7 +31,7 @@ class Controller {
     this.app.on('finishInit', obj => this.arrangeHandless(obj));
 
     this.model.on('pxValueDone', obj => this.app.paint(obj as Temp));
-    this.app.on('onUserMove', obj => this.model.dynamicCounting(obj as Temp));
+    this.app.on('onUserMove', obj => this.model.counting(obj as Temp));
 
     // Синхронизация настроек и состояния
     this.app.UIs.settings &&
@@ -44,13 +48,12 @@ class Controller {
     this.model.on(
       'pxValueDone',
       () =>
-        this.app.UIs.settings &&
-        this.app.UIs.settings.paint({ ...this.model.state, ...this.visualModel.state } as any),
+        this.app.UIs.settings && this.app.UIs.settings.paint({ ...this.model.state, ...this.visualModel.state } as any),
     );
 
     // Пересоздать слайдер
     this.app.UIs.settings &&
-      this.app.UIs.settings.on('reCreateApp', (newVisualModel) =>
+      this.app.UIs.settings.on('reCreateApp', newVisualModel =>
         this.reCreateApplication(newVisualModel as VisualState),
       );
 
@@ -61,7 +64,7 @@ class Controller {
 
     // Нажатия по значениям на шкале
     this.app.UIs.scale &&
-      this.app.UIs.scale.on('newValueFromScale', (obj) => {
+      this.app.UIs.scale.on('newValueFromScale', obj => {
         this.model.setState(obj as ModelState);
         this.arrangeHandless(obj);
       });
@@ -70,7 +73,7 @@ class Controller {
   // Расстановка бегунков
   private arrangeHandless({ edge, handles }: any): void {
     for (let i = 0; i < handles.length; i += 1) {
-      this.model.initialCounting({
+      this.model.counting({
         tempEdge: edge,
         tempTarget: handles[i],
         tempValue: this.model.state.values[i],

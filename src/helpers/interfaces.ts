@@ -32,7 +32,6 @@ interface Temp {
   tempTarget?: HTMLElement;
   tempPxValues?: number[];
   values?: number[];
-
 }
 
 interface OnlyNumbers {
@@ -75,5 +74,5 @@ export {
   Temp,
   forMouseMove,
   directions,
-  types
+  types,
 };
