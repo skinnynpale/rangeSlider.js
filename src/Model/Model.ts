@@ -39,7 +39,7 @@ class Model extends Observer {
 
   private findTempValue(temp: Temp) {
     if (temp.tempValue !== undefined) {
-      return this.correctValueInTheRange(temp.tempValue, this.state);
+      return temp.tempValue;
     } else if (temp.left !== undefined) {
       this.state = { ...this.state, ...this.updateArrayOfValues() };
       return this.countValueFromLeft(temp.left);
@@ -91,26 +91,15 @@ class Model extends Observer {
     const state = this.state;
     const value = Math.round(left / this.getRatio()) * state.step + state.min;
 
-    return this.correctValueInTheRange(value, this.state);
+    return this.correctValueInTheRange(value);
   }
 
   private notifyAboutPxValueDone(state: Temp): void {
-    console.log({
-      tempValue: state.tempValue,
-      tempPxValue: state.tempPxValue,
-      tempPxValues: this.createArrayOfPxValues(),
-      steps: this.createSteps(this.state),
-      values: this.state.values,
-      tempTarget: state.tempTarget,
-      edge: this.edge,
-      ratio: this.getRatio(),
-    });
-
     this.emit('pxValueDone', {
       tempValue: state.tempValue,
       tempPxValue: state.tempPxValue,
       tempPxValues: this.createArrayOfPxValues(),
-      steps: this.createSteps(this.state),
+      steps: this.createSteps(),
       values: this.state.values,
       tempTarget: state.tempTarget,
       edge: this.edge,
@@ -149,22 +138,19 @@ class Model extends Observer {
   }
 
   private correctValues(state: ModelState): {} {
-    let values = state.values === undefined ? this.state.values : state.values;
-    values = values.map(value => this.correctValueInTheRange(value, state)).sort((a, b) => a - b);
+    const values = state.values === undefined ? this.state.values : state.values;
+    const newValues = values.map(value => this.correctValueInTheRange(value)).sort((a, b) => a - b);
 
     const { max } = this.state;
-    if (values.length === 1) {
-      values.push(max);
+    if (newValues.length === 1) {
+      newValues.push(max);
     }
 
-    return { values };
+    return { values: newValues };
   }
 
-  private correctValueInTheRange(value: number, state: ModelState): number {
-    const max = state.max === undefined ? this.state.max : state.max;
-    const min = state.min === undefined ? this.state.min : state.min;
-    const step = (state.step === undefined ? this.state.step : state.step) || 1;
-
+  private correctValueInTheRange(value: number): number {
+    const { step, min, max } = this.state;
     const offset = min - Math.round(min / step) * step;
     const newValue = Math.round(value / step) * step + offset;
 
@@ -179,11 +165,8 @@ class Model extends Observer {
     return newValue;
   }
 
-  private createSteps(state: ModelState): number[] {
-    const max = state.max === undefined ? this.state.max : state.max;
-    const min = state.min === undefined ? this.state.min : state.min;
-    const step = (state.step === undefined ? this.state.step : state.step) || 1;
-
+  private createSteps(): number[] {
+    const { min, max, step } = this.state;
     const steps = [];
 
     for (let i = min; i <= max; i += step) {
