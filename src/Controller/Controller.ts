@@ -16,7 +16,7 @@ class Controller {
     this.initMVC(settingsVisualModel, settingsModel);
   }
 
-  private initMVC(settingsVisualModel: VisualState, settingsModel: ModelState): void {
+  private initMVC(settingsVisualModel: VisualState, settingsModel: ModelState) {
     this.model = new Model(settingsModel);
     this.visualModel = new VisualModel();
     this.visualModel.setState(settingsVisualModel);
@@ -28,7 +28,7 @@ class Controller {
   }
 
   private bindEvents(): void {
-    this.app.on('finishInit', obj => this.arrangeHandless(obj));
+    this.app.on('finishInit', obj => this.arrangeHandles(obj as { edge: number; handles: NodeList }));
 
     this.model.on('pxValueDone', obj => this.app.paint(obj as Temp));
     this.app.on('onUserMove', obj => this.model.counting(obj as Temp));
@@ -37,10 +37,10 @@ class Controller {
     this.app.UIs.settings &&
       this.app.UIs.settings.on('newSettings', obj => {
         this.model.setState(obj as ModelState);
-        this.arrangeHandless(obj);
+        this.arrangeHandles(obj as { edge: number; handles: NodeList });
 
         if ((obj as ModelState).step) {
-          this.reCreateApplication(this.visualModel.state);
+          this.reCreateApplication();
         }
       });
 
@@ -53,9 +53,10 @@ class Controller {
 
     // Пересоздать слайдер
     this.app.UIs.settings &&
-      this.app.UIs.settings.on('reCreateApp', newVisualModel =>
-        this.reCreateApplication(newVisualModel as VisualState),
-      );
+      this.app.UIs.settings.on('reCreateApp', newVisualModel => {
+        this.visualModel.setState(newVisualModel);
+        this.reCreateApplication();
+      });
 
     // События для плагина
     this.model.on('pxValueDone', () =>
@@ -66,34 +67,26 @@ class Controller {
     this.app.UIs.scale &&
       this.app.UIs.scale.on('newValueFromScale', obj => {
         this.model.setState(obj as ModelState);
-        this.arrangeHandless(obj);
+        this.arrangeHandles(obj as { edge: number; handles: NodeList });
       });
   }
 
   // Расстановка бегунков
-  private arrangeHandless({ edge, handles }: any): void {
+  private arrangeHandles({ edge, handles }: { edge: number; handles: NodeList }) {
     for (let i = 0; i < handles.length; i += 1) {
       this.model.counting({
         tempEdge: edge,
-        tempTarget: handles[i],
+        tempTarget: handles[i] as HTMLElement,
         tempValue: this.model.state.values[i],
       });
     }
   }
 
-  private reCreateApplication(newVisualModel: VisualState): void {
-    const settingsVisualModel = Object.assign(this.settingsVisualModel, newVisualModel);
-    const settingsModel = this.saveOldModel(this.settingsModel, this.model.state);
+  private reCreateApplication(newVisualModel: VisualState = this.visualModel.state) {
+    const settingsModel = { ...this.settingsModel, ...this.model.state };
 
     this.app.removeHTML();
-    this.initMVC(settingsVisualModel, settingsModel);
-  }
-
-  private saveOldModel(target: any, obj: any) {
-    for (const prop in target) {
-      target[prop] = obj[prop];
-    }
-    return target;
+    this.initMVC(newVisualModel, settingsModel);
   }
 }
 

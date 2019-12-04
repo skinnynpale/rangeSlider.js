@@ -50,7 +50,7 @@ interface UIs {
   settings?: Settings;
 }
 
-type EventCallback = (data?: {}) => void;
+type EventCallback = (data?: any) => void;
 
 interface Events {
   [key: string]: EventCallback[];
