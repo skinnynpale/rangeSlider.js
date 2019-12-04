@@ -4,7 +4,7 @@ import { ModelState, OnlyNumbers, Temp } from '../helpers/interfaces';
 
 class Model extends Observer {
   public state: ModelState = defaultModel;
-  private mapOfHandless: Map<HTMLElement, OnlyNumbers> = new Map();
+  mapOfHandles: Map<HTMLElement, OnlyNumbers> = new Map();
   private edge = 0;
 
   constructor(state: ModelState) {
@@ -25,7 +25,7 @@ class Model extends Observer {
     const tempPxValue = this.countPxValueFromValue(tempValue);
 
     const tempTarget = temp.tempTarget as HTMLElement;
-    this.mapOfHandless.set(tempTarget, {
+    this.mapOfHandles.set(tempTarget, {
       tempValue,
       tempPxValue,
     });
@@ -41,7 +41,6 @@ class Model extends Observer {
     if (temp.tempValue !== undefined) {
       return temp.tempValue;
     } else if (temp.left !== undefined) {
-      this.state = { ...this.state, ...this.updateArrayOfValues() };
       return this.countValueFromLeft(temp.left);
     }
     return 0;
@@ -50,13 +49,13 @@ class Model extends Observer {
   private updateArrayOfValues(): {} {
     const values = [];
 
-    for (const handleObj of Array.from(this.mapOfHandless.values())) {
+    for (const handleObj of Array.from(this.mapOfHandles.values())) {
       values.push(handleObj.tempValue);
     }
 
     values.sort((a, b) => a - b);
 
-    if (this.mapOfHandless.size === 1) {
+    if (this.mapOfHandles.size === 1) {
       if (this.state.max != null) {
         values[1] = this.state.max;
       }
@@ -108,13 +107,11 @@ class Model extends Observer {
   }
 
   private correctMinMax(state: ModelState): {} {
-    let max = state.max === undefined ? this.state.max : state.max;
-    let min = state.min === undefined ? this.state.min : state.min;
+    const max = state.max === undefined ? this.state.max : state.max;
+    const min = state.min === undefined ? this.state.min : state.min;
 
     if (min >= max) {
-      const temp = min;
-      min = max;
-      max = temp;
+      return { min: max, max: min };
     }
 
     return { min, max };
