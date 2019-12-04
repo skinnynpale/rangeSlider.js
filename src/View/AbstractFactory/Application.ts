@@ -90,14 +90,14 @@ class Application extends Observer {
     e.preventDefault();
     if ((e.target as HTMLElement).className !== 'slider__handle') return;
 
-    const tempTarget = e.target as HTMLElement;
+    const target = e.target as HTMLElement;
     const shiftX = e.offsetX;
-    const shiftY = tempTarget.offsetHeight - e.offsetY;
+    const shiftY = target.offsetHeight - e.offsetY;
 
     const forMouseMove: forMouseMove = {
       shiftX,
       shiftY,
-      tempTarget,
+      target,
       data,
     };
 
@@ -117,7 +117,7 @@ class Application extends Observer {
     const shiftY = forMouseMove.shiftY;
     const shiftX = forMouseMove.shiftX;
     const data = forMouseMove.data;
-    const tempTarget = forMouseMove.tempTarget;
+    const target = forMouseMove.target;
 
     let left;
     if (data.state.direction === constants.DIRECTION_VERTICAL) {
@@ -126,7 +126,7 @@ class Application extends Observer {
       left = e.clientX - shiftX - data.wrapper.offsetLeft;
     }
 
-    this.emit('onUserMove', { left, tempTarget });
+    this.emit('onUserMove', { left, target });
   }
 }
 

@@ -25,12 +25,12 @@ interface VisualState {
 }
 
 interface Temp {
-  tempPxValue?: number;
-  tempValue?: number;
-  tempEdge?: number;
+  pxValue?: number;
+  value?: number;
+  edge?: number;
   left?: number;
-  tempTarget?: HTMLElement;
-  tempPxValues?: number[];
+  target?: HTMLElement;
+  pxValues?: number[];
   values?: number[];
 }
 
@@ -60,7 +60,7 @@ type forMouseMove = {
   shiftX: number;
   shiftY: number;
   data: { wrapper: HTMLElement; state: VisualState };
-  tempTarget: HTMLElement;
+  target: HTMLElement;
 };
 
 export {

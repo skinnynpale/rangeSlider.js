@@ -13,26 +13,26 @@ class Tip implements Tip {
 }
 
 class SingleTip extends Tip {
-  public paint({ tempTarget, tempValue }: Temp): void {
-    if (tempTarget === undefined) return;
+  public paint({ target, value }: Temp): void {
+    if (target === undefined) return;
 
-    const tip = tempTarget.querySelector('.slider__tip') as HTMLElement;
-    tip.setAttribute('data-value', `${tempValue}`);
+    const tip = target.querySelector('.slider__tip') as HTMLElement;
+    tip.setAttribute('data-value', `${value}`);
   }
 }
 class IntervalTip extends Tip {
-  public paint({ tempTarget, tempValue, tempPxValues, values }: Temp): void {
-    if (tempTarget === undefined || tempPxValues === undefined) return;
+  public paint({ target, value, pxValues, values }: Temp): void {
+    if (target === undefined || pxValues === undefined) return;
 
-    const tip = tempTarget.querySelector('.slider__tip') as HTMLElement;
-    tip.setAttribute('data-value', `${tempValue}`);
+    const tip = target.querySelector('.slider__tip') as HTMLElement;
+    tip.setAttribute('data-value', `${value}`);
 
-    const allTips = tempTarget.parentElement && tempTarget.parentElement.querySelectorAll('.slider__tip');
+    const allTips = target.parentElement && target.parentElement.querySelectorAll('.slider__tip');
     const anotherTip = allTips && (Array.from(allTips).find((item: Element) => item !== tip) as HTMLElement);
 
     if (!anotherTip) return;
 
-    const distance = tempPxValues[1] - tempPxValues[0];
+    const distance = pxValues[1] - pxValues[0];
 
     if (distance <= anotherTip.offsetWidth && distance <= tip.offsetWidth) {
       if (tip.classList.contains('slider__tip--extended')) {

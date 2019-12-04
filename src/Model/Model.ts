@@ -12,34 +12,34 @@ class Model extends Observer {
     this.setState(state);
   }
 
-  public setState(state: ModelState): void {
+  public setState(state: ModelState) {
     this.state = { ...this.state, ...this.correctMinMax(state) };
     this.state = { ...this.state, ...this.correctStep(state) };
     this.state = { ...this.state, ...this.correctValues(state) };
   }
 
   public counting(temp: Temp) {
-    this.edge = temp.tempEdge || this.edge;
+    this.edge = temp.edge || this.edge;
 
-    const tempValue = this.findTempValue(temp);
-    const tempPxValue = this.countPxValueFromValue(tempValue);
+    const value = this.findTempValue(temp);
+    const pxValue = this.countPxValueFromValue(value);
 
-    const tempTarget = temp.tempTarget as HTMLElement;
-    this.mapOfHandles.set(tempTarget, {
-      tempValue,
-      tempPxValue,
+    const target = temp.target as HTMLElement;
+    this.mapOfHandles.set(target, {
+      value,
+      pxValue,
     });
 
     if (temp.left !== undefined) {
       this.state = { ...this.state, ...this.updateArrayOfValues() };
     }
 
-    this.notifyAboutPxValueDone({ tempValue, tempPxValue, tempTarget });
+    this.notifyAboutPxValueDone({ value, pxValue, target });
   }
 
   private findTempValue(temp: Temp) {
-    if (temp.tempValue !== undefined) {
-      return temp.tempValue;
+    if (temp.value !== undefined) {
+      return temp.value;
     } else if (temp.left !== undefined) {
       return this.countValueFromLeft(temp.left);
     }
@@ -50,7 +50,7 @@ class Model extends Observer {
     const values = [];
 
     for (const handleObj of Array.from(this.mapOfHandles.values())) {
-      values.push(handleObj.tempValue);
+      values.push(handleObj.value);
     }
 
     values.sort((a, b) => a - b);
@@ -95,18 +95,18 @@ class Model extends Observer {
 
   private notifyAboutPxValueDone(state: Temp): void {
     this.emit('pxValueDone', {
-      tempValue: state.tempValue,
-      tempPxValue: state.tempPxValue,
-      tempPxValues: this.createArrayOfPxValues(),
+      value: state.value,
+      pxValue: state.pxValue,
+      pxValues: this.createArrayOfPxValues(),
       steps: this.createSteps(),
       values: this.state.values,
-      tempTarget: state.tempTarget,
+      target: state.target,
       edge: this.edge,
       ratio: this.getRatio(),
     });
   }
 
-  private correctMinMax(state: ModelState): {} {
+  private correctMinMax(state: ModelState) {
     const max = state.max === undefined ? this.state.max : state.max;
     const min = state.min === undefined ? this.state.min : state.min;
 
@@ -117,7 +117,7 @@ class Model extends Observer {
     return { min, max };
   }
 
-  private correctStep(state: ModelState): {} {
+  private correctStep(state: ModelState) {
     const step = state.step === undefined ? this.state.step : state.step;
     const { min, max } = this.state;
 
@@ -134,7 +134,7 @@ class Model extends Observer {
     return { step };
   }
 
-  private correctValues(state: ModelState): {} {
+  private correctValues(state: ModelState) {
     const values = state.values === undefined ? this.state.values : state.values;
     const newValues = values.map(value => this.correctValueInTheRange(value)).sort((a, b) => a - b);
 

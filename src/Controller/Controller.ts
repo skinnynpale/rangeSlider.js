@@ -75,9 +75,9 @@ class Controller {
   private arrangeHandles({ edge, handles }: { edge: number; handles: NodeList }) {
     for (let i = 0; i < handles.length; i += 1) {
       this.model.counting({
-        tempEdge: edge,
-        tempTarget: handles[i] as HTMLElement,
-        tempValue: this.model.state.values[i],
+        edge: edge,
+        target: handles[i] as HTMLElement,
+        value: this.model.state.values[i],
       });
     }
   }

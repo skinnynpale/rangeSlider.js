@@ -2,7 +2,7 @@ import { Temp } from '../../../../helpers/interfaces';
 import { constants } from '../../../../helpers/constants';
 
 interface Bar {
-  paint({ tempPxValue, tempPxValues, tempValue, tempTarget }: Temp): void;
+  paint({ pxValue, pxValues, value, target }: Temp): void;
   init(anchor: HTMLElement): void;
 }
 
@@ -16,31 +16,31 @@ class Bar implements Bar {
 }
 
 class SingleBar extends Bar {
-  public paint({ tempPxValue, tempTarget }: Temp): void {
-    if (tempPxValue === undefined || tempTarget === undefined) return;
+  public paint({ pxValue, target }: Temp): void {
+    if (pxValue === undefined || target === undefined) return;
 
-    const bar = tempTarget.parentElement && (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);
+    const bar = target.parentElement && (target.parentElement.querySelector('.slider__bar') as HTMLElement);
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
-      bar && (bar.style.width = `${tempPxValue + 10}px`);
+      bar && (bar.style.width = `${pxValue + 10}px`);
     } else if (this.direction === constants.DIRECTION_VERTICAL) {
-      bar && (bar.style.height = `${tempPxValue + 10}px`);
+      bar && (bar.style.height = `${pxValue + 10}px`);
     }
   }
 }
 
 class IntervalBar extends Bar {
-  public paint({ tempPxValues, tempTarget }: Temp): void {
-    if (tempPxValues === undefined || tempTarget === undefined) return;
+  public paint({ pxValues, target }: Temp): void {
+    if (pxValues === undefined || target === undefined) return;
 
-    const bar = tempTarget.parentElement && (tempTarget.parentElement.querySelector('.slider__bar') as HTMLElement);
+    const bar = target.parentElement && (target.parentElement.querySelector('.slider__bar') as HTMLElement);
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
-      bar && (bar.style.left = `${tempPxValues[0]}px`);
-      bar && (bar.style.width = `${tempPxValues[1] - tempPxValues[0] + 10}px`);
+      bar && (bar.style.left = `${pxValues[0]}px`);
+      bar && (bar.style.width = `${pxValues[1] - pxValues[0] + 10}px`);
     } else if (this.direction === constants.DIRECTION_VERTICAL) {
-      bar && (bar.style.bottom = `${tempPxValues[0]}px`);
-      bar && (bar.style.height = `${tempPxValues[1] - tempPxValues[0] + 10}px`);
+      bar && (bar.style.bottom = `${pxValues[0]}px`);
+      bar && (bar.style.height = `${pxValues[1] - pxValues[0] + 10}px`);
     }
   }
 }

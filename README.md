@@ -104,7 +104,7 @@ $("#anchor").rangeSlider("onChange", (event) => console.log(event.detail));
 
 1. `Model` - отвечает за хранение всех _числовых_ и _временных (temp)_ значений, а так же все рассчеты
 
-   > Например: Model.state: { step: 5, min: 10, max: 90, tempValue: 13, tempPxValue: 60 ... }
+   > Например: Model.state: { step: 5, min: 10, max: 90, value: 13, pxValue: 60 ... }
 2. `VisualModel` - отвечает за хранение информации о графическом состоянии слайдера
 
    > Например: VisualModel.state: { direction: "vertical", tip: true, bar: true ... }

@@ -3,7 +3,7 @@ import { Temp } from '../../../../helpers/interfaces';
 import { constants } from '../../../../helpers/constants';
 
 interface Handle {
-  paint({ tempTarget, tempPxValue }: Temp): void;
+  paint({ target, pxValue }: Temp): void;
   init(anchor: HTMLElement): void;
   append(component: Tip): void;
 }
@@ -30,13 +30,13 @@ class Handle implements Handle {
 }
 
 class SingleHandle extends Handle  {
-  public paint({ tempTarget, tempPxValue }: Temp): void {
-    if (!tempTarget) return;
+  public paint({ target, pxValue }: Temp): void {
+    if (!target) return;
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
-      tempTarget.style.left = `${tempPxValue}px`;
+      target.style.left = `${pxValue}px`;
     } else if (this.direction === constants.DIRECTION_VERTICAL) {
-      tempTarget.style.bottom = `${tempPxValue}px`;
+      target.style.bottom = `${pxValue}px`;
     }
   }
 }
@@ -50,13 +50,13 @@ class IntervalHandle extends Handle {
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
-  public paint({ tempTarget, tempPxValue }: Temp): void {
-    if (!tempTarget) return;
+  public paint({ target, pxValue }: Temp): void {
+    if (!target) return;
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
-      tempTarget.style.left = `${tempPxValue}px`;
+      target.style.left = `${pxValue}px`;
     } else if (this.direction === constants.DIRECTION_VERTICAL) {
-      tempTarget.style.bottom = `${tempPxValue}px`;
+      target.style.bottom = `${pxValue}px`;
     }
   }
 }
