@@ -15,7 +15,7 @@ $('#anchorDestroy').rangeSlider('destroy');
 //
 $('#anchor').rangeSlider();
 //
-// // Test Methods
+// Test Methods
 $('#anchor').rangeSlider({ skin: 'red', direction: 'vertical' }, { step: 20, values: [30] });
 $('#anchor').rangeSlider({ skin: 'green', direction: 'horizontal' });
 $('#anchor').rangeSlider('reset');
