@@ -5,7 +5,7 @@ import { GUIFactory, IntervalFactory, SingleFactory } from './Factories/Factorie
 
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { directions, forMouseMove, Temp, UIs, VisualState } from '../../helpers/interfaces';
+import { directions, forMouseMove, ViewValues, UIs, VisualState } from '../../helpers/interfaces';
 
 /**
  * Application
@@ -54,7 +54,7 @@ class Application extends Observer {
     this.emit('finishInit', { handles, edge });
   }
 
-  public paint(state: Temp): void {
+  public paint(state: ViewValues): void {
     const gui = Object.keys(this.UIs);
 
     for (const UI of gui) {

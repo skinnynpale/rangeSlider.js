@@ -24,7 +24,7 @@ interface VisualState {
   settings?: boolean;
 }
 
-interface Temp {
+interface ViewValues {
   pxValue?: number;
   value?: number;
   edge?: number;
@@ -71,7 +71,7 @@ export {
   Events,
   EventCallback,
   ModelState,
-  Temp,
+  ViewValues,
   forMouseMove,
   directions,
   types,

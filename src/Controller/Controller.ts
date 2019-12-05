@@ -1,7 +1,7 @@
 import Model from '../Model/Model';
 import VisualModel from '../Model/VisualModel';
 import { Application, ApplicationConfigurator } from '../View/AbstractFactory/Application';
-import { ModelState, Temp, VisualState } from '../helpers/interfaces';
+import { ModelState, ViewValues, VisualState } from '../helpers/interfaces';
 
 class Controller {
   private model!: Model;
@@ -30,8 +30,8 @@ class Controller {
   private bindEvents(): void {
     this.app.on('finishInit', obj => this.arrangeHandles(obj as { edge: number; handles: NodeList }));
 
-    this.model.on('pxValueDone', obj => this.app.paint(obj as Temp));
-    this.app.on('onUserMove', obj => this.model.counting(obj as Temp));
+    this.model.on('pxValueDone', obj => this.app.paint(obj as ViewValues));
+    this.app.on('onUserMove', obj => this.model.counting(obj as ViewValues));
 
     // Синхронизация настроек и состояния
     this.app.UIs.settings &&

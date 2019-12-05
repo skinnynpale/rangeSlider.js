@@ -1,6 +1,6 @@
 import Observer from '../Observer/Observer';
 import { defaultModel } from '../defaultModel';
-import { ModelState, OnlyNumbers, Temp } from '../helpers/interfaces';
+import { ModelState, OnlyNumbers, ViewValues } from '../helpers/interfaces';
 
 class Model extends Observer {
   public state: ModelState = defaultModel;
@@ -19,30 +19,30 @@ class Model extends Observer {
     this.state = { ...this.state, min, max, step, values };
   }
 
-  public counting(temp: Temp) {
-    this.edge = temp.edge || this.edge;
+  public counting(viewValues: ViewValues) {
+    this.edge = viewValues.edge || this.edge;
 
-    const value = this.findTempValue(temp);
+    const value = this.findViewValue(viewValues);
     const pxValue = this.countPxValueFromValue(value);
 
-    const target = temp.target as HTMLElement;
+    const target = viewValues.target as HTMLElement;
     this.mapOfHandles.set(target, {
       value,
       pxValue,
     });
 
-    if (temp.left !== undefined) {
+    if (viewValues.left !== undefined) {
       this.state = { ...this.state, ...this.updateArrayOfValues() };
     }
 
     this.notifyAboutPxValueDone({ value, pxValue, target });
   }
 
-  private findTempValue(temp: Temp) {
-    if (temp.value !== undefined) {
-      return temp.value;
-    } else if (temp.left !== undefined) {
-      return this.countValueFromLeft(temp.left);
+  private findViewValue(viewValues: ViewValues) {
+    if (viewValues.value !== undefined) {
+      return viewValues.value;
+    } else if (viewValues.left !== undefined) {
+      return this.countValueFromLeft(viewValues.left);
     }
     return 0;
   }
@@ -94,7 +94,7 @@ class Model extends Observer {
     return this.correctValueInTheRange(value);
   }
 
-  private notifyAboutPxValueDone(state: Temp): void {
+  private notifyAboutPxValueDone(state: ViewValues): void {
     this.emit('pxValueDone', {
       value: state.value,
       pxValue: state.pxValue,

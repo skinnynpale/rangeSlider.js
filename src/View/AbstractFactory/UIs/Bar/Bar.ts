@@ -1,8 +1,8 @@
-import { Temp } from '../../../../helpers/interfaces';
+import { ViewValues } from '../../../../helpers/interfaces';
 import { constants } from '../../../../helpers/constants';
 
 interface Bar {
-  paint({ pxValue, pxValues, value, target }: Temp): void;
+  paint({ pxValue, pxValues, value, target }: ViewValues): void;
   init(anchor: HTMLElement): void;
 }
 
@@ -16,7 +16,7 @@ class Bar implements Bar {
 }
 
 class SingleBar extends Bar {
-  public paint({ pxValue, target }: Temp): void {
+  public paint({ pxValue, target }: ViewValues): void {
     if (pxValue === undefined || target === undefined) return;
 
     const bar = target.parentElement && (target.parentElement.querySelector('.slider__bar') as HTMLElement);
@@ -30,7 +30,7 @@ class SingleBar extends Bar {
 }
 
 class IntervalBar extends Bar {
-  public paint({ pxValues, target }: Temp): void {
+  public paint({ pxValues, target }: ViewValues): void {
     if (pxValues === undefined || target === undefined) return;
 
     const bar = target.parentElement && (target.parentElement.querySelector('.slider__bar') as HTMLElement);

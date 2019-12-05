@@ -1,4 +1,4 @@
-import { Temp } from '../../../../helpers/interfaces';
+import { ViewValues } from '../../../../helpers/interfaces';
 
 interface Tip {
   init(handle: HTMLElement): void;
@@ -13,7 +13,7 @@ class Tip implements Tip {
 }
 
 class SingleTip extends Tip {
-  public paint({ target, value }: Temp): void {
+  public paint({ target, value }: ViewValues): void {
     if (target === undefined) return;
 
     const tip = target.querySelector('.slider__tip') as HTMLElement;
@@ -21,7 +21,7 @@ class SingleTip extends Tip {
   }
 }
 class IntervalTip extends Tip {
-  public paint({ target, value, pxValues, values }: Temp): void {
+  public paint({ target, value, pxValues, values }: ViewValues): void {
     if (target === undefined || pxValues === undefined) return;
 
     const tip = target.querySelector('.slider__tip') as HTMLElement;

@@ -1,9 +1,9 @@
 import { Tip } from '../Tip/Tip';
-import { Temp } from '../../../../helpers/interfaces';
+import { ViewValues } from '../../../../helpers/interfaces';
 import { constants } from '../../../../helpers/constants';
 
 interface Handle {
-  paint({ target, pxValue }: Temp): void;
+  paint({ target, pxValue }: ViewValues): void;
   init(anchor: HTMLElement): void;
   append(component: Tip): void;
 }
@@ -30,7 +30,7 @@ class Handle implements Handle {
 }
 
 class SingleHandle extends Handle  {
-  public paint({ target, pxValue }: Temp): void {
+  public paint({ target, pxValue }: ViewValues): void {
     if (!target) return;
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
@@ -50,7 +50,7 @@ class IntervalHandle extends Handle {
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
-  public paint({ target, pxValue }: Temp): void {
+  public paint({ target, pxValue }: ViewValues): void {
     if (!target) return;
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
