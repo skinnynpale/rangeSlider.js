@@ -3,18 +3,10 @@ import Settings from '../UIs/Settings/Settings';
 
 import { IntervalTip, SingleTip, Tip } from '../UIs/Tip/Tip';
 
-import {
-  Bar,
-  SingleBar,
-  IntervalBar
-} from '../UIs/Bar/Bar';
-import {
-  Handle,
-  SingleHandle,
-  IntervalHandle
-} from '../UIs/Handle/Handle';
+import { Bar, SingleBar, IntervalBar } from '../UIs/Bar/Bar';
+import { Handle, SingleHandle, IntervalHandle } from '../UIs/Handle/Handle';
 import { Scale } from '../UIs/Scale/Scale';
-import { directions } from '../../../helpers/interfaces';
+import { Directions } from '../../../helpers/interfaces';
 
 interface GUIFactory {
   createBar(): Bar;
@@ -30,7 +22,7 @@ interface GUIFactory {
  */
 
 class Factory {
-  constructor(protected direction: directions) {}
+  constructor(protected direction: Directions) {}
 
   public createTemplate(): Template {
     return new Template();
@@ -77,8 +69,4 @@ class IntervalFactory extends Factory implements GUIFactory {
   }
 }
 
-export {
-  GUIFactory,
-  SingleFactory,
-  IntervalFactory
-};
+export { GUIFactory, SingleFactory, IntervalFactory };

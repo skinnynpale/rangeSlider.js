@@ -5,7 +5,7 @@ import { GUIFactory, IntervalFactory, SingleFactory } from './Factories/Factorie
 
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { directions, forMouseMove, ViewValues, UIs, VisualState } from '../../helpers/interfaces';
+import { Directions, ForMouseMove, ViewValues, UIs, VisualState } from '../../helpers/interfaces';
 
 /**
  * Application
@@ -94,7 +94,7 @@ class Application extends Observer {
     const shiftX = e.offsetX;
     const shiftY = target.offsetHeight - e.offsetY;
 
-    const forMouseMove: forMouseMove = {
+    const forMouseMove: ForMouseMove = {
       shiftX,
       shiftY,
       target,
@@ -113,7 +113,7 @@ class Application extends Observer {
     document.addEventListener('mouseup', handleFinishMove);
   }
 
-  private handleMouseMove(this: Application, forMouseMove: forMouseMove, e: MouseEvent) {
+  private handleMouseMove(this: Application, forMouseMove: ForMouseMove, e: MouseEvent) {
     const shiftY = forMouseMove.shiftY;
     const shiftX = forMouseMove.shiftX;
     const data = forMouseMove.data;
@@ -139,9 +139,9 @@ class ApplicationConfigurator {
     let factory;
 
     if (type === constants.TYPE_SINGLE) {
-      factory = new SingleFactory(direction as directions);
+      factory = new SingleFactory(direction as Directions);
     } else if (type === constants.TYPE_INTERVAL) {
-      factory = new IntervalFactory(direction as directions);
+      factory = new IntervalFactory(direction as Directions);
     } else {
       throw new Error(`Error! Unknown ${type} or ${direction}`);
     }

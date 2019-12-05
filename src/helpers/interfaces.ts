@@ -11,16 +11,16 @@ interface ModelState {
   values: number[];
 }
 
-type directions = 'horizontal' | 'vertical';
-type types = 'single' | 'interval';
+type Directions = 'horizontal' | 'vertical';
+type Types = 'single' | 'interval';
 
 interface VisualState {
   scale?: boolean;
-  direction?: directions;
+  direction?: Directions;
   skin?: 'green' | 'red';
   bar?: boolean;
   tip?: boolean;
-  type?: types;
+  type?: Types;
   settings?: boolean;
 }
 
@@ -56,7 +56,7 @@ interface Events {
   [key: string]: EventCallback[];
 }
 
-type forMouseMove = {
+type ForMouseMove = {
   shiftX: number;
   shiftY: number;
   data: { wrapper: HTMLElement; state: VisualState };
@@ -72,7 +72,7 @@ export {
   EventCallback,
   ModelState,
   ViewValues,
-  forMouseMove,
-  directions,
-  types,
+  ForMouseMove,
+  Directions,
+  Types,
 };
