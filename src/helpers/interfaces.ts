@@ -32,6 +32,7 @@ interface ViewValues {
   target?: HTMLElement;
   pxValues?: number[];
   values?: number[];
+  handles?: NodeList;
 }
 
 interface OnlyNumbers {

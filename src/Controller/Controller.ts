@@ -28,7 +28,7 @@ class Controller {
   }
 
   private bindEvents(): void {
-    this.app.on('finishInit', obj => this.arrangeHandles(obj as { edge: number; handles: NodeList }));
+    this.app.on('finishInit', obj => this.arrangeHandles(obj as ViewValues));
 
     this.model.on('pxValueDone', obj => this.app.paint(obj as ViewValues));
     this.app.on('onUserMove', obj => this.model.counting(obj as ViewValues));
@@ -37,7 +37,7 @@ class Controller {
     this.app.UIs.settings &&
       this.app.UIs.settings.on('newSettings', obj => {
         this.model.setState(obj as ModelState);
-        this.arrangeHandles(obj as { edge: number; handles: NodeList });
+        this.arrangeHandles(obj as ViewValues);
 
         if ((obj as ModelState).step) {
           this.reCreateApplication();
@@ -67,12 +67,14 @@ class Controller {
     this.app.UIs.scale &&
       this.app.UIs.scale.on('newValueFromScale', obj => {
         this.model.setState(obj as ModelState);
-        this.arrangeHandles(obj as { edge: number; handles: NodeList });
+        this.arrangeHandles(obj as ViewValues);
       });
   }
 
   // Расстановка бегунков
-  private arrangeHandles({ edge, handles }: { edge: number; handles: NodeList }) {
+  private arrangeHandles({ edge, handles }: ViewValues) {
+    if (!handles) return;
+
     for (let i = 0; i < handles.length; i += 1) {
       this.model.counting({
         edge: edge,
