@@ -13,9 +13,10 @@ class Model extends Observer {
   }
 
   public setState(state: ModelState) {
-    this.state = { ...this.state, ...this.correctMinMax(state) };
-    this.state = { ...this.state, ...this.correctStep(state) };
-    this.state = { ...this.state, ...this.correctValues(state) };
+    const { min, max } = this.correctMinMax({ min: state.min, max: state.max });
+    const { step } = this.correctStep({ step: state.step, min, max });
+    const { values } = this.correctValues({ values: state.values, min, max, step });
+    this.state = { ...this.state, min, max, step, values };
   }
 
   public counting(temp: Temp) {
@@ -106,7 +107,7 @@ class Model extends Observer {
     });
   }
 
-  private correctMinMax(state: ModelState) {
+  private correctMinMax(state: { min: number; max: number }) {
     const max = state.max === undefined ? this.state.max : state.max;
     const min = state.min === undefined ? this.state.min : state.min;
 
@@ -117,9 +118,9 @@ class Model extends Observer {
     return { min, max };
   }
 
-  private correctStep(state: ModelState) {
+  private correctStep(state: { min: number; max: number; step: number }) {
     const step = state.step === undefined ? this.state.step : state.step;
-    const { min, max } = this.state;
+    const { min, max } = state;
 
     const diff = Math.abs(max - min) || 1;
 
@@ -134,11 +135,11 @@ class Model extends Observer {
     return { step };
   }
 
-  private correctValues(state: ModelState) {
+  private correctValues(state: { min: number; max: number; values: number[]; step: number }) {
     const values = state.values === undefined ? this.state.values : state.values;
-    const newValues = values.map(value => this.correctValueInTheRange(value)).sort((a, b) => a - b);
+    const newValues = values.map(value => this.correctValueInTheRange(value, state)).sort((a, b) => a - b);
 
-    const { max } = this.state;
+    const { max } = state;
     if (newValues.length === 1) {
       newValues.push(max);
     }
@@ -146,8 +147,8 @@ class Model extends Observer {
     return { values: newValues };
   }
 
-  private correctValueInTheRange(value: number): number {
-    const { step, min, max } = this.state;
+  private correctValueInTheRange(value: number, state: ModelState = this.state): number {
+    const { step, min, max } = state;
     const offset = min - Math.round(min / step) * step;
     const newValue = Math.round(value / step) * step + offset;
 
