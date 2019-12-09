@@ -14,8 +14,8 @@ class Model extends Observer {
 
   public setState(state: ModelState) {
     const { min, max } = this.correctMinMax({ min: state.min, max: state.max });
-    const { step } = this.correctStep({ step: state.step, min, max });
-    const { values } = this.correctValues({ values: state.values, min, max, step });
+    const step = this.correctStep({ step: state.step, min, max });
+    const values = this.correctValues({ values: state.values, min, max, step });
     this.state = { ...this.state, min, max, step, values };
   }
 
@@ -125,14 +125,14 @@ class Model extends Observer {
     const diff = Math.abs(max - min) || 1;
 
     if (step > diff) {
-      return { step: diff };
+      return diff;
     }
 
     if (step < 1) {
-      return { step: 1 };
+      return 1;
     }
 
-    return { step };
+    return step;
   }
 
   private correctValues(state: { min: number; max: number; values: number[]; step: number }) {
@@ -144,7 +144,7 @@ class Model extends Observer {
       newValues.push(max);
     }
 
-    return { values: newValues };
+    return newValues;
   }
 
   private correctValueInTheRange(value: number, state: ModelState = this.state): number {
