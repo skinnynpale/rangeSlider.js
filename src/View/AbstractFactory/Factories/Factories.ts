@@ -12,10 +12,6 @@ interface GUIFactory {
   createScale(): Scale;
 }
 
-/**
- * Factories
- */
-
 class Factory {
   constructor(protected direction: Directions) {}
 }

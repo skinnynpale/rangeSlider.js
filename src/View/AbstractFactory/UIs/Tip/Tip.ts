@@ -16,7 +16,9 @@ class SingleTip extends Tip {
   public paint({ target, value }: ViewValues) {
     if (target === undefined) return;
 
-    const tip = target.querySelector('.slider__tip') as HTMLElement;
+    const tip = target.querySelector('.slider__tip');
+    if (!tip) return;
+
     tip.setAttribute('data-value', `${value}`);
   }
 }
@@ -25,11 +27,12 @@ class IntervalTip extends Tip {
     if (target === undefined || pxValues === undefined) return;
 
     const tip = target.querySelector('.slider__tip') as HTMLElement;
+    if (!tip) return;
+
     tip.setAttribute('data-value', `${value}`);
 
     const allTips = target.parentElement && target.parentElement.querySelectorAll('.slider__tip');
     const anotherTip = allTips && (Array.from(allTips).find((item: Element) => item !== tip) as HTMLElement);
-
     if (!anotherTip) return;
 
     const distance = pxValues[1] - pxValues[0];

@@ -50,7 +50,6 @@ class App extends Observer {
 
     for (const UI of gui) {
       if (UI === 'settings') continue;
-
       (this.UIs as any)[UI].paint(state);
     }
   }
@@ -59,7 +58,9 @@ class App extends Observer {
     if (this.UIs.settings) {
       this.anchor.removeChild(this.UIs.settings.settingsHTML);
     }
-    this.anchor.removeChild(this.template.templateHTML);
+    if (this.template.templateHTML) {
+      this.anchor.removeChild(this.template.templateHTML);
+    }
   }
 
   private getEdge(state: VisualState): number {

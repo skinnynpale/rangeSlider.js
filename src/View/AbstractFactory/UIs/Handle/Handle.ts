@@ -29,8 +29,8 @@ class Handle implements Handle {
   }
 }
 
-class SingleHandle extends Handle  {
-  public paint({ target, pxValue }: ViewValues) {
+class SingleHandle extends Handle {
+  public paint({ target, pxValue }: ViewValues): void {
     if (!target) return;
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
@@ -42,7 +42,7 @@ class SingleHandle extends Handle  {
 }
 
 class IntervalHandle extends Handle {
-  public init(anchor: HTMLElement) {
+  public init(anchor: HTMLElement): void {
     this.anchor = anchor;
     const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
@@ -50,7 +50,7 @@ class IntervalHandle extends Handle {
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
-  public paint({ target, pxValue }: ViewValues) {
+  public paint({ target, pxValue }: ViewValues): void {
     if (!target) return;
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
@@ -61,8 +61,4 @@ class IntervalHandle extends Handle {
   }
 }
 
-export {
-  Handle,
-  IntervalHandle,
-  SingleHandle
-};
+export { Handle, IntervalHandle, SingleHandle };

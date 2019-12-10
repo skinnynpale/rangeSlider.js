@@ -1,15 +1,9 @@
-import { Tip } from '../Tip/Tip';
 import { Bar } from '../Bar/Bar';
 import { Handle } from '../Handle/Handle';
 import { VisualState } from '../../../../helpers/interfaces';
 
-interface Template {
-  init(obj: VisualState, anchor: HTMLElement): void;
-  append(component: Handle | Bar | Tip, anchor: HTMLElement): void;
-}
-
-class Template implements Template {
-  public templateHTML!: HTMLElement;
+class Template {
+  public templateHTML: HTMLElement | null = null;
 
   public init({ skin, direction }: VisualState, anchor: HTMLElement) {
     const sliderTemplate = `
@@ -19,7 +13,7 @@ class Template implements Template {
     `;
 
     anchor.insertAdjacentHTML('afterbegin', sliderTemplate);
-    this.templateHTML = anchor.querySelector('.wrapper-slider') as HTMLElement;
+    this.templateHTML = anchor.querySelector('.wrapper-slider');
   }
 
   public append(component: Handle | Bar, anchor: HTMLElement) {

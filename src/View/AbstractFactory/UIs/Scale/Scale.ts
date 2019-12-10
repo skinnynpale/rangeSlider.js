@@ -5,8 +5,8 @@ class Scale extends Observer {
   protected slider!: HTMLElement;
   protected scaleHTML!: HTMLElement;
   protected anchor!: HTMLElement;
-  protected steps!: number[];
-  private ratio!: number;
+  protected steps: number[] = [];
+  private ratio = 0;
 
   constructor(protected direction: string) {
     super();
@@ -19,8 +19,8 @@ class Scale extends Observer {
 
     const scaleWrapper = `<div class="slider__scale"><div class="scale"></div></div>`;
     this.slider.insertAdjacentHTML('afterbegin', scaleWrapper);
-    this.scaleHTML = this.anchor.querySelector('.scale') as HTMLElement;
 
+    this.scaleHTML = this.anchor.querySelector('.scale') as HTMLElement;
     this.scaleHTML.addEventListener('click', this.handleScaleValue);
   }
 
