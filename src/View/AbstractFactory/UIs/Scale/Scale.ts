@@ -1,11 +1,6 @@
 import Observer from '../../../../Observer/Observer';
 import { constants } from '../../../../helpers/constants';
 
-interface Scale {
-  init(anchor: HTMLElement): void;
-  paint(state: {}): void;
-}
-
 class Scale extends Observer implements Scale {
   protected slider!: HTMLElement;
   protected scaleHTML!: HTMLElement;

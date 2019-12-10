@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import jsdom from 'jsdom';
 
-import { Application } from './Application';
+import { App } from './App';
 import { IntervalFactory } from './Factories/Factories';
 import { IntervalBar } from './UIs/Bar/Bar';
 import { IntervalHandle } from './UIs/Handle/Handle';
@@ -23,7 +23,7 @@ describe('Application', () => {
   });
 
   it('Должен правильно создать сущности отталкиваясь от заданной фабрики', () => {
-    const app = new Application(new IntervalFactory('horizontal'), anchor);
+    const app = new App(new IntervalFactory('horizontal'), anchor);
 
     app.createUI({ bar: true });
     // @ts-ignore
@@ -38,7 +38,7 @@ describe('Application', () => {
   });
 
   it('Должен отрисовать HTML с заданными настройками', () => {
-    let app = new Application(new IntervalFactory('horizontal'), anchor);
+    let app = new App(new IntervalFactory('horizontal'), anchor);
     app.createUI({ bar: true, settings: true });
     app.init({
       direction: 'horizontal',
@@ -57,7 +57,7 @@ describe('Application', () => {
 
     app.removeHTML();
 
-    app = new Application(new IntervalFactory('horizontal'), anchor);
+    app = new App(new IntervalFactory('horizontal'), anchor);
     app.createUI({ bar: true, settings: true });
     app.init({
       direction: 'horizontal',
@@ -73,7 +73,7 @@ describe('Application', () => {
   });
 
   it('RemoveHTML', () => {
-    const app = new Application(new IntervalFactory('horizontal'), anchor);
+    const app = new App(new IntervalFactory('horizontal'), anchor);
     app.createUI({ bar: true, settings: true });
     app.init({
       direction: 'horizontal',

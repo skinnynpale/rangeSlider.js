@@ -1,12 +1,12 @@
 import Model from '../Model/Model';
 import VisualModel from '../Model/VisualModel';
-import { Application, ApplicationConfigurator } from '../View/AbstractFactory/Application';
+import { App, AppConfigurator } from '../View/AbstractFactory/App';
 import { ModelState, ViewValues, VisualState } from '../helpers/interfaces';
 
 class Controller {
   private model!: Model;
   private visualModel!: VisualModel;
-  private app!: Application;
+  private app!: App;
 
   constructor(
     private anchor: HTMLElement,
@@ -21,25 +21,24 @@ class Controller {
     this.visualModel = new VisualModel();
     this.visualModel.setState(settingsVisualModel);
 
-    this.app = new ApplicationConfigurator().main(this.visualModel.state, this.anchor);
+    this.app = new AppConfigurator().main(this.visualModel.state, this.anchor);
     this.app.createUI(this.visualModel.state);
     this.bindEvents();
     this.app.init(this.visualModel.state);
   }
 
   private bindEvents(): void {
-    this.app.on('finishInit', obj => this.arrangeHandles(obj as ViewValues));
-
-    this.model.on('pxValueDone', obj => this.app.paint(obj as ViewValues));
-    this.app.on('onUserMove', obj => this.model.counting(obj as ViewValues));
+    this.app.on('finishInit', obj => this.arrangeHandles(obj));
+    this.model.on('pxValueDone', obj => this.app.paint(obj));
+    this.app.on('onUserMove', obj => this.model.counting(obj));
 
     // Синхронизация настроек и состояния
     this.app.UIs.settings &&
       this.app.UIs.settings.on('newSettings', obj => {
-        this.model.setState(obj as ModelState);
-        this.arrangeHandles(obj as ViewValues);
+        this.model.setState(obj);
+        this.arrangeHandles(obj);
 
-        if ((obj as ModelState).step) {
+        if (obj.step) {
           this.reCreateApplication();
         }
       });
@@ -66,8 +65,8 @@ class Controller {
     // Нажатия по значениям на шкале
     this.app.UIs.scale &&
       this.app.UIs.scale.on('newValueFromScale', obj => {
-        this.model.setState(obj as ModelState);
-        this.arrangeHandles(obj as ViewValues);
+        this.model.setState(obj);
+        this.arrangeHandles(obj);
       });
   }
 

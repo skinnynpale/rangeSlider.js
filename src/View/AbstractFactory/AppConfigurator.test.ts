@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import jsdom from 'jsdom';
 
-import { ApplicationConfigurator } from './Application';
+import { AppConfigurator } from './App';
 import { IntervalFactory } from './Factories/Factories';
 
 const { JSDOM } = jsdom;
@@ -21,7 +21,7 @@ describe('ApplicationConfigurator', () => {
   });
 
   it('Должен верно определить фабрику', () => {
-    const applicationConfigurator = new ApplicationConfigurator().main(
+    const applicationConfigurator = new AppConfigurator().main(
       {
         type: 'interval',
         direction: 'horizontal',
@@ -34,7 +34,7 @@ describe('ApplicationConfigurator', () => {
   });
 
   it('Должен выкинуть исключение на неверные данные', () => {
-    const applicationConfigurator = new ApplicationConfigurator();
+    const applicationConfigurator = new AppConfigurator();
     // @ts-ignore
     const func = applicationConfigurator.main.bind(
       applicationConfigurator,

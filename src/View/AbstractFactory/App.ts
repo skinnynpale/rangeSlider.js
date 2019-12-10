@@ -12,7 +12,7 @@ import { Directions, ForMouseMove, ViewValues, UIs, VisualState } from '../../he
  *
  */
 
-class Application extends Observer {
+class App extends Observer {
   public UIs: UIs = {};
   public settings?: Settings;
   private template!: Template;
@@ -113,7 +113,7 @@ class Application extends Observer {
     document.addEventListener('mouseup', handleFinishMove);
   }
 
-  private handleMouseMove(this: Application, forMouseMove: ForMouseMove, e: MouseEvent) {
+  private handleMouseMove(this: App, forMouseMove: ForMouseMove, e: MouseEvent) {
     const shiftY = forMouseMove.shiftY;
     const shiftX = forMouseMove.shiftX;
     const data = forMouseMove.data;
@@ -134,8 +134,8 @@ class Application extends Observer {
  * Application configurator
  */
 
-class ApplicationConfigurator {
-  public main({ type, direction }: VisualState, anchor: HTMLElement): Application {
+class AppConfigurator {
+  public main({ type, direction }: VisualState, anchor: HTMLElement): App {
     let factory;
 
     if (type === constants.TYPE_SINGLE) {
@@ -146,8 +146,8 @@ class ApplicationConfigurator {
       throw new Error(`Error! Unknown ${type} or ${direction}`);
     }
 
-    return new Application(factory, anchor);
+    return new App(factory, anchor);
   }
 }
 
-export { ApplicationConfigurator, Application };
+export { AppConfigurator, App };
