@@ -1,7 +1,7 @@
 import Observer from '../../../../Observer/Observer';
 import { constants } from '../../../../helpers/constants';
 
-class Scale extends Observer implements Scale {
+class Scale extends Observer {
   protected slider!: HTMLElement;
   protected scaleHTML!: HTMLElement;
   protected anchor!: HTMLElement;

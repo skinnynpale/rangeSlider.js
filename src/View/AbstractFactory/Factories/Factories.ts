@@ -1,6 +1,3 @@
-import Template from '../UIs/Template/Template';
-import Settings from '../UIs/Settings/Settings';
-
 import { IntervalTip, SingleTip, Tip } from '../UIs/Tip/Tip';
 
 import { Bar, SingleBar, IntervalBar } from '../UIs/Bar/Bar';
@@ -12,9 +9,7 @@ interface GUIFactory {
   createBar(): Bar;
   createTip(): Tip;
   createHandle(): Handle;
-  createTemplate(): Template;
   createScale(): Scale;
-  createSettings(): Settings;
 }
 
 /**
@@ -23,14 +18,6 @@ interface GUIFactory {
 
 class Factory {
   constructor(protected direction: Directions) {}
-
-  public createTemplate(): Template {
-    return new Template();
-  }
-
-  public createSettings(): Settings {
-    return new Settings();
-  }
 }
 
 class SingleFactory extends Factory implements GUIFactory {

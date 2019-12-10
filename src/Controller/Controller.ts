@@ -4,8 +4,8 @@ import { App, AppConfigurator } from '../View/AbstractFactory/App';
 import { ModelState, ViewValues, VisualState } from '../helpers/interfaces';
 
 class Controller {
-  private model!: Model;
-  private visualModel!: VisualModel;
+  private model = new Model();
+  private visualModel = new VisualModel();
   private app!: App;
 
   constructor(
@@ -18,7 +18,6 @@ class Controller {
 
   private initMVC(settingsVisualModel: VisualState, settingsModel: ModelState) {
     this.model = new Model(settingsModel);
-    this.visualModel = new VisualModel();
     this.visualModel.setState(settingsVisualModel);
 
     this.app = new AppConfigurator().main(this.visualModel.state, this.anchor);
