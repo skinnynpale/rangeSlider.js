@@ -26,7 +26,7 @@ class Controller {
     this.app.init(this.visualModel.state);
   }
 
-  private bindEvents(): void {
+  private bindEvents() {
     this.app.on('finishInit', obj => this.arrangeHandles(obj));
     this.model.on('pxValueDone', obj => this.app.paint(obj));
     this.app.on('onUserMove', obj => this.model.counting(obj));

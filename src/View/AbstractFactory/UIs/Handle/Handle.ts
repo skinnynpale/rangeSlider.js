@@ -13,14 +13,14 @@ class Handle implements Handle {
 
   constructor(protected direction: string) {}
 
-  public init(anchor: HTMLElement): void {
+  public init(anchor: HTMLElement) {
     this.anchor = anchor;
     const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
-  public append(component: Tip): void {
+  public append(component: Tip) {
     const handles = this.anchor.querySelectorAll('.slider__handle');
 
     for (const handle of Array.from(handles)) {
@@ -30,7 +30,7 @@ class Handle implements Handle {
 }
 
 class SingleHandle extends Handle  {
-  public paint({ target, pxValue }: ViewValues): void {
+  public paint({ target, pxValue }: ViewValues) {
     if (!target) return;
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
@@ -42,7 +42,7 @@ class SingleHandle extends Handle  {
 }
 
 class IntervalHandle extends Handle {
-  public init(anchor: HTMLElement): void {
+  public init(anchor: HTMLElement) {
     this.anchor = anchor;
     const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
@@ -50,7 +50,7 @@ class IntervalHandle extends Handle {
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
-  public paint({ target, pxValue }: ViewValues): void {
+  public paint({ target, pxValue }: ViewValues) {
     if (!target) return;
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {

@@ -1,36 +1,28 @@
 import Settings from './UIs/Settings/Settings';
 import Template from './UIs/Template/Template';
-
 import { GUIFactory, IntervalFactory, SingleFactory } from './Factories/Factories';
-
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
 import { Directions, ForMouseMove, ViewValues, UIs, VisualState } from '../../helpers/interfaces';
 
-/**
- * Application
- *
- */
-
 class App extends Observer {
   public UIs: UIs = {};
   public settings?: Settings;
-  private template!: Template;
+  private template = new Template();
 
   constructor(private factory: GUIFactory, private anchor: HTMLElement) {
     super();
   }
 
-  public createUI({ bar, scale, settings }: VisualState): void {
-    this.template = this.factory.createTemplate();
+  public createUI({ bar, scale, settings }: VisualState) {
     this.UIs.handle = this.factory.createHandle();
 
     bar && (this.UIs.bar = this.factory.createBar());
     scale && (this.UIs.scale = this.factory.createScale());
-    settings && (this.UIs.settings = this.factory.createSettings());
+    settings && (this.UIs.settings = new Settings());
   }
 
-  public init(state: VisualState): void {
+  public init(state: VisualState) {
     this.template.init(state, this.anchor);
 
     const gui = Object.keys(this.UIs);
@@ -43,7 +35,6 @@ class App extends Observer {
       this.UIs.tip = this.factory.createTip();
       this.UIs.handle.append(this.UIs.tip);
     }
-    // Коллаборации
 
     // для правильной отрисовки
     const edge = this.getEdge(state);
@@ -54,7 +45,7 @@ class App extends Observer {
     this.emit('finishInit', { handles, edge });
   }
 
-  public paint(state: ViewValues): void {
+  public paint(state: ViewValues) {
     const gui = Object.keys(this.UIs);
 
     for (const UI of gui) {
@@ -64,7 +55,7 @@ class App extends Observer {
     }
   }
 
-  public removeHTML(): void {
+  public removeHTML() {
     if (this.UIs.settings) {
       this.anchor.removeChild(this.UIs.settings.settingsHTML);
     }
@@ -129,10 +120,6 @@ class App extends Observer {
     this.emit('onUserMove', { left, target });
   }
 }
-
-/**
- * Application configurator
- */
 
 class AppConfigurator {
   public main({ type, direction }: VisualState, anchor: HTMLElement): App {

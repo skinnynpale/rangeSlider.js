@@ -7,7 +7,7 @@ class VisualModel extends Observer {
     super();
   }
 
-  public setState(state: VisualState = {}): void {
+  public setState(state: VisualState = {}) {
     Object.assign(this.state, state);
 
     this.emit('newVisualModel', this.state);

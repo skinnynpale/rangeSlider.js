@@ -6,14 +6,14 @@ interface Tip {
 }
 
 class Tip implements Tip {
-  public init(handle: HTMLElement): void {
+  public init(handle: HTMLElement) {
     const tipTemplate = '<div class="slider__tip"><div class="slider__tongue"></div></div>';
     handle.insertAdjacentHTML('beforeend', tipTemplate);
   }
 }
 
 class SingleTip extends Tip {
-  public paint({ target, value }: ViewValues): void {
+  public paint({ target, value }: ViewValues) {
     if (target === undefined) return;
 
     const tip = target.querySelector('.slider__tip') as HTMLElement;
@@ -21,7 +21,7 @@ class SingleTip extends Tip {
   }
 }
 class IntervalTip extends Tip {
-  public paint({ target, value, pxValues, values }: ViewValues): void {
+  public paint({ target, value, pxValues, values }: ViewValues) {
     if (target === undefined || pxValues === undefined) return;
 
     const tip = target.querySelector('.slider__tip') as HTMLElement;

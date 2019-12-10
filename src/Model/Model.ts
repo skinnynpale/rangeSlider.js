@@ -94,7 +94,7 @@ class Model extends Observer {
     return this.correctValueInTheRange(value);
   }
 
-  private notifyAboutPxValueDone(state: ViewValues): void {
+  private notifyAboutPxValueDone(state: ViewValues) {
     this.emit('pxValueDone', {
       value: state.value,
       pxValue: state.pxValue,

@@ -8,7 +8,7 @@ interface Bar {
 
 class Bar implements Bar {
   constructor(protected direction: string) {}
-  public init(anchor: HTMLElement): void {
+  public init(anchor: HTMLElement) {
     const barTemplate = '<div class="slider__bar"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
     slider.insertAdjacentHTML('beforeend', barTemplate);
@@ -16,7 +16,7 @@ class Bar implements Bar {
 }
 
 class SingleBar extends Bar {
-  public paint({ pxValue, target }: ViewValues): void {
+  public paint({ pxValue, target }: ViewValues) {
     if (pxValue === undefined || target === undefined) return;
 
     const bar = target.parentElement && (target.parentElement.querySelector('.slider__bar') as HTMLElement);
@@ -30,7 +30,7 @@ class SingleBar extends Bar {
 }
 
 class IntervalBar extends Bar {
-  public paint({ pxValues, target }: ViewValues): void {
+  public paint({ pxValues, target }: ViewValues) {
     if (pxValues === undefined || target === undefined) return;
 
     const bar = target.parentElement && (target.parentElement.querySelector('.slider__bar') as HTMLElement);
