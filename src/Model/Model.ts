@@ -47,7 +47,7 @@ class Model extends Observer {
     return 0;
   }
 
-  private updateArrayOfValues(): {} {
+  private updateArrayOfValues() {
     const values = [];
 
     for (const handleObj of Array.from(this.mapOfHandles.values())) {
@@ -65,12 +65,12 @@ class Model extends Observer {
     return { values };
   }
 
-  private countPxValueFromValue(value: number): number {
+  private countPxValueFromValue(value: number) {
     const state = this.state;
     return (value - state.min) * (this.getRatio() / state.step);
   }
 
-  private getRatio(): number {
+  private getRatio() {
     const state = this.state;
     const edge = this.edge;
 
@@ -82,12 +82,12 @@ class Model extends Observer {
     return ratio;
   }
 
-  private createArrayOfPxValues(): {} {
+  private createArrayOfPxValues() {
     const values = this.state.values;
     return values.map(value => this.countPxValueFromValue(value)).sort((a, b) => a - b);
   }
 
-  private countValueFromLeft(left: number): number {
+  private countValueFromLeft(left: number) {
     const state = this.state;
     const value = Math.round(left / this.getRatio()) * state.step + state.min;
 
@@ -147,7 +147,7 @@ class Model extends Observer {
     return newValues;
   }
 
-  private correctValueInTheRange(value: number, state: ModelState = this.state): number {
+  private correctValueInTheRange(value: number, state: ModelState = this.state) {
     const { step, min, max } = state;
     const offset = min - Math.round(min / step) * step;
     const newValue = Math.round(value / step) * step + offset;
@@ -163,7 +163,7 @@ class Model extends Observer {
     return newValue;
   }
 
-  private createSteps(): number[] {
+  private createSteps() {
     const { min, max, step } = this.state;
     const steps = [];
 

@@ -17,37 +17,37 @@ class Factory {
 }
 
 class SingleFactory extends Factory implements GUIFactory {
-  public createBar(): Bar {
+  public createBar() {
     return new SingleBar(this.direction);
   }
 
-  public createHandle(): Handle {
+  public createHandle() {
     return new SingleHandle(this.direction);
   }
 
-  public createTip(): Tip {
+  public createTip() {
     return new SingleTip();
   }
 
-  public createScale(): Scale {
+  public createScale() {
     return new Scale(this.direction);
   }
 }
 
 class IntervalFactory extends Factory implements GUIFactory {
-  public createBar(): Bar {
+  public createBar() {
     return new IntervalBar(this.direction);
   }
 
-  public createHandle(): Handle {
+  public createHandle() {
     return new IntervalHandle(this.direction);
   }
 
-  public createTip(): Tip {
+  public createTip() {
     return new IntervalTip();
   }
 
-  public createScale(): Scale {
+  public createScale() {
     return new Scale(this.direction);
   }
 }

@@ -16,7 +16,6 @@ class App extends Observer {
 
   public createUI({ bar, scale, settings }: VisualState) {
     this.UIs.handle = this.factory.createHandle();
-
     bar && (this.UIs.bar = this.factory.createBar());
     scale && (this.UIs.scale = this.factory.createScale());
     settings && (this.UIs.settings = new Settings());
@@ -63,7 +62,7 @@ class App extends Observer {
     }
   }
 
-  private getEdge(state: VisualState): number {
+  private getEdge(state: VisualState) {
     const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
     const handles = this.anchor.querySelectorAll('.slider__handle');
 
@@ -123,7 +122,7 @@ class App extends Observer {
 }
 
 class AppConfigurator {
-  public main({ type, direction }: VisualState, anchor: HTMLElement): App {
+  public main({ type, direction }: VisualState, anchor: HTMLElement) {
     let factory;
 
     if (type === constants.TYPE_SINGLE) {
