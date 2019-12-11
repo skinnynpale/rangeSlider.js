@@ -17,8 +17,8 @@ class Controller {
     this.visualModel = new VisualModel(settingsVisualModel);
 
     this.app = new AppConfigurator().main(this.visualModel.state, this.anchor);
-    this.app.createUI(this.visualModel.state);
     this.bindEvents();
+    this.app.createUI(this.visualModel.state);
     this.app.init(this.visualModel.state);
   }
 
@@ -42,7 +42,8 @@ class Controller {
     this.model.on(
       'pxValueDone',
       () =>
-        this.app.UIs.settings && this.app.UIs.settings.paint({ ...this.model.state, ...this.visualModel.state } as any),
+        this.app.UIs.settings &&
+        this.app.UIs.settings.setState({ ...this.model.state, ...this.visualModel.state } as any),
     );
 
     // Пересоздать слайдер

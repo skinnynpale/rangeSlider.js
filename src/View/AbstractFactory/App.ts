@@ -14,21 +14,17 @@ class App extends Observer {
     super();
   }
 
-  public createUI({ bar, scale, settings }: VisualState) {
-    this.UIs.handle = this.factory.createHandle();
-    bar && (this.UIs.bar = this.factory.createBar());
-    scale && (this.UIs.scale = this.factory.createScale());
-    settings && (this.UIs.settings = new Settings());
+  public createUI(state: VisualState) {
+    const { bar, scale, settings } = state;
+
+    this.template.init(state, this.anchor);
+    this.UIs.handle = this.factory.createHandle(this.anchor);
+    bar && (this.UIs.bar = this.factory.createBar(this.anchor));
+    scale && (this.UIs.scale = this.factory.createScale(this.anchor));
+    settings && (this.UIs.settings = new Settings(this.anchor));
   }
 
   public init(state: VisualState) {
-    this.template.init(state, this.anchor);
-
-    const gui = Object.keys(this.UIs);
-    for (const UI of gui) {
-      this.template.append((this.UIs as any)[UI], this.anchor);
-    }
-
     // Коллаборации
     if (state.tip && this.UIs.handle) {
       this.UIs.tip = this.factory.createTip();

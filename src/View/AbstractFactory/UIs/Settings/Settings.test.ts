@@ -19,16 +19,14 @@ describe('Settings', () => {
   });
 
   it('Должен создать SettingsTemplate', () => {
-    const settings = new Settings();
-    settings.init(anchor);
+    const settings = new Settings(anchor);
 
     expect(anchor.querySelectorAll('.settings').length).to.eq(1);
   });
 
   it('Должен расставить переданные значения в инпуты', () => {
-    const settings = new Settings();
-    settings.init(anchor);
-    settings.paint({
+    const settings = new Settings(anchor);
+    settings.setState({
       min: 10,
       max: 50,
       step: 5,

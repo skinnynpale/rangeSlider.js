@@ -1,5 +1,3 @@
-import { Bar } from '../Bar/Bar';
-import { Handle } from '../Handle/Handle';
 import { VisualState } from '../../../../helpers/interfaces';
 
 class Template {
@@ -14,10 +12,6 @@ class Template {
 
     anchor.insertAdjacentHTML('afterbegin', sliderTemplate);
     this.wrapper = anchor.querySelector('.wrapper-slider');
-  }
-
-  public append(component: Handle | Bar, anchor: HTMLElement) {
-    component.init(anchor);
   }
 }
 

@@ -5,10 +5,10 @@ import { Scale } from '../UIs/Scale/Scale';
 import { Directions } from '../../../helpers/interfaces';
 
 interface GUIFactory {
-  createBar(): Bar;
+  createBar(anchor: HTMLElement): Bar;
   createTip(): Tip;
-  createHandle(): Handle;
-  createScale(): Scale;
+  createHandle(anchor: HTMLElement): Handle;
+  createScale(anchor: HTMLElement): Scale;
 }
 
 class Factory {
@@ -16,38 +16,38 @@ class Factory {
 }
 
 class SingleFactory extends Factory implements GUIFactory {
-  public createBar() {
-    return new SingleBar(this.direction);
+  public createBar(anchor: HTMLElement) {
+    return new SingleBar(this.direction, anchor);
   }
 
-  public createHandle() {
-    return new SingleHandle(this.direction);
+  public createHandle(anchor: HTMLElement) {
+    return new SingleHandle(this.direction, anchor);
   }
 
   public createTip() {
     return new SingleTip();
   }
 
-  public createScale() {
-    return new Scale(this.direction);
+  public createScale(anchor: HTMLElement) {
+    return new Scale(this.direction, anchor);
   }
 }
 
 class IntervalFactory extends Factory implements GUIFactory {
-  public createBar() {
-    return new IntervalBar(this.direction);
+  public createBar(anchor: HTMLElement) {
+    return new IntervalBar(this.direction, anchor);
   }
 
-  public createHandle() {
-    return new IntervalHandle(this.direction);
+  public createHandle(anchor: HTMLElement) {
+    return new IntervalHandle(this.direction, anchor);
   }
 
   public createTip() {
     return new IntervalTip();
   }
 
-  public createScale() {
-    return new Scale(this.direction);
+  public createScale(anchor: HTMLElement) {
+    return new Scale(this.direction, anchor);
   }
 }
 

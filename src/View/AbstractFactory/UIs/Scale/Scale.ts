@@ -2,21 +2,16 @@ import Observer from '../../../../Observer/Observer';
 import { constants } from '../../../../helpers/constants';
 
 class Scale extends Observer {
-  protected slider!: HTMLElement;
-  protected wrapper!: HTMLElement;
-  protected anchor!: HTMLElement;
+  protected slider: HTMLElement;
+  protected wrapper: HTMLElement;
   protected steps: number[] = [];
   private ratio = 0;
 
-  constructor(protected direction: string) {
+  constructor(protected direction: string, protected anchor: HTMLElement) {
     super();
     this.handleScaleValue = this.handleScaleValue.bind(this);
-  }
 
-  public init(anchor: HTMLElement) {
-    this.anchor = anchor;
     this.slider = anchor.querySelector('.slider') as HTMLElement;
-
     const scaleWrapper = `<div class="slider__scale"><div class="scale"></div></div>`;
     this.slider.insertAdjacentHTML('afterbegin', scaleWrapper);
 

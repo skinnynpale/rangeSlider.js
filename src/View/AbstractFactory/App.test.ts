@@ -27,14 +27,14 @@ describe('Application', () => {
 
     app.createUI({ bar: true });
     // @ts-ignore
-    expect(app.UIs.bar).to.deep.equal(new IntervalBar('horizontal'));
+    expect(app.UIs.bar).to.deep.equal(new IntervalBar('horizontal', anchor));
 
     // @ts-ignore
     app.createUI({ handle: true });
     // @ts-ignore
-    expect(app.UIs.bar).to.deep.equal(new IntervalBar('horizontal'));
+    expect(app.UIs.bar).to.deep.equal(new IntervalBar('horizontal', anchor));
     // @ts-ignore
-    expect(app.UIs.handle).to.deep.equal(new IntervalHandle('horizontal'));
+    expect(app.UIs.handle).to.deep.equal(new IntervalHandle('horizontal', anchor));
   });
 
   it('Должен отрисовать HTML с заданными настройками', () => {

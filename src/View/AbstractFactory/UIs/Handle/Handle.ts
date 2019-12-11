@@ -9,16 +9,7 @@ interface Handle {
 }
 
 class Handle implements Handle {
-  protected anchor!: HTMLElement;
-
-  constructor(protected direction: string) {}
-
-  public init(anchor: HTMLElement) {
-    this.anchor = anchor;
-    const handleTemplate = '<div class="slider__handle"></div>';
-    const slider = anchor.querySelector('.slider') as HTMLElement;
-    slider.insertAdjacentHTML('beforeend', handleTemplate);
-  }
+  constructor(protected anchor: HTMLElement) {}
 
   public append(component: Tip) {
     const handles = this.anchor.querySelectorAll('.slider__handle');
@@ -30,6 +21,15 @@ class Handle implements Handle {
 }
 
 class SingleHandle extends Handle {
+  constructor(protected direction: string, anchor: HTMLElement) {
+    super(anchor);
+
+    this.anchor = anchor;
+    const handleTemplate = '<div class="slider__handle"></div>';
+    const slider = anchor.querySelector('.slider') as HTMLElement;
+    slider.insertAdjacentHTML('beforeend', handleTemplate);
+  }
+
   public paint({ target, pxValue }: ViewValues) {
     if (!target) return;
 
@@ -42,7 +42,9 @@ class SingleHandle extends Handle {
 }
 
 class IntervalHandle extends Handle {
-  public init(anchor: HTMLElement) {
+  constructor(protected direction: string, anchor: HTMLElement) {
+    super(anchor);
+
     this.anchor = anchor;
     const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;

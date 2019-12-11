@@ -7,8 +7,7 @@ interface Bar {
 }
 
 class Bar implements Bar {
-  constructor(protected direction: string) {}
-  public init(anchor: HTMLElement) {
+  constructor(protected direction: string, anchor: HTMLElement) {
     const barTemplate = '<div class="slider__bar"></div>';
     const slider = anchor.querySelector('.slider') as HTMLElement;
     slider.insertAdjacentHTML('beforeend', barTemplate);
