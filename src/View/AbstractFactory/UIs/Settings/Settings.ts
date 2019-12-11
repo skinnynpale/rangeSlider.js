@@ -3,7 +3,7 @@ import { constants } from '../../../../helpers/constants';
 import { GState } from '../../../../helpers/interfaces';
 
 class Settings extends Observer {
-  public settingsHTML!: HTMLFormElement;
+  public wrapper!: HTMLFormElement;
   private state!: GState;
   private anchor!: HTMLElement;
 
@@ -79,14 +79,14 @@ class Settings extends Observer {
 
     anchor.insertAdjacentHTML('beforeend', settingsTemplate);
 
-    this.settingsHTML = anchor.querySelector('.settings') as HTMLFormElement;
+    this.wrapper = anchor.querySelector('.settings') as HTMLFormElement;
 
-    this.settingsHTML.addEventListener('change', this.handleChangeSettings);
+    this.wrapper.addEventListener('change', this.handleChangeSettings);
   }
 
   public paint(state: GState) {
     this.state = state;
-    const inputs = this.settingsHTML.elements;
+    const inputs = this.wrapper.elements;
 
     const [valueFrom, valueTo] = state.values as number[];
 
@@ -107,13 +107,13 @@ class Settings extends Observer {
       }
     }
 
-    const selects = this.settingsHTML.querySelectorAll('select');
+    const selects = this.wrapper.querySelectorAll('select');
     for (const select of selects as any) {
       select.value = state[select.name];
     }
 
     if ((state.type as string) === constants.TYPE_SINGLE) {
-      const valueToInput = this.settingsHTML.valueTo;
+      const valueToInput = this.wrapper.valueTo;
       if (valueToInput && valueToInput.getAttribute('disabled') === 'true') return;
       valueToInput && valueToInput.setAttribute('disabled', 'true');
     }
@@ -127,8 +127,8 @@ class Settings extends Observer {
 
       // разбивка на valueFrom и valueTo
       if (target.name === 'valueFrom' || target.name === 'valueTo') {
-        const valueFrom = Number(this.settingsHTML.valueFrom.value);
-        const valueTo = Number(this.settingsHTML.valueTo.value);
+        const valueFrom = Number(this.wrapper.valueFrom.value);
+        const valueTo = Number(this.wrapper.valueTo.value);
 
         this.emit('newSettings', {
           handles,

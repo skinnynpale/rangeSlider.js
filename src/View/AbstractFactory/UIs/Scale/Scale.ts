@@ -3,7 +3,7 @@ import { constants } from '../../../../helpers/constants';
 
 class Scale extends Observer {
   protected slider!: HTMLElement;
-  protected scaleHTML!: HTMLElement;
+  protected wrapper!: HTMLElement;
   protected anchor!: HTMLElement;
   protected steps: number[] = [];
   private ratio = 0;
@@ -20,8 +20,8 @@ class Scale extends Observer {
     const scaleWrapper = `<div class="slider__scale"><div class="scale"></div></div>`;
     this.slider.insertAdjacentHTML('afterbegin', scaleWrapper);
 
-    this.scaleHTML = this.anchor.querySelector('.scale') as HTMLElement;
-    this.scaleHTML.addEventListener('click', this.handleScaleValue);
+    this.wrapper = this.anchor.querySelector('.scale') as HTMLElement;
+    this.wrapper.addEventListener('click', this.handleScaleValue);
   }
 
   public paint({ ratio, steps }: { ratio: number; steps: number[] }) {
@@ -29,22 +29,22 @@ class Scale extends Observer {
     const progression = steps;
     let ratioProgressive = 0;
 
-    if (this.scaleHTML.childElementCount === progression.length) {
+    if (this.wrapper.childElementCount === progression.length) {
       if (ratio === this.ratio) {
         return;
       }
     }
 
-    this.scaleHTML.innerHTML = '';
+    this.wrapper.innerHTML = '';
     if (ratio !== undefined) {
       this.ratio = ratio;
     }
 
     for (let i = 0; i < progression.length; i += 1) {
       const template = `<div class="scale__value">${progression[i]}</div>`;
-      this.scaleHTML.insertAdjacentHTML('beforeend', template);
+      this.wrapper.insertAdjacentHTML('beforeend', template);
 
-      const currentCreatedValue = this.scaleHTML.children[i] as HTMLElement;
+      const currentCreatedValue = this.wrapper.children[i] as HTMLElement;
 
       if (i === 0) {
         switch (this.direction) {
@@ -74,10 +74,10 @@ class Scale extends Observer {
 
     switch (this.direction) {
       case constants.DIRECTION_HORIZONTAL:
-        this.scaleHTML.style.marginLeft = `${handle.offsetWidth / 4 - 1}px`;
+        this.wrapper.style.marginLeft = `${handle.offsetWidth / 4 - 1}px`;
         break;
       case constants.DIRECTION_VERTICAL:
-        this.scaleHTML.style.marginBottom = `${handle.offsetWidth / 4 - 1}px`;
+        this.wrapper.style.marginBottom = `${handle.offsetWidth / 4 - 1}px`;
         break;
     }
   }

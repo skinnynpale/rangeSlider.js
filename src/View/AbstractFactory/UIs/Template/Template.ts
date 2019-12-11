@@ -3,7 +3,7 @@ import { Handle } from '../Handle/Handle';
 import { VisualState } from '../../../../helpers/interfaces';
 
 class Template {
-  public templateHTML: HTMLElement | null = null;
+  public wrapper: HTMLElement | null = null;
 
   public init({ skin, direction }: VisualState, anchor: HTMLElement) {
     const sliderTemplate = `
@@ -13,7 +13,7 @@ class Template {
     `;
 
     anchor.insertAdjacentHTML('afterbegin', sliderTemplate);
-    this.templateHTML = anchor.querySelector('.wrapper-slider');
+    this.wrapper = anchor.querySelector('.wrapper-slider');
   }
 
   public append(component: Handle | Bar, anchor: HTMLElement) {

@@ -1,5 +1,4 @@
 import { IntervalTip, SingleTip, Tip } from '../UIs/Tip/Tip';
-
 import { Bar, SingleBar, IntervalBar } from '../UIs/Bar/Bar';
 import { Handle, SingleHandle, IntervalHandle } from '../UIs/Handle/Handle';
 import { Scale } from '../UIs/Scale/Scale';

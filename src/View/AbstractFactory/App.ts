@@ -55,10 +55,10 @@ class App extends Observer {
 
   public removeHTML() {
     if (this.UIs.settings) {
-      this.anchor.removeChild(this.UIs.settings.settingsHTML);
+      this.anchor.removeChild(this.UIs.settings.wrapper);
     }
-    if (this.template.templateHTML) {
-      this.anchor.removeChild(this.template.templateHTML);
+    if (this.template.wrapper) {
+      this.anchor.removeChild(this.template.wrapper);
     }
   }
 
