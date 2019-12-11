@@ -4,21 +4,17 @@ import { App, AppConfigurator } from '../View/AbstractFactory/App';
 import { ModelState, ViewValues, VisualState } from '../helpers/interfaces';
 
 class Controller {
-  private model = new Model();
-  private visualModel = new VisualModel();
-  private app!: App;
+  private model: Model;
+  private visualModel: VisualModel;
+  private app: App;
 
   constructor(
     private anchor: HTMLElement,
     private settingsVisualModel: VisualState,
     private settingsModel: ModelState,
   ) {
-    this.initMVC(settingsVisualModel, settingsModel);
-  }
-
-  private initMVC(settingsVisualModel: VisualState, settingsModel: ModelState) {
     this.model = new Model(settingsModel);
-    this.visualModel.setState(settingsVisualModel);
+    this.visualModel = new VisualModel(settingsVisualModel);
 
     this.app = new AppConfigurator().main(this.visualModel.state, this.anchor);
     this.app.createUI(this.visualModel.state);
@@ -83,10 +79,16 @@ class Controller {
   }
 
   private reCreateApplication(newVisualModel: VisualState = this.visualModel.state) {
-    const settingsModel = { ...this.settingsModel, ...this.model.state };
-
     this.app.removeHTML();
-    this.initMVC(newVisualModel, settingsModel);
+
+    const settingsModel = { ...this.settingsModel, ...this.model.state };
+    this.model = new Model(settingsModel);
+    this.visualModel.setState(newVisualModel);
+
+    this.app = new AppConfigurator().main(this.visualModel.state, this.anchor);
+    this.app.createUI(this.visualModel.state);
+    this.bindEvents();
+    this.app.init(this.visualModel.state);
   }
 }
 

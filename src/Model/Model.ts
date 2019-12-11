@@ -7,7 +7,7 @@ class Model extends Observer {
   mapOfHandles: Map<HTMLElement, OnlyNumbers> = new Map();
   private edge = 0;
 
-  constructor(state: ModelState = defaultModel) {
+  constructor(state: ModelState) {
     super();
     this.setState(state);
   }
