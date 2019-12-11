@@ -17,7 +17,8 @@ class SingleTip extends Tip {
     if (target === undefined) return;
 
     const tip = target.querySelector('.slider__tip');
-    if (!tip) return;
+
+    if (!tip) throw new Error('.slider__tip - не был найден!');
 
     tip.setAttribute('data-value', `${value}`);
   }
@@ -27,7 +28,8 @@ class IntervalTip extends Tip {
     if (target === undefined || pxValues === undefined) return;
 
     const tip = target.querySelector('.slider__tip') as HTMLElement;
-    if (!tip) return;
+
+    if (!tip) throw new Error('.slider__tip - не был найден!');
 
     tip.setAttribute('data-value', `${value}`);
 

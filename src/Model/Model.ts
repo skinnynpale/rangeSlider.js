@@ -24,8 +24,10 @@ class Model extends Observer {
 
     const value = this.findViewValue(viewValues);
     const pxValue = this.countPxValueFromValue(value);
+    const target = viewValues.target;
 
-    const target = viewValues.target as HTMLElement;
+    if (!target) throw new Error('Не был передан target!');
+
     this.mapOfHandles.set(target, {
       value,
       pxValue,

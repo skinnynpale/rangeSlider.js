@@ -26,7 +26,10 @@ class SingleHandle extends Handle {
 
     this.anchor = anchor;
     const handleTemplate = '<div class="slider__handle"></div>';
-    const slider = anchor.querySelector('.slider') as HTMLElement;
+    const slider = anchor.querySelector('.slider');
+
+    if (slider === null) throw new Error('.slider - не было найдено!');
+
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
@@ -47,7 +50,10 @@ class IntervalHandle extends Handle {
 
     this.anchor = anchor;
     const handleTemplate = '<div class="slider__handle"></div>';
-    const slider = anchor.querySelector('.slider') as HTMLElement;
+    const slider = anchor.querySelector('.slider');
+
+    if (slider === null) throw new Error('.slider - не было найдено!');
+
     slider.insertAdjacentHTML('beforeend', handleTemplate);
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }

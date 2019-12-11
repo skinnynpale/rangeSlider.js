@@ -36,6 +36,7 @@ class App extends Observer {
     const handles = this.anchor.querySelectorAll('.slider__handle');
     const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
 
+    if (!wrapper) throw new Error('.wrapper-slider - не было найдено!');
     this.bindEventListeners({ wrapper, state });
     this.emit('finishInit', { handles, edge });
   }
@@ -60,7 +61,12 @@ class App extends Observer {
 
   private getEdge(state: VisualState) {
     const wrapper = this.anchor.querySelector('.wrapper-slider') as HTMLElement;
+
+    if (!wrapper) throw new Error('.wrapper-slider - не было найдено!');
+
     const handles = this.anchor.querySelectorAll('.slider__handle');
+
+    if (!handles) throw new Error('.slider__handle - не было найдено!');
 
     if (state.direction === constants.DIRECTION_VERTICAL) {
       return wrapper.clientHeight - (handles[0] as HTMLElement).offsetHeight;
@@ -78,6 +84,9 @@ class App extends Observer {
     if ((e.target as HTMLElement).className !== 'slider__handle') return;
 
     const target = e.target as HTMLElement;
+
+    if (!target) throw new Error('event.target - не найден!');
+
     const shiftX = e.offsetX;
     const shiftY = target.offsetHeight - e.offsetY;
 

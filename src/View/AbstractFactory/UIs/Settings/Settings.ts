@@ -13,6 +13,9 @@ class Settings extends Observer {
 
     anchor.insertAdjacentHTML('beforeend', settingsTemplate);
     this.wrapper = anchor.querySelector('.settings') as HTMLFormElement;
+
+    if (!this.wrapper) throw new Error('.settings - не было найдено!');
+
     this.wrapper.addEventListener('change', this.handleChangeSettings);
   }
 
@@ -57,7 +60,6 @@ class Settings extends Observer {
   }
 
   private handleChangeSettings(e: Event) {
-    console.log(this);
     const target = e.target as HTMLInputElement;
 
     if (target.tagName === 'INPUT') {
