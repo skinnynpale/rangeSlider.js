@@ -81,9 +81,14 @@ class App extends Observer {
 
   private handleStartMove(data: { wrapper: HTMLElement; state: VisualState }, e: MouseEvent) {
     e.preventDefault();
-    if ((e.target as HTMLElement).className !== 'slider__handle') return;
 
-    const target = e.target as HTMLElement;
+    let target = e.target as HTMLElement;
+
+    if (!target.className.match(/(slider__handle|slider__tip)/g)) return;
+
+    if (target.className.includes('slider__tip')) {
+      target = target.parentElement as HTMLElement;
+    }
 
     if (!target) throw new Error('event.target - не найден!');
 
