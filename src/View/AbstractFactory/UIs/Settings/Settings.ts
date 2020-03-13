@@ -19,8 +19,8 @@ class Settings extends Observer {
     this.wrapper.addEventListener('change', this.handleChangeSettings);
   }
 
-  public setState(state: GState) {
-    this.state = state;
+  public setState(state: {}) {
+    this.state = { ...this.state, ...state };
     this.paint();
     return this;
   }
