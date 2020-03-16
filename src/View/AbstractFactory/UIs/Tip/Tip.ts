@@ -50,7 +50,9 @@ class IntervalTip extends Tip {
       anotherTip.setAttribute('data-extendedValue', `${values && values.join(' - ')}`);
     } else {
       tip.style.visibility = 'visible';
+      tip.classList.remove('slider__tip--extended');
       anotherTip.classList.remove('slider__tip--extended');
+      anotherTip.style.visibility = 'visible';
     }
   }
 }

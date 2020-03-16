@@ -6,7 +6,9 @@ class Template {
   public init({ skin, direction }: VisualState, anchor: HTMLElement) {
     const sliderTemplate = `
       <div class="wrapper-slider wrapper-slider--${direction}">
-        <div class="slider slider--${direction} slider--${skin}"></div>
+        <div class="slider slider--${direction} slider--${skin}">
+          <div class="slider__bar-empty">
+        </div>
       </div>
     `;
 

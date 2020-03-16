@@ -41,12 +41,15 @@ class Model extends Observer {
   }
 
   private findViewValue(viewValues: ViewValues) {
+    let value = 0;
+
     if (viewValues.value !== undefined) {
-      return viewValues.value;
+      value = viewValues.value;
     } else if (viewValues.left !== undefined) {
-      return this.countValueFromLeft(viewValues.left);
+      value = this.countValueFromLeft(viewValues.left);
     }
-    return 0;
+
+    return value;
   }
 
   private updateArrayOfValues() {

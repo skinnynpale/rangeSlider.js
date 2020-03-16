@@ -9,6 +9,7 @@ class App extends Observer {
   public UIs: UIs = {};
   public settings?: Settings;
   private template = new Template();
+  private closestHandle: HTMLElement | null = null;
 
   constructor(private factory: GUIFactory, private anchor: HTMLElement) {
     super();
@@ -81,12 +82,11 @@ class App extends Observer {
 
   private handleStartMove(data: { wrapper: HTMLElement; state: VisualState }, e: MouseEvent) {
     e.preventDefault();
-
     let target = e.target as HTMLElement;
+    if (!target.className.match(/(slider__handle|slider__tip|slider__bar)/g)) return;
 
-    if (!target.className.match(/(slider__handle|slider__tip)/g)) return;
-
-    if (target.className.includes('slider__tip')) {
+    const isTip = target.className.includes('slider__tip');
+    if (isTip) {
       target = target.parentElement as HTMLElement;
     }
 
@@ -105,29 +105,67 @@ class App extends Observer {
     const handleMouseMove = this.handleMouseMove.bind(this, forMouseMove);
 
     document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousedown', handleMouseMove);
 
-    function handleFinishMove() {
+    const handleFinishMove = () => {
+      this.closestHandle = null;
       document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mousedown', handleMouseMove);
       document.removeEventListener('mouseup', handleFinishMove);
-    }
+    };
 
     document.addEventListener('mouseup', handleFinishMove);
   }
 
   private handleMouseMove(this: App, forMouseMove: ForMouseMove, e: MouseEvent) {
-    const shiftY = forMouseMove.shiftY;
-    const shiftX = forMouseMove.shiftX;
-    const data = forMouseMove.data;
     const target = forMouseMove.target;
+    const isBar = target.className.includes('slider__bar');
 
-    let left;
+    const shiftY = isBar ? 0 : forMouseMove.shiftY;
+    const shiftX = isBar ? 0 : forMouseMove.shiftX;
+    const data = forMouseMove.data;
+
+    let left = 0;
     if (data.state.direction === constants.DIRECTION_VERTICAL) {
       left = data.wrapper.offsetHeight - e.clientY - shiftY + data.wrapper.getBoundingClientRect().top;
     } else {
       left = e.clientX - shiftX - data.wrapper.offsetLeft;
     }
 
-    this.emit('onUserMove', { left, target });
+    if (isBar && !this.closestHandle) {
+      const handlesNodes = Array.from(data.wrapper.querySelectorAll('.slider__handle'));
+      const handles = handlesNodes.map(handle => {
+        let value = 0;
+
+        if (data.state.direction === constants.DIRECTION_VERTICAL) {
+          value = parseInt((handle as HTMLElement).style.bottom || '');
+        } else {
+          value = parseInt((handle as HTMLElement).style.left || '');
+        }
+
+        return {
+          value,
+          handle: handle as HTMLElement,
+        };
+      });
+
+      if (handles.length === 2) {
+        const first = Math.abs(handles[0].value - left);
+        const second = Math.abs(handles[1].value - left);
+        const arr = [first, second];
+        const desiredIndex = arr.map((item, index, array) => {
+          if (item <= array[index + 1]) {
+            return index;
+          }
+          return index + 1;
+        });
+        this.closestHandle = handles[desiredIndex[0]].handle;
+      } else {
+        this.closestHandle = handles[0].handle;
+      }
+    }
+
+    this.emit('onUserMove', { left, target: isBar ? this.closestHandle : target });
   }
 }
 
