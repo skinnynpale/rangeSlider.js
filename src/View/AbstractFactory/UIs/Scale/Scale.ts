@@ -4,7 +4,7 @@ import { constants } from '../../../../helpers/constants';
 class Scale extends Observer {
   protected slider: HTMLElement;
   protected wrapper: HTMLElement;
-  protected steps: number[] = [];
+  protected steps: [{ value: number; px: number }] = [{ value: 0, px: 0 }];
   private ratio = 0;
 
   constructor(protected direction: string, protected anchor: HTMLElement) {
@@ -25,10 +25,9 @@ class Scale extends Observer {
     this.wrapper.addEventListener('click', this.handleScaleValue);
   }
 
-  public paint({ ratio, steps }: { ratio: number; steps: number[] }) {
+  public paint({ ratio, steps }: { ratio: number; steps: [{ value: number; px: number }] }) {
     this.steps = steps;
     const progression = steps;
-    let ratioProgressive = 0;
 
     if (this.wrapper.childElementCount === progression.length) {
       if (ratio === this.ratio) {
@@ -42,46 +41,19 @@ class Scale extends Observer {
     }
 
     for (let i = 0; i < progression.length; i += 1) {
-      const template = `<div class="scale__value">${progression[i]}</div>`;
+      const template = `<div class="scale__value">${progression[i].value}</div>`;
       this.wrapper.insertAdjacentHTML('beforeend', template);
 
       const currentCreatedValue = this.wrapper.children[i] as HTMLElement;
 
-      if (i === 0) {
-        switch (this.direction) {
-          case constants.DIRECTION_HORIZONTAL:
-            currentCreatedValue.style.left = `${0}px`;
-            break;
-          case constants.DIRECTION_VERTICAL:
-            currentCreatedValue.style.bottom = `${0}px`;
-            break;
-        }
-      } else {
-        ratioProgressive += ratio;
-        const offset = currentCreatedValue.clientWidth / 8;
-
-        switch (this.direction) {
-          case constants.DIRECTION_HORIZONTAL:
-            currentCreatedValue.style.left = `${ratioProgressive - offset}px`;
-            break;
-          case constants.DIRECTION_VERTICAL:
-            currentCreatedValue.style.bottom = `${ratioProgressive - offset}px`;
-            break;
-        }
+      switch (this.direction) {
+        case constants.DIRECTION_HORIZONTAL:
+          currentCreatedValue.style.left = `${progression[i].px}px`;
+          break;
+        case constants.DIRECTION_VERTICAL:
+          currentCreatedValue.style.bottom = `${progression[i].px}px`;
+          break;
       }
-    }
-
-    const handle = this.slider.querySelector('.slider__handle') as HTMLElement;
-
-    if (!handle) throw new Error('.slider__handle - не было найдено!');
-
-    switch (this.direction) {
-      case constants.DIRECTION_HORIZONTAL:
-        this.wrapper.style.marginLeft = `${handle.offsetWidth / 4 - 1}px`;
-        break;
-      case constants.DIRECTION_VERTICAL:
-        this.wrapper.style.marginBottom = `${handle.offsetWidth / 4 - 1}px`;
-        break;
     }
   }
 
@@ -104,7 +76,7 @@ class Scale extends Observer {
       values[desiredIndex[0]] = value;
     } else {
       values[0] = value;
-      values[1] = this.steps[this.steps.length - 1];
+      values[1] = this.steps[this.steps.length - 1].value;
     }
     return { handles, values };
   }

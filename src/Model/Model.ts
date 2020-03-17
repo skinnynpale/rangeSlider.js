@@ -21,7 +21,6 @@ class Model extends Observer {
 
   public counting(viewValues: ViewValues) {
     this.edge = viewValues.edge || this.edge;
-
     const value = this.findViewValue(viewValues);
     const pxValue = this.countPxValueFromValue(value);
     const target = viewValues.target;
@@ -96,6 +95,10 @@ class Model extends Observer {
     const state = this.state;
     const value = Math.round(left / this.getRatio()) * state.step + state.min;
 
+    if (left >= this.edge) {
+      return this.state.max;
+    }
+
     return this.correctValueInTheRange(value);
   }
 
@@ -165,18 +168,38 @@ class Model extends Observer {
       return max;
     }
 
+    if (value === max) {
+      return max;
+    }
+
     return newValue;
   }
 
   private createSteps() {
     const { min, max, step } = this.state;
-    const steps = [];
 
-    for (let i = min; i <= max; i += step) {
-      steps.push(i);
+    if ((max - min) / step >= 15) {
+      const result = new Set([min, max]);
+      const percent = (max - min) * 0.2;
+
+      for (let i = min; i <= max; i += percent) {
+        result.add(this.correctValueInTheRange(i));
+      }
+
+      return Array.from(result)
+        .sort((a, b) => a - b)
+        .map(value => ({ value, px: this.countPxValueFromValue(value) }));
+    } else {
+      const result = new Set([min, max]);
+
+      for (let i = min + step; i <= max; i += step) {
+        result.add(i);
+      }
+
+      return Array.from(result)
+        .sort((a, b) => a - b)
+        .map(value => ({ value, px: this.countPxValueFromValue(value) }));
     }
-
-    return steps;
   }
 }
 

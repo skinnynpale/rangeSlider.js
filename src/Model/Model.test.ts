@@ -179,12 +179,12 @@ describe('Model', () => {
       values: [13, 50],
     });
     // @ts-ignore
-    expect(model.createSteps()).to.deep.eq([10, 20, 30, 40, 50]);
+    expect(model.createSteps()).to.deep.eq([10, 20, 30, 40, 50, 52]);
     // @ts-ignore
 
     model.setState({ step: 3, max: 19, min: 9 });
     // @ts-ignore
-    expect(model.createSteps()).to.deep.eq([9, 12, 15, 18]);
+    expect(model.createSteps()).to.deep.eq([9, 12, 15, 18, 19]);
 
     // @ts-ignore
     model.setState({ step: 50, max: -2, min: -1 });

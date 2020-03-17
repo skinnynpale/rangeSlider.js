@@ -70,10 +70,10 @@ class App extends Observer {
     if (!handles) throw new Error('.slider__handle - не было найдено!');
 
     if (state.direction === constants.DIRECTION_VERTICAL) {
-      return wrapper.clientHeight - (handles[0] as HTMLElement).offsetHeight;
+      return wrapper.clientHeight;
     }
 
-    return wrapper.offsetWidth - (handles[0] as HTMLElement).offsetWidth;
+    return wrapper.offsetWidth;
   }
 
   private bindEventListeners(data: { wrapper: HTMLElement; state: VisualState }) {
@@ -121,11 +121,11 @@ class App extends Observer {
     const target = forMouseMove.target;
     const isBar = target.className.includes('slider__bar');
 
-    const shiftY = isBar ? 0 : forMouseMove.shiftY;
-    const shiftX = isBar ? 0 : forMouseMove.shiftX;
+    const shiftY = isBar ? 0 : forMouseMove.shiftY * 0.5;
+    const shiftX = isBar ? 0 : forMouseMove.shiftX * 0.5;
     const data = forMouseMove.data;
 
-    let left = 0;
+    let left: number;
     if (data.state.direction === constants.DIRECTION_VERTICAL) {
       left = data.wrapper.offsetHeight - e.clientY - shiftY + data.wrapper.getBoundingClientRect().top;
     } else {
@@ -135,7 +135,7 @@ class App extends Observer {
     if (isBar && !this.closestHandle) {
       const handlesNodes = Array.from(data.wrapper.querySelectorAll('.slider__handle'));
       const handles = handlesNodes.map(handle => {
-        let value = 0;
+        let value: number;
 
         if (data.state.direction === constants.DIRECTION_VERTICAL) {
           value = parseInt((handle as HTMLElement).style.bottom || '');

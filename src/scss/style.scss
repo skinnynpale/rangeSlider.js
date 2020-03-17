@@ -16,6 +16,7 @@
     font-weight: bold;
     color: #8a8faa;
     cursor: pointer;
+    transform: translate(-50%, 50%);
 
     &:hover {
       color: lighten(#8a8faa, 10%);
@@ -24,6 +25,7 @@
 }
 
 .settings {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   font-family: monospace;
@@ -77,6 +79,7 @@
     position: absolute;
     z-index: 1;
     cursor: pointer;
+    transform: translate(-50%, 50%);
   }
 
   &__tip {
@@ -109,7 +112,7 @@
       bottom: 30px;
     }
     .slider__handle {
-      bottom: 23px;
+      top: 25px;
       left: 135px;
     }
     .slider__tip {
@@ -127,8 +130,9 @@
       transform: rotate(180deg) translate(50%);
     }
     .slider__scale {
-      margin-top: 15px;
+      margin-top: 10px;
       position: absolute;
+      width: 100%;
     }
   }
 
@@ -143,7 +147,7 @@
     }
     .slider__handle {
       bottom: 135px;
-      left: -8px;
+      left: 4px;
     }
     .slider__tip {
       padding: 2px 5px;
