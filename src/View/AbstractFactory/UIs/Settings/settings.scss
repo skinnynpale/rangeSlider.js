@@ -1,0 +1,23 @@
+.settings {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  font-family: monospace;
+  font-size: 16px;
+  border: 2px dotted green;
+
+  &__separation {
+    height: 1px;
+    background-color: green;
+    margin: 5px;
+  }
+
+  &__label {
+    margin: 2px 5px;
+  }
+
+  &__input {
+    width: 90px;
+    font-family: monospace;
+  }
+}

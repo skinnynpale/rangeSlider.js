@@ -1,3 +1,5 @@
+import './scale.scss';
+
 import Observer from '../../../../Observer/Observer';
 import { constants } from '../../../../helpers/constants';
 

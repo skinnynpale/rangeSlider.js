@@ -1,0 +1,16 @@
+.scale {
+  position: relative;
+
+  &__value {
+    position: absolute;
+    font-family: monospace;
+    font-weight: bold;
+    color: #8a8faa;
+    cursor: pointer;
+    transform: translate(-50%, 50%);
+
+    &:hover {
+      color: lighten(#8a8faa, 10%);
+    }
+  }
+}

@@ -1,9 +1,9 @@
 import Settings from './UIs/Settings/Settings';
 import Template from './UIs/Template/Template';
-import { GUIFactory, IntervalFactory, SingleFactory } from './Factories/Factories';
+import { GUIFactory } from './Factories/Factories';
 import Observer from '../../Observer/Observer';
 import { constants } from '../../helpers/constants';
-import { Directions, ForMouseMove, ViewValues, UIs, VisualState } from '../../helpers/interfaces';
+import { ForMouseMove, ViewValues, UIs, VisualState } from '../../helpers/interfaces';
 
 class App extends Observer {
   public UIs: UIs = {};
@@ -169,20 +169,4 @@ class App extends Observer {
   }
 }
 
-class AppConfigurator {
-  public main({ type, direction }: VisualState, anchor: HTMLElement) {
-    let factory;
-
-    if (type === constants.TYPE_SINGLE) {
-      factory = new SingleFactory(direction as Directions);
-    } else if (type === constants.TYPE_INTERVAL) {
-      factory = new IntervalFactory(direction as Directions);
-    } else {
-      throw new Error(`Error! Unknown ${type} or ${direction}`);
-    }
-
-    return new App(factory, anchor);
-  }
-}
-
-export { AppConfigurator, App };
+export default App;

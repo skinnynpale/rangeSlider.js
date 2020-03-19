@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import jsdom from 'jsdom';
 
-import { App } from './App';
+import App from './App';
 import { IntervalFactory } from './Factories/Factories';
 import { IntervalBar } from './UIs/Bar/Bar';
 import { IntervalHandle } from './UIs/Handle/Handle';

@@ -1,6 +1,6 @@
 import Observer from '../Observer/Observer';
 import { VisualState } from '../helpers/interfaces';
-import { defaultVisualModel } from '../defaultVisualModel';
+import { defaultVisualModel } from './defaultVisualModel';
 
 class VisualModel extends Observer {
   public state: VisualState = defaultVisualModel;

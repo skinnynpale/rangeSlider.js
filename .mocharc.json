@@ -1,5 +1,5 @@
 {
   "extension": ["ts"],
-  "require": "ts-node/register",
+  "require": ["ts-node/register", "ignore-styles"],
   "spec": "src/**/*.test.ts"
 }

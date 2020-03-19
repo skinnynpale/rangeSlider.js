@@ -1,7 +1,7 @@
 import Controller from './Controller/Controller';
 import { EventCallback, ModelState, VisualState } from './helpers/interfaces';
-import { defaultModel } from './defaultModel';
-import { defaultVisualModel } from './defaultVisualModel';
+import { defaultModel } from './Model/defaultModel';
+import { defaultVisualModel } from './Model/defaultVisualModel';
 
 const methods = {
   reset() {

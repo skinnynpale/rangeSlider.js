@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import jsdom from 'jsdom';
 
-import { AppConfigurator } from './App';
-import { IntervalFactory } from './Factories/Factories';
+import { IntervalFactory } from '../Factories/Factories';
+import AppConfigurator from './AppConfigurator';
 
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');

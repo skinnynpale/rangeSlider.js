@@ -1,5 +1,5 @@
 import Observer from '../Observer/Observer';
-import { defaultModel } from '../defaultModel';
+import { defaultModel } from './defaultModel';
 import { ModelState, OnlyNumbers, ViewValues } from '../helpers/interfaces';
 
 class Model extends Observer {
@@ -177,29 +177,23 @@ class Model extends Observer {
 
   private createSteps() {
     const { min, max, step } = this.state;
+    const partions = (max - min) / step;
+    const result = new Set([min, max]);
 
-    if ((max - min) / step >= 15) {
-      const result = new Set([min, max]);
+    if (partions >= 15) {
       const percent = (max - min) * 0.2;
-
       for (let i = min; i <= max; i += percent) {
         result.add(this.correctValueInTheRange(i));
       }
-
-      return Array.from(result)
-        .sort((a, b) => a - b)
-        .map(value => ({ value, px: this.countPxValueFromValue(value) }));
     } else {
-      const result = new Set([min, max]);
-
       for (let i = min + step; i <= max; i += step) {
         result.add(i);
       }
-
-      return Array.from(result)
-        .sort((a, b) => a - b)
-        .map(value => ({ value, px: this.countPxValueFromValue(value) }));
     }
+
+    return Array.from(result)
+      .sort((a, b) => a - b)
+      .map(value => ({ value, px: this.countPxValueFromValue(value) }));
   }
 }
 

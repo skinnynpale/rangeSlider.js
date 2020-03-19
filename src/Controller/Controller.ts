@@ -1,18 +1,15 @@
+import { ModelState, ViewValues, VisualState } from '../helpers/interfaces';
 import Model from '../Model/Model';
 import VisualModel from '../Model/VisualModel';
-import { App, AppConfigurator } from '../View/AbstractFactory/App';
-import { ModelState, ViewValues, VisualState } from '../helpers/interfaces';
+import App from '../View/AbstractFactory/App';
+import AppConfigurator from '../View/AbstractFactory/AppConfigurator/AppConfigurator';
 
 class Controller {
   private model: Model;
   private visualModel: VisualModel;
   private app: App;
 
-  constructor(
-    private anchor: HTMLElement,
-    private settingsVisualModel: VisualState,
-    private settingsModel: ModelState,
-  ) {
+  constructor(private anchor: HTMLElement, settingsVisualModel: VisualState, private settingsModel: ModelState) {
     this.model = new Model(settingsModel);
     this.visualModel = new VisualModel(settingsVisualModel);
 

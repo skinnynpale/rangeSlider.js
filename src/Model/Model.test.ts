@@ -175,20 +175,31 @@ describe('Model', () => {
     const model = new Model({
       min: 10,
       max: 52,
-      step: 10,
+      step: 20,
       values: [13, 50],
     });
     // @ts-ignore
-    expect(model.createSteps()).to.deep.eq([10, 20, 30, 40, 50, 52]);
+    expect(model.createSteps()).to.deep.eq([
+      { px: 0, value: 10 },
+      { px: 0, value: 30 },
+      { px: 0, value: 50 },
+      { px: 0, value: 52 },
+    ]);
     // @ts-ignore
 
     model.setState({ step: 3, max: 19, min: 9 });
     // @ts-ignore
-    expect(model.createSteps()).to.deep.eq([9, 12, 15, 18, 19]);
+    expect(model.createSteps()).to.deep.eq([
+      { px: 0, value: 9 },
+      { px: 0, value: 12 },
+      { px: 0, value: 15 },
+      { px: 0, value: 18 },
+      { px: 0, value: 19 },
+    ]);
 
     // @ts-ignore
     model.setState({ step: 50, max: -2, min: -1 });
     // @ts-ignore
-    expect(model.createSteps()).to.deep.eq([-2, -1]);
+    expect(model.createSteps()).to.deep.eq([{ px: 0, value: -2 }, { px: 0, value: -1 }]);
   });
 });

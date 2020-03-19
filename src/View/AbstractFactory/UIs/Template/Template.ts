@@ -1,3 +1,6 @@
+import './slider.scss';
+import './wrapper-slider.scss';
+
 import { VisualState } from '../../../../helpers/interfaces';
 
 class Template {

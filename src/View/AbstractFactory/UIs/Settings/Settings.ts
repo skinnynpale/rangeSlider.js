@@ -1,7 +1,9 @@
+import './settings.scss';
+
+import { settingsTemplate } from './settingsTemplate';
 import Observer from '../../../../Observer/Observer';
 import { constants } from '../../../../helpers/constants';
 import { GState } from '../../../../helpers/interfaces';
-import { settingsTemplate } from './settingsTemplate';
 
 class Settings extends Observer {
   public wrapper: HTMLFormElement;

@@ -1,4 +1,4 @@
-import { ModelState } from './helpers/interfaces';
+import { ModelState } from '../helpers/interfaces';
 
 export const defaultModel: ModelState = {
   min: 10,
