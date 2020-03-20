@@ -38,7 +38,7 @@ class Controller {
     // Отрисовка настроек
     this.model.on(
       'pxValueDone',
-      () => this.app.UIs.settings && this.app.UIs.settings.setState({ ...this.model.state, ...this.visualModel.state }),
+      () => this.app.UIs.settings && this.app.UIs.settings.setState(this.model.state, this.visualModel.state),
     );
 
     // Пересоздать слайдер

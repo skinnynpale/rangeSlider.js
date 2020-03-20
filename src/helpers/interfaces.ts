@@ -1,6 +1,6 @@
-import { Handle } from '../View/AbstractFactory/UIs/Handle/Handle';
-import { Bar } from '../View/AbstractFactory/UIs/Bar/Bar';
-import { Tip } from '../View/AbstractFactory/UIs/Tip/Tip';
+import { HandleInterface } from '../View/AbstractFactory/UIs/Handle/Handle';
+import { BarInterface } from '../View/AbstractFactory/UIs/Bar/Bar';
+import { TipInterface } from '../View/AbstractFactory/UIs/Tip/Tip';
 import { Scale } from '../View/AbstractFactory/UIs/Scale/Scale';
 import Settings from '../View/AbstractFactory/UIs/Settings/Settings';
 
@@ -15,13 +15,13 @@ type Directions = 'horizontal' | 'vertical';
 type Types = 'single' | 'interval';
 
 interface VisualState {
-  scale?: boolean;
-  direction?: Directions;
-  skin?: 'green' | 'red';
-  bar?: boolean;
-  tip?: boolean;
-  type?: Types;
-  settings?: boolean;
+  scale: boolean;
+  direction: Directions;
+  skin: 'green' | 'red';
+  bar: boolean;
+  tip: boolean;
+  type: Types;
+  settings: boolean;
 }
 
 interface ViewValues {
@@ -44,9 +44,9 @@ interface GState {
 }
 
 interface UIs {
-  handle?: Handle;
-  bar?: Bar;
-  tip?: Tip;
+  handle?: HandleInterface;
+  bar?: BarInterface;
+  tip?: TipInterface;
   scale?: Scale;
   settings?: Settings;
 }

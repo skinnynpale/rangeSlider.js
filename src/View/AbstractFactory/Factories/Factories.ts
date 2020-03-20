@@ -1,13 +1,13 @@
-import { IntervalTip, SingleTip, Tip } from '../UIs/Tip/Tip';
-import { Bar, SingleBar, IntervalBar } from '../UIs/Bar/Bar';
-import { Handle, SingleHandle, IntervalHandle } from '../UIs/Handle/Handle';
+import { IntervalTip, SingleTip, TipInterface } from '../UIs/Tip/Tip';
+import { SingleBar, IntervalBar, BarInterface } from '../UIs/Bar/Bar';
+import { SingleHandle, IntervalHandle, HandleInterface } from '../UIs/Handle/Handle';
 import { Scale } from '../UIs/Scale/Scale';
 import { Directions } from '../../../helpers/interfaces';
 
 interface GUIFactory {
-  createBar(anchor: HTMLElement): Bar;
-  createTip(): Tip;
-  createHandle(anchor: HTMLElement): Handle;
+  createBar(anchor: HTMLElement): BarInterface;
+  createTip(): TipInterface;
+  createHandle(anchor: HTMLElement): HandleInterface;
   createScale(anchor: HTMLElement): Scale;
 }
 

@@ -3,6 +3,7 @@ import jsdom from 'jsdom';
 
 import { IntervalFactory } from '../Factories/Factories';
 import AppConfigurator from './AppConfigurator';
+import { defaultVisualModel } from '../../../Model/defaultVisualModel';
 
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');
@@ -23,6 +24,7 @@ describe('ApplicationConfigurator', () => {
   it('Должен верно определить фабрику', () => {
     const applicationConfigurator = new AppConfigurator().main(
       {
+        ...defaultVisualModel,
         type: 'interval',
         direction: 'horizontal',
       },

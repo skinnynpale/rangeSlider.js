@@ -1,4 +1,4 @@
-import { VisualState, Directions } from '../../../helpers/interfaces';
+import { VisualState } from '../../../helpers/interfaces';
 import App from '../App';
 import { SingleFactory, IntervalFactory } from '../Factories/Factories';
 import { constants } from '../../../helpers/constants';
@@ -6,12 +6,11 @@ import { constants } from '../../../helpers/constants';
 class AppConfigurator {
   public main({ type, direction }: VisualState, anchor: HTMLElement) {
     let factory;
-    console.log(type, direction);
 
     if (type === constants.TYPE_SINGLE) {
-      factory = new SingleFactory(direction as Directions);
+      factory = new SingleFactory(direction);
     } else if (type === constants.TYPE_INTERVAL) {
-      factory = new IntervalFactory(direction as Directions);
+      factory = new IntervalFactory(direction);
     } else {
       throw new Error(`Error! Unknown ${type} or ${direction}`);
     }

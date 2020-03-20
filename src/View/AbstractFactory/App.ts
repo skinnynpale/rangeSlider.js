@@ -43,11 +43,11 @@ class App extends Observer {
   }
 
   public paint(state: ViewValues) {
-    const gui = Object.keys(this.UIs);
+    const UIs = Object.entries(this.UIs);
 
-    for (const UI of gui) {
-      if (UI === 'settings') continue;
-      (this.UIs as any)[UI].paint(state);
+    for (const [UIName, UIInstance] of UIs) {
+      if (UIName === 'settings') continue;
+      UIInstance.paint(state);
     }
   }
 

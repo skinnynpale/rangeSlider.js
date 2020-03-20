@@ -2,13 +2,12 @@ import { Tip } from '../Tip/Tip';
 import { ViewValues } from '../../../../helpers/interfaces';
 import { constants } from '../../../../helpers/constants';
 
-interface Handle {
+interface HandleInterface {
   paint({ target, pxValue }: ViewValues): void;
-  init(anchor: HTMLElement): void;
   append(component: Tip): void;
 }
 
-class Handle implements Handle {
+class Handle {
   constructor(protected anchor: HTMLElement) {}
 
   public append(component: Tip) {
@@ -20,7 +19,7 @@ class Handle implements Handle {
   }
 }
 
-class SingleHandle extends Handle {
+class SingleHandle extends Handle implements HandleInterface {
   constructor(protected direction: string, anchor: HTMLElement) {
     super(anchor);
 
@@ -44,7 +43,7 @@ class SingleHandle extends Handle {
   }
 }
 
-class IntervalHandle extends Handle {
+class IntervalHandle extends Handle implements HandleInterface {
   constructor(protected direction: string, anchor: HTMLElement) {
     super(anchor);
 
@@ -69,4 +68,4 @@ class IntervalHandle extends Handle {
   }
 }
 
-export { Handle, IntervalHandle, SingleHandle };
+export { Handle, IntervalHandle, SingleHandle, HandleInterface };

@@ -1,12 +1,11 @@
 import { ViewValues } from '../../../../helpers/interfaces';
 import { constants } from '../../../../helpers/constants';
 
-interface Bar {
+interface BarInterface {
   paint({ pxValue, pxValues, value, target }: ViewValues): void;
-  init(anchor: HTMLElement): void;
 }
 
-class Bar implements Bar {
+class Bar {
   constructor(protected direction: string, anchor: HTMLElement) {
     const barTemplate = '</div><div class="slider__bar"></div>';
     const slider = anchor.querySelector('.slider');
@@ -17,7 +16,7 @@ class Bar implements Bar {
   }
 }
 
-class SingleBar extends Bar {
+class SingleBar extends Bar implements BarInterface {
   public paint({ pxValue, target }: ViewValues) {
     if (pxValue === undefined || target === undefined) return;
 
@@ -33,7 +32,7 @@ class SingleBar extends Bar {
   }
 }
 
-class IntervalBar extends Bar {
+class IntervalBar extends Bar implements BarInterface {
   public paint({ pxValues, target }: ViewValues) {
     if (pxValues === undefined || target === undefined) return;
 
@@ -51,4 +50,4 @@ class IntervalBar extends Bar {
   }
 }
 
-export { Bar, IntervalBar, SingleBar };
+export { Bar, IntervalBar, SingleBar, BarInterface };

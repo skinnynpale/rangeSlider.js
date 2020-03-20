@@ -1,18 +1,18 @@
 import { ViewValues } from '../../../../helpers/interfaces';
 
-interface Tip {
+interface TipInterface {
   init(handle: HTMLElement): void;
   paint(state: {}): void;
 }
 
-class Tip implements Tip {
+class Tip {
   public init(handle: HTMLElement) {
     const tipTemplate = '<div class="slider__tip"><div class="slider__tongue"></div></div>';
     handle.insertAdjacentHTML('beforeend', tipTemplate);
   }
 }
 
-class SingleTip extends Tip {
+class SingleTip extends Tip implements TipInterface {
   public paint({ target, value }: ViewValues) {
     if (target === undefined) return;
 
@@ -23,7 +23,7 @@ class SingleTip extends Tip {
     tip.setAttribute('data-value', `${value}`);
   }
 }
-class IntervalTip extends Tip {
+class IntervalTip extends Tip implements TipInterface {
   public paint({ target, value, pxValues, values }: ViewValues) {
     if (target === undefined || pxValues === undefined) return;
 
@@ -57,4 +57,4 @@ class IntervalTip extends Tip {
   }
 }
 
-export { Tip, IntervalTip, SingleTip };
+export { Tip, IntervalTip, SingleTip, TipInterface };

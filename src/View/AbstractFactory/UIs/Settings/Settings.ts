@@ -3,11 +3,15 @@ import './settings.scss';
 import { settingsTemplate } from './settingsTemplate';
 import Observer from '../../../../Observer/Observer';
 import { constants } from '../../../../helpers/constants';
-import { GState } from '../../../../helpers/interfaces';
+import { GState, VisualState, ModelState } from '../../../../helpers/interfaces';
+import { defaultModel } from '../../../../Model/defaultModel';
+import { defaultVisualModel } from '../../../../Model/defaultVisualModel';
 
 class Settings extends Observer {
   public wrapper: HTMLFormElement;
   private state: GState = {};
+  private model: ModelState = defaultModel;
+  private visualModel: VisualState = defaultVisualModel;
 
   constructor(private anchor: HTMLElement) {
     super();
@@ -21,40 +25,46 @@ class Settings extends Observer {
     this.wrapper.addEventListener('change', this.handleChangeSettings);
   }
 
-  public setState(state: {}) {
-    this.state = { ...this.state, ...state };
+  public setState(model: ModelState, visualModel: VisualState) {
+    this.model = { ...this.model, ...model };
+    this.visualModel = { ...this.visualModel, ...visualModel };
     this.paint();
     return this;
   }
 
   public paint() {
-    const state = this.state;
+    let { model } = this;
+    const { visualModel } = this;
     const inputs = this.wrapper.elements;
-    const [valueFrom, valueTo] = state.values as number[];
+    const [valueFrom, valueTo] = model.values;
 
-    Object.assign(state, { valueFrom, valueTo });
+    model = { ...model, ...{ valueFrom, valueTo } };
 
-    for (const input of inputs as any) {
-      input.value = state[input.name];
+    for (const nonInput of Array.from(inputs)) {
+      const input = nonInput as HTMLFormElement;
+      type modelKeys = keyof ModelState;
+      input.value = model[input.name as modelKeys];
 
       if (input.name === 'valueFrom') {
-        input.step = state.step;
-        input.min = state.min;
-        input.max = state.max;
+        input.step = model.step;
+        input.min = model.min;
+        input.max = model.max;
       }
+
       if (input.name === 'valueTo') {
-        input.step = state.step;
-        input.min = state.min;
-        input.max = state.max;
+        input.step = model.step;
+        input.min = model.min;
+        input.max = model.max;
       }
     }
 
     const selects = this.wrapper.querySelectorAll('select');
-    for (const select of selects as any) {
-      select.value = state[select.name];
+    for (const select of Array.from(selects)) {
+      type visualKeys = keyof VisualState;
+      select.value = visualModel[select.name as visualKeys].toString();
     }
 
-    if ((state.type as string) === constants.TYPE_SINGLE) {
+    if (visualModel.type === constants.TYPE_SINGLE) {
       const valueToInput = this.wrapper.valueTo;
       if (valueToInput && valueToInput.getAttribute('disabled') === 'true') return;
       valueToInput && valueToInput.setAttribute('disabled', 'true');

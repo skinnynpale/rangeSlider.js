@@ -63,7 +63,7 @@ class Scale extends Observer {
     const handles = anchor.querySelectorAll('.slider__handle');
     const tips = anchor.querySelectorAll('.slider__tip');
 
-    const values = (Array.from(tips).map(item => (item as HTMLElement).dataset.value) as unknown) as number[];
+    const values = Array.from(tips).map(item => Number((item as HTMLElement).dataset.value));
 
     if (handles.length === 2) {
       const first = Math.abs(values[0] - value);

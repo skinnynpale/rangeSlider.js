@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import Settings from './Settings';
 
 import jsdom from 'jsdom';
+import { defaultVisualModel } from '../../../../Model/defaultVisualModel';
 
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');
@@ -19,19 +20,22 @@ describe('Settings', () => {
   });
 
   it('Должен создать SettingsTemplate', () => {
-    const settings = new Settings(anchor);
+    new Settings(anchor);
 
     expect(anchor.querySelectorAll('.settings').length).to.eq(1);
   });
 
   it('Должен расставить переданные значения в инпуты', () => {
     const settings = new Settings(anchor);
-    settings.setState({
-      min: 10,
-      max: 50,
-      step: 5,
-      values: [20, 40],
-    });
+    settings.setState(
+      {
+        min: 10,
+        max: 50,
+        step: 5,
+        values: [20, 40],
+      },
+      defaultVisualModel,
+    );
 
     const settingsHTML = anchor.querySelector('.settings') as HTMLElement;
 
