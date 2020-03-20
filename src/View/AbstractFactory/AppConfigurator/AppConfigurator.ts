@@ -6,6 +6,7 @@ import { constants } from '../../../helpers/constants';
 class AppConfigurator {
   public main({ type, direction }: VisualState, anchor: HTMLElement) {
     let factory;
+    console.log(type, direction);
 
     if (type === constants.TYPE_SINGLE) {
       factory = new SingleFactory(direction as Directions);

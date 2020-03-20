@@ -1,5 +1,5 @@
 import Controller from './Controller/Controller';
-import { EventCallback, ModelState, VisualState } from './helpers/interfaces';
+import { ModelState, VisualState } from './helpers/interfaces';
 import { defaultModel } from './Model/defaultModel';
 import { defaultVisualModel } from './Model/defaultVisualModel';
 
@@ -14,8 +14,8 @@ const methods = {
     rangeSlider.app.removeHTML();
     $(this).off('onChange');
   },
-  onChange(this: JQuery, func: () => EventCallback) {
-    $(this).on('onChange', func);
+  onChange(this: JQuery, func: Function) {
+    $(this).on('onChange', args => func(args));
   },
 };
 
@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-type State = { VisualState: VisualState; ModelState: ModelState };
+type State = { VisualState: VisualState; ModelState: ModelState | {} };
 
 (function($) {
   function init(
@@ -55,15 +55,15 @@ type State = { VisualState: VisualState; ModelState: ModelState };
     }
 
     if (typeof options === 'string') {
-      if (options === 'onChange') {
-        methods[options].call(this, data as () => EventCallback);
-      } else if (methods[options]) {
-        methods[options].call(this);
+      if (options === 'onChange' && typeof data === 'function') {
+        return methods[options].call(this, data);
+      } else if (methods[options] && options !== 'onChange') {
+        return methods[options].call(this);
       }
     }
 
     if (typeof options === 'object') {
-      setState.call(this, { VisualState: options, ModelState: (data as ModelState) || {} });
+      return setState.call(this, { VisualState: options, ModelState: data || {} });
     }
   };
 })(jQuery);
