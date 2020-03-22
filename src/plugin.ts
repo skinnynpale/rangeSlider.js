@@ -27,43 +27,41 @@ declare global {
 
 type State = { VisualState: VisualState; ModelState: ModelState | {} };
 
-(function($) {
-  function init(
-    this: JQuery,
-    settingsVisualModel: VisualState = defaultVisualModel,
-    settingsModel: ModelState = defaultModel,
-  ) {
-    const visualModel = { ...defaultVisualModel, ...settingsVisualModel };
-    const model = { ...defaultModel, ...settingsModel };
+function init(
+  this: JQuery,
+  settingsVisualModel: VisualState = defaultVisualModel,
+  settingsModel: ModelState = defaultModel,
+) {
+  const visualModel = { ...defaultVisualModel, ...settingsVisualModel };
+  const model = { ...defaultModel, ...settingsModel };
 
-    return this.each(function(this: HTMLElement) {
-      $(this).data().rangeSlider = new Controller(this, visualModel, model);
-      $(this).data().startingVisualModel = visualModel;
-      $(this).data().startingModel = model;
-    });
+  return this.each(function(this: HTMLElement) {
+    $(this).data().rangeSlider = new Controller(this, visualModel, model);
+    $(this).data().startingVisualModel = visualModel;
+    $(this).data().startingModel = model;
+  });
+}
+
+function setState(this: JQuery, { VisualState, ModelState }: State) {
+  const rangeSlider = $(this).data('rangeSlider');
+  rangeSlider.model.setState(ModelState);
+  rangeSlider.reCreateApplication(Object.assign(rangeSlider.visualModel.state, VisualState));
+}
+
+$.fn.rangeSlider = function(options, data) {
+  if (!$(this).data('rangeSlider')) {
+    init.call(this);
   }
 
-  function setState(this: JQuery, { VisualState, ModelState }: State) {
-    const rangeSlider = $(this).data('rangeSlider');
-    rangeSlider.model.setState(ModelState);
-    rangeSlider.reCreateApplication(Object.assign(rangeSlider.visualModel.state, VisualState));
+  if (typeof options === 'string') {
+    if (options === 'onChange' && typeof data === 'function') {
+      return methods[options].call(this, data);
+    } else if (methods[options] && options !== 'onChange') {
+      return methods[options].call(this);
+    }
   }
 
-  $.fn.rangeSlider = function(options, data) {
-    if (!$(this).data('rangeSlider')) {
-      init.call(this);
-    }
-
-    if (typeof options === 'string') {
-      if (options === 'onChange' && typeof data === 'function') {
-        return methods[options].call(this, data);
-      } else if (methods[options] && options !== 'onChange') {
-        return methods[options].call(this);
-      }
-    }
-
-    if (typeof options === 'object') {
-      return setState.call(this, { VisualState: options, ModelState: data || {} });
-    }
-  };
-})(jQuery);
+  if (typeof options === 'object') {
+    return setState.call(this, { VisualState: options, ModelState: data || {} });
+  }
+};
