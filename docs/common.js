@@ -21,7 +21,7 @@ $('#anchor').rangeSlider({ skin: 'green', direction: 'horizontal' });
 $('#anchor').rangeSlider('reset');
 $('#anchor').rangeSlider({ skin: 'red', direction: 'horizontal', settings: true, scale: true });
 $('#anchor').rangeSlider({}, { step: 20, values: [590], max: 1000 });
-$('#anchor').rangeSlider('onChange', event => console.log(event.detail));
+// $('#anchor').rangeSlider('onChange', event => console.log(event.detail));
 //
 $('#anchor2').rangeSlider({
   settings: true,

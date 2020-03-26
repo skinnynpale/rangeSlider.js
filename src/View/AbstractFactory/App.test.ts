@@ -10,6 +10,7 @@ import { defaultVisualModel } from '../../Model/defaultVisualModel';
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');
 const document = dom.window.document;
+
 const defaults = defaultVisualModel;
 
 describe('Application', () => {

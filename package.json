@@ -7,7 +7,8 @@
     "eslint": "eslint --ext .js,.ts, src",
     "test": "mocha -w",
     "dev": "webpack-dev-server --open",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "test-coverage": "nyc mocha"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "ignore-styles": "^5.0.1",
     "jsdom": "^15.1.1",
     "mocha": "^6.2.0",
+    "nyc": "^15.0.0",
     "prettier": "^1.18.2",
     "typescript": "^3.6.3",
     "webpack-cli": "^3.3.9",
@@ -31,18 +33,18 @@
     "@types/jsdom": "^12.2.4",
     "@types/mocha": "^5.2.7",
     "autoprefixer": "^9.6.1",
+    "css-loader": "^3.2.0",
     "css-mqpacker": "^7.0.0",
     "cssnano": "^4.1.10",
     "jquery": "^3.4.1",
-    "webpack": "^4.41.0",
-    "css-loader": "^3.2.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "ts-loader": "^6.1.2",
-    "ts-node": "^8.4.1"
+    "ts-node": "^8.4.1",
+    "webpack": "^4.41.0"
   },
   "browserslist": [
     "> 1%",

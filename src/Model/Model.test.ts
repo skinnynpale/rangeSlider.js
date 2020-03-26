@@ -1,5 +1,10 @@
 import { expect } from 'chai';
 import Model from './Model';
+import jsdom from 'jsdom';
+
+const { JSDOM } = jsdom;
+const dom = new JSDOM('<html><body id="root"></body></html>');
+const document = dom.window.document;
 
 describe('Model', () => {
   it('Должен поставить кастомные настройки', () => {
@@ -200,6 +205,58 @@ describe('Model', () => {
     // @ts-ignore
     model.setState({ step: 50, max: -2, min: -1 });
     // @ts-ignore
-    expect(model.createSteps()).to.deep.eq([{ px: 0, value: -2 }, { px: 0, value: -1 }]);
+    expect(model.createSteps()).to.deep.eq([
+      { px: 0, value: -2 },
+      { px: 0, value: -1 },
+    ]);
+  });
+  it('(counting) Должен правильно найти / высчитать значение из объекта ViewValues', () => {
+    const model = new Model({
+      min: 10,
+      max: 1000,
+      step: 20,
+      values: [10, 1000],
+    });
+
+    const target = document.createElement('div');
+
+    model.counting({ left: 65, target, edge: 400 });
+    expect(model.state.values).to.deep.eq([170, 1000]);
+
+    model.counting({ target, value: 390 });
+    expect(model.mapOfHandles.get(target)).to.deep.eq({ value: 390, pxValue: 153.53535353535355 });
+  });
+  it('(counting) Должен правильно выдать результат работы событием pxValueDone', () => {
+    const model = new Model({
+      min: 10,
+      max: 1000,
+      step: 20,
+      values: [10, 1000],
+    });
+
+    const target = document.createElement('div');
+    let result = null;
+    model.on('pxValueDone', obj => {
+      result = obj;
+    });
+
+    model.counting({ left: 65, target, edge: 400 });
+    expect(result).to.deep.eq({
+      target,
+      value: 170,
+      pxValue: 64.64646464646465,
+      pxValues: [64.64646464646465, 400.00000000000006],
+      steps: [
+        { value: 10, px: 0 },
+        { value: 190, px: 72.72727272727273 },
+        { value: 390, px: 153.53535353535355 },
+        { value: 590, px: 234.34343434343438 },
+        { value: 790, px: 315.1515151515152 },
+        { value: 1000, px: 400.00000000000006 },
+      ],
+      values: [170, 1000],
+      edge: 400,
+      ratio: 8.080808080808081,
+    });
   });
 });

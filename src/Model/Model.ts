@@ -32,7 +32,7 @@ class Model extends Observer {
       pxValue,
     });
 
-    if (viewValues.left !== undefined) {
+    if (viewValues.value === undefined) {
       this.state = { ...this.state, ...this.updateArrayOfValues() };
     }
 
