@@ -2,15 +2,15 @@ import { expect } from 'chai';
 import jsdom from 'jsdom';
 
 import App from './App';
-import { IntervalFactory } from './Factories/Factories';
+import { IntervalFactory, SingleFactory } from './Factories/Factories';
 import { IntervalBar } from './UIs/Bar/Bar';
 import { IntervalHandle } from './UIs/Handle/Handle';
 import { defaultVisualModel } from '../../Model/defaultVisualModel';
 
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<html><body id="root"></body></html>');
+const window = dom.window;
 const document = dom.window.document;
-
 const defaults = defaultVisualModel;
 
 describe('Application', () => {
@@ -29,19 +29,12 @@ describe('Application', () => {
     const app = new App(new IntervalFactory('horizontal'), anchor);
 
     app.createUI({ ...defaults, bar: true });
-    // @ts-ignore
     expect(app.UIs.bar).to.deep.equal(new IntervalBar('horizontal', anchor));
-
-    // @ts-ignore
-    app.createUI({ handle: true });
-    // @ts-ignore
-    expect(app.UIs.bar).to.deep.equal(new IntervalBar('horizontal', anchor));
-    // @ts-ignore
     expect(app.UIs.handle).to.deep.equal(new IntervalHandle('horizontal', anchor));
   });
 
   it('Должен отрисовать HTML с заданными настройками', () => {
-    let app = new App(new IntervalFactory('horizontal'), anchor);
+    let app = new App(new SingleFactory('horizontal'), anchor);
     app.createUI({ ...defaults, bar: true, settings: true });
     app.init({
       direction: 'horizontal',

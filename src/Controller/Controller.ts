@@ -14,8 +14,8 @@ class Controller {
     this.visualModel = new VisualModel(settingsVisualModel);
 
     this.app = new AppConfigurator().main(this.visualModel.state, this.anchor);
-    this.bindEvents();
     this.app.createUI(this.visualModel.state);
+    this.bindEvents();
     this.app.init(this.visualModel.state);
   }
 

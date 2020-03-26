@@ -2,12 +2,12 @@ import './scale.scss';
 
 import Observer from '../../../../Observer/Observer';
 import { constants } from '../../../../helpers/constants';
+import { Steps } from '../../../../helpers/interfaces';
 
 class Scale extends Observer {
   protected slider: HTMLElement;
   protected wrapper: HTMLElement;
-  protected steps: [{ value: number; px: number }] = [{ value: 0, px: 0 }];
-  private ratio = 0;
+  protected steps: Steps = [{ value: 0, px: 0 }];
 
   constructor(protected direction: string, protected anchor: HTMLElement) {
     super();
@@ -27,20 +27,10 @@ class Scale extends Observer {
     this.wrapper.addEventListener('click', this.handleScaleValue);
   }
 
-  public paint({ ratio, steps }: { ratio: number; steps: [{ value: number; px: number }] }) {
+  public paint({ steps }: { steps: Steps }) {
     this.steps = steps;
     const progression = steps;
-
-    if (this.wrapper.childElementCount === progression.length) {
-      if (ratio === this.ratio) {
-        return;
-      }
-    }
-
     this.wrapper.innerHTML = '';
-    if (ratio !== undefined) {
-      this.ratio = ratio;
-    }
 
     for (let i = 0; i < progression.length; i += 1) {
       const template = `<div class="scale__value">${progression[i].value}</div>`;

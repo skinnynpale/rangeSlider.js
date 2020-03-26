@@ -13,6 +13,7 @@ interface ModelState {
 
 type Directions = 'horizontal' | 'vertical';
 type Types = 'single' | 'interval';
+type Steps = Array<{ value: number; px: number }>;
 
 interface VisualState {
   scale: boolean;
@@ -33,6 +34,7 @@ interface ViewValues {
   pxValues?: number[];
   values?: number[];
   handles?: NodeList;
+  steps?: Steps;
 }
 
 interface OnlyNumbers {
@@ -76,4 +78,5 @@ export {
   ForMouseMove,
   Directions,
   Types,
+  Steps,
 };

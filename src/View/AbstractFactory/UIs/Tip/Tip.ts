@@ -14,7 +14,7 @@ class Tip {
 
 class SingleTip extends Tip implements TipInterface {
   public paint({ target, value }: ViewValues) {
-    if (target === undefined) return;
+    if (!target) return;
 
     const tip = target.querySelector('.slider__tip');
 
@@ -25,7 +25,7 @@ class SingleTip extends Tip implements TipInterface {
 }
 class IntervalTip extends Tip implements TipInterface {
   public paint({ target, value, pxValues, values }: ViewValues) {
-    if (target === undefined || pxValues === undefined) return;
+    if (!target || !pxValues) return;
 
     const tip = target.querySelector('.slider__tip') as HTMLElement;
 

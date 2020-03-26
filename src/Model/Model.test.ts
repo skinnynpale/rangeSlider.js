@@ -30,6 +30,7 @@ describe('Model', () => {
     expect(model.state.values).to.deep.equal([20, 51]);
     expect(model.state.step).to.equal(2);
   });
+
   it('Должен исправить min/max если заходят друг за друга', () => {
     let model = new Model({
       min: 90,
@@ -58,6 +59,7 @@ describe('Model', () => {
     expect(model.state.min).to.equal(0);
     expect(model.state.max).to.equal(0);
   });
+
   it('Должен исправить шаг', () => {
     let model = new Model({
       step: 90,
@@ -91,6 +93,7 @@ describe('Model', () => {
     });
     expect(model.state.step).to.eq(1);
   });
+
   it('Должен вернуть откорректированное значение', () => {
     let model = new Model({
       min: 10,
@@ -116,6 +119,7 @@ describe('Model', () => {
     });
     expect(model.state.values).to.deep.eq([10, 80]);
   });
+
   it('Должен все сделать в правильном порядке', () => {
     const model = new Model({
       min: 50,
@@ -126,6 +130,7 @@ describe('Model', () => {
     expect(model.state.min).to.eq(-200);
     expect(model.state.max).to.eq(50);
   });
+
   it('Должен отсортировать значения', () => {
     const model = new Model({
       min: 10,
@@ -135,6 +140,7 @@ describe('Model', () => {
     });
     expect(model.state.values).to.deep.eq([10, 61]);
   });
+
   it('Должен исправить значения основанные на шаге', () => {
     let model = new Model({
       min: 9,
@@ -176,6 +182,7 @@ describe('Model', () => {
     });
     expect(model.state.values).to.deep.eq([10, 19]);
   });
+
   it('Должен вернуть правильный массив прогрессии', () => {
     const model = new Model({
       min: 10,
@@ -183,6 +190,7 @@ describe('Model', () => {
       step: 20,
       values: [13, 50],
     });
+
     // @ts-ignore
     expect(model.createSteps()).to.deep.eq([
       { px: 0, value: 10 },
@@ -190,9 +198,10 @@ describe('Model', () => {
       { px: 0, value: 50 },
       { px: 0, value: 52 },
     ]);
-    // @ts-ignore
 
+    // @ts-ignore
     model.setState({ step: 3, max: 19, min: 9 });
+
     // @ts-ignore
     expect(model.createSteps()).to.deep.eq([
       { px: 0, value: 9 },
@@ -204,12 +213,14 @@ describe('Model', () => {
 
     // @ts-ignore
     model.setState({ step: 50, max: -2, min: -1 });
+
     // @ts-ignore
     expect(model.createSteps()).to.deep.eq([
       { px: 0, value: -2 },
       { px: 0, value: -1 },
     ]);
   });
+
   it('(counting) Должен правильно найти / высчитать значение из объекта ViewValues', () => {
     const model = new Model({
       min: 10,
@@ -225,38 +236,5 @@ describe('Model', () => {
 
     model.counting({ target, value: 390 });
     expect(model.mapOfHandles.get(target)).to.deep.eq({ value: 390, pxValue: 153.53535353535355 });
-  });
-  it('(counting) Должен правильно выдать результат работы событием pxValueDone', () => {
-    const model = new Model({
-      min: 10,
-      max: 1000,
-      step: 20,
-      values: [10, 1000],
-    });
-
-    const target = document.createElement('div');
-    let result = null;
-    model.on('pxValueDone', obj => {
-      result = obj;
-    });
-
-    model.counting({ left: 65, target, edge: 400 });
-    expect(result).to.deep.eq({
-      target,
-      value: 170,
-      pxValue: 64.64646464646465,
-      pxValues: [64.64646464646465, 400.00000000000006],
-      steps: [
-        { value: 10, px: 0 },
-        { value: 190, px: 72.72727272727273 },
-        { value: 390, px: 153.53535353535355 },
-        { value: 590, px: 234.34343434343438 },
-        { value: 790, px: 315.1515151515152 },
-        { value: 1000, px: 400.00000000000006 },
-      ],
-      values: [170, 1000],
-      edge: 400,
-      ratio: 8.080808080808081,
-    });
   });
 });

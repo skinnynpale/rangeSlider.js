@@ -111,7 +111,6 @@ class Model extends Observer {
       values: this.state.values,
       target: state.target,
       edge: this.edge,
-      ratio: this.getRatio(),
     });
   }
 
@@ -177,10 +176,10 @@ class Model extends Observer {
 
   private createSteps() {
     const { min, max, step } = this.state;
-    const partions = (max - min) / step;
+    const pieces = (max - min) / step;
     const result = new Set([min, max]);
 
-    if (partions >= 15) {
+    if (pieces >= 15) {
       const percent = (max - min) * 0.2;
       for (let i = min; i <= max; i += percent) {
         result.add(this.correctValueInTheRange(i));

@@ -18,7 +18,7 @@ class Bar {
 
 class SingleBar extends Bar implements BarInterface {
   public paint({ pxValue, target }: ViewValues) {
-    if (pxValue === undefined || target === undefined) return;
+    if (!pxValue || !target) return;
 
     const bar = target.parentElement && (target.parentElement.querySelector('.slider__bar') as HTMLElement);
 
@@ -34,7 +34,7 @@ class SingleBar extends Bar implements BarInterface {
 
 class IntervalBar extends Bar implements BarInterface {
   public paint({ pxValues, target }: ViewValues) {
-    if (pxValues === undefined || target === undefined) return;
+    if (!pxValues || !target) return;
 
     const bar = target.parentElement && (target.parentElement.querySelector('.slider__bar') as HTMLElement);
 
