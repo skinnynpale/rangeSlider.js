@@ -8,7 +8,7 @@
     "test": "mocha -w",
     "dev": "webpack-dev-server --open",
     "build": "webpack --mode production",
-    "test-coverage": "nyc mocha"
+    "test-coverage": "nyc --reporter=html --reporter=text mocha"
   },
   "keywords": [],
   "author": "",

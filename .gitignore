@@ -3,3 +3,4 @@ node_modules
 .idea
 .eslintcache
 .nyc_output
+coverage
