@@ -3,7 +3,7 @@ import Model from './Model';
 import jsdom from 'jsdom';
 
 const { JSDOM } = jsdom;
-const dom = new JSDOM('<html><body id="root"></body></html>');
+const dom = new JSDOM('<html><body></body></html>');
 const document = dom.window.document;
 
 describe('Model', () => {

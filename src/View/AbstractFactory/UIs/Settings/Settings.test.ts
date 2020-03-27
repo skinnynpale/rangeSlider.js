@@ -5,7 +5,7 @@ import jsdom from 'jsdom';
 import { defaultVisualModel } from '../../../../Model/defaultVisualModel';
 
 const { JSDOM } = jsdom;
-const dom = new JSDOM('<html><body id="root"></body></html>');
+const dom = new JSDOM('<html><body></body></html>');
 const document = dom.window.document;
 
 describe('Settings', () => {

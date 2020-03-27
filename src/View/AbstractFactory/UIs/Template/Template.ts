@@ -17,7 +17,6 @@ class Template {
 
     anchor.insertAdjacentHTML('afterbegin', sliderTemplate);
     this.wrapper = anchor.querySelector('.wrapper-slider');
-    if (!this.wrapper) throw new Error('.wrapper-slider - не был найден!');
   }
 }
 

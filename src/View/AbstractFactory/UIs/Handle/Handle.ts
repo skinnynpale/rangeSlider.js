@@ -27,13 +27,13 @@ class SingleHandle extends Handle implements HandleInterface {
     const handleTemplate = '<div class="slider__handle"></div>';
     const slider = anchor.querySelector('.slider');
 
-    if (slider === null) throw new Error('.slider - не было найдено!');
+    if (!slider) throw new Error('.slider - не было найдено!');
 
     slider.insertAdjacentHTML('beforeend', handleTemplate);
   }
 
   public paint({ target, pxValue }: ViewValues) {
-    if (!target) return;
+    if (!target) throw new Error('Не был передан target!');
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
       target.style.left = `${pxValue}px`;
@@ -58,7 +58,7 @@ class IntervalHandle extends Handle implements HandleInterface {
   }
 
   public paint({ target, pxValue }: ViewValues) {
-    if (!target) return;
+    if (!target) throw new Error('Не был передан target!');
 
     if (this.direction === constants.DIRECTION_HORIZONTAL) {
       target.style.left = `${pxValue}px`;

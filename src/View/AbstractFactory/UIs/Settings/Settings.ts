@@ -20,8 +20,6 @@ class Settings extends Observer {
     anchor.insertAdjacentHTML('beforeend', settingsTemplate);
     this.wrapper = anchor.querySelector('.settings') as HTMLFormElement;
 
-    if (!this.wrapper) throw new Error('.settings - не было найдено!');
-
     this.wrapper.addEventListener('change', this.handleChangeSettings);
   }
 

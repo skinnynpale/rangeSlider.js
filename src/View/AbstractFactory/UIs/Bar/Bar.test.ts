@@ -86,7 +86,7 @@ describe('Bar', () => {
 
     it('(paint) Должен правильно обработать ошибки', () => {
       const singleBar = new IntervalBar('horizontal', anchor);
-      expect(() => singleBar.paint({})).to.throw('pxValue или target не был передан!');
+      expect(() => singleBar.paint({})).to.throw('pxValues или target не был передан!');
     });
 
     it('(paint) Должен правильно обработать ошибки', () => {

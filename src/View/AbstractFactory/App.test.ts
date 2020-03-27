@@ -8,7 +8,7 @@ import { IntervalHandle } from './UIs/Handle/Handle';
 import { defaultVisualModel } from '../../Model/defaultVisualModel';
 
 const { JSDOM } = jsdom;
-const dom = new JSDOM('<html><body id="root"></body></html>');
+const dom = new JSDOM('<html><body></body></html>');
 const window = dom.window;
 const document = dom.window.document;
 const defaults = defaultVisualModel;

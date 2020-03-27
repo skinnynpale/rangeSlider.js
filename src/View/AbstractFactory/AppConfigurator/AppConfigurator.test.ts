@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import jsdom from 'jsdom';
 
-import { IntervalFactory } from '../Factories/Factories';
+import { IntervalFactory, SingleFactory } from '../Factories/Factories';
 import AppConfigurator from './AppConfigurator';
 import { defaultVisualModel } from '../../../Model/defaultVisualModel';
 
 const { JSDOM } = jsdom;
-const dom = new JSDOM('<html><body id="root"></body></html>');
+const dom = new JSDOM('<html><body></body></html>');
 const document = dom.window.document;
 
 describe('ApplicationConfigurator', () => {
@@ -22,7 +22,7 @@ describe('ApplicationConfigurator', () => {
   });
 
   it('Должен верно определить фабрику', () => {
-    const applicationConfigurator = new AppConfigurator().main(
+    const test1 = new AppConfigurator().main(
       {
         ...defaultVisualModel,
         type: 'interval',
@@ -32,7 +32,19 @@ describe('ApplicationConfigurator', () => {
     );
 
     // @ts-ignore
-    expect(applicationConfigurator.factory).to.deep.equal(new IntervalFactory('horizontal'));
+    expect(test1.factory).to.deep.equal(new IntervalFactory('horizontal'));
+
+    const test2 = new AppConfigurator().main(
+      {
+        ...defaultVisualModel,
+        type: 'single',
+        direction: 'vertical',
+      },
+      anchor,
+    );
+
+    // @ts-ignore
+    expect(test2.factory).to.deep.equal(new SingleFactory('vertical'));
   });
 
   it('Должен выкинуть исключение на неверные данные', () => {

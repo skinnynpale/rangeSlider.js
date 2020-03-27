@@ -7,7 +7,7 @@ import { defaultVisualModel } from '../../../../Model/defaultVisualModel';
 const defaults = defaultVisualModel;
 
 const { JSDOM } = jsdom;
-const dom = new JSDOM('<html><body id="root"></body></html>');
+const dom = new JSDOM('<html><body></body></html>');
 const document = dom.window.document;
 const window = dom.window;
 
@@ -97,8 +97,5 @@ describe('Scale', () => {
 
     const handles = anchor.querySelectorAll('.slider__handle');
     expect(result).to.deep.equal({ handles, values: [590, 10] });
-
-    // const tips = anchor.querySelectorAll('.slider__tip');
-    // console.log(Array.from(tips).forEach(tip => console.log((tip as HTMLElement).dataset.value)));
   });
 });

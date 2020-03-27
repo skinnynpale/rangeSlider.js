@@ -15,14 +15,10 @@ class Scale extends Observer {
 
     this.slider = anchor.querySelector('.slider') as HTMLElement;
 
-    if (!this.slider) throw new Error('.slider - не было найдено!');
-
     const scaleWrapper = `<div class="slider__scale"><div class="scale"></div></div>`;
     this.slider.insertAdjacentHTML('afterbegin', scaleWrapper);
 
     this.wrapper = this.anchor.querySelector('.scale') as HTMLElement;
-
-    if (!this.wrapper) throw new Error('.scale - не было найдено!');
 
     this.wrapper.addEventListener('click', this.handleScaleValue);
   }
