@@ -12,7 +12,6 @@ class VisualModel extends Observer {
 
   public setState(state: VisualState) {
     this.state = { ...this.state, ...state };
-
     this.emit('newVisualModel', this.state);
   }
 }

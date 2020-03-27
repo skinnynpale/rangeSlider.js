@@ -8,7 +8,7 @@
 
 | Режим тестирования | Режим разработки | Режим продакшена |
 | ------------------ | ---------------- | ---------------- |
-| `npm run test`     | `npm run dev`    | `npm run build`   |
+| `npm run test`     | `npm run dev`    | `npm run build`  |
 
 ## Установка плагина
 
@@ -44,57 +44,64 @@ $(#myDiv).rangeSlider(
 
 ### Настройки для первого передаваемого объекта
 
-| Свойство    | Тип     | Default    | Описание                                              |
-| ----------- | ------- | ------------------------- | ----------------------------------------------------- |
-| `direction` | string  | "horizontal"              | Указывает положение слайдера "horizontal" или "vertical" |
-| `type`      | string  |  "single"                 | Позволяет выбрать одиночной значение или интервальное, "single" или "interval"  |
-| `skin`      | string  | "green"                   | Выбор рассцветки для слайдера, "green" или "red"                         |
-| `settings`  | boolean | false           | Настройки на лету                                     |
-| `bar`       | boolean | true              | Полоса заполнения                                     |
-| `tip`       | boolean | true              | Подсказки значений                                    |
-| `scale`     | boolean | false         | Линейка                                               |
+| Свойство    | Тип     | Default      | Описание                                                                       |
+| ----------- | ------- | ------------ | ------------------------------------------------------------------------------ |
+| `direction` | string  | "horizontal" | Указывает положение слайдера "horizontal" или "vertical"                       |
+| `type`      | string  | "single"     | Позволяет выбрать одиночной значение или интервальное, "single" или "interval" |
+| `skin`      | string  | "green"      | Выбор рассцветки для слайдера, "green" или "red"                               |
+| `settings`  | boolean | false        | Настройки на лету                                                              |
+| `bar`       | boolean | true         | Полоса заполнения                                                              |
+| `tip`       | boolean | true         | Подсказки значений                                                             |
+| `scale`     | boolean | false        | Линейка                                                                        |
 
 ### Настройки для второго передаваемого объекта
 
 | Свойство | Тип      | Default  | Описание                                         |
-| -------- | -------- | ---------------------- | ------------------------------------------------ |
-| `min`    | number   | 10                | Минимальное значение       (любое)                      |
-| `max`    | number   | 50                  | Максимальное значение       (любое)                     |
-| `step`   | number   | 2                    | Шаг                           (> 0)                   |
-| `values` | number[] | [20, 40]  | Начальные значения для первого и второго бегунка |
+| -------- | -------- | -------- | ------------------------------------------------ |
+| `min`    | number   | 10       | Минимальное значение (любое)                     |
+| `max`    | number   | 50       | Максимальное значение (любое)                    |
+| `step`   | number   | 2        | Шаг (> 0)                                        |
+| `values` | number[] | [20, 40] | Начальные значения для первого и второго бегунка |
 
 ### Публичные методы
+
 Для начала нужно инициализировать плагин
+
 ```javascript
-$("#anchor").rangeSlider();
+$('#anchor').rangeSlider();
 ```
-Затем, для использования существует 4 публичных метода
+
+Затем, для использования существует 2 публичных метода и один для обновления
+
 ```javascript
 // Обновление только числовых значений
-$("#anchor").rangeSlider("updateValues", null, {step: 1, values: [15]}); 
+$('#anchor').rangeSlider({}, { step: 1, values: [15] });
 
 // Обновление только визуала
-$("#anchor").rangeSlider("updateVisual", {skin: "red", direction: "vertical"});
+$('#anchor').rangeSlider({ skin: 'red', direction: 'vertical' });
 
 // Сброс к первоначальным кастомным настройкам
-$("#anchor").rangeSlider("reset");
+$('#anchor').rangeSlider('reset');
 
 // Удаление плагина из HTML
-$("#anchor").rangeSlider("destroy");
+$('#anchor').rangeSlider('destroy');
 ```
 
 ### Событие `onChange`
+
 ```javascript
 // Есть возможность повесить callback функцию на это событие
-$("#anchor").rangeSlider("onChange", () => 'ваш код');
+$('#anchor').rangeSlider('onChange', () => 'ваш код');
 
 // Так же можно брать значения слайдера из свойства detail, пример:
-$("#anchor").rangeSlider("onChange", (event) => console.log(event.detail));
+$('#anchor').rangeSlider('onChange', event => console.log(event.detail));
 ```
 
 # Архитектура
 
-### [Полная UML диаграмма](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=rangeSlider%20Class%20Diagramm#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Xe6DzLpntBZs3fBWXV2PZ_qWj9ztVsGw%26export%3Ddownload)
+### [UML диаграмма на сайте](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=rangeSlider%20Class%20Diagramm#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1Xe6DzLpntBZs3fBWXV2PZ_qWj9ztVsGw%26export%3Ddownload)
+
+![](https://sun9-56.userapi.com/c205820/v205820226/be3a5/bucS4TxZd_M.jpg)
 
 #### Инициализация
 
@@ -102,12 +109,14 @@ $("#anchor").rangeSlider("onChange", (event) => console.log(event.detail));
 
 При инициализации создаются экземпляры классов:
 
-1. `Model` - отвечает за хранение всех _числовых_ и _временных (ViewValues)_ значений, а так же все рассчеты
+1. `Model` - отвечает за хранение _числовых_ значений, а так же все рассчеты
 
    > Например: Model.state: { step: 5, min: 10, max: 90, value: 13, pxValue: 60 ... }
+
 2. `VisualModel` - отвечает за хранение информации о графическом состоянии слайдера
 
    > Например: VisualModel.state: { direction: "vertical", tip: true, bar: true ... }
+
 3. `Application` - отвечает за создание отображения. С помощью фасада `ApplicationConfigurator` определяется нужная фабрика, на которой будут создаваться все сущности, нужные для пользователя, из одной категории. Здесь использован шаблон проектирования `Абстрактная Фабрика`
 
    > Например: определилась фабрика `IntervalHorizontalFactory`, затем создаются `IntervalHorizontalBar`, `IntervalHorizontalScale` и тд..
@@ -120,6 +129,6 @@ $("#anchor").rangeSlider("onChange", (event) => console.log(event.detail));
 
 #### Взаимодействие с пользователем
 
-![](https://sun9-6.userapi.com/c851420/v851420293/1ebdcf/1le7Bipcr2Q.jpg)
-
 > Высокоуровневая диаграмма процесса
+
+![](https://sun9-6.userapi.com/c851420/v851420293/1ebdcf/1le7Bipcr2Q.jpg)

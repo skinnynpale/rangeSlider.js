@@ -4,7 +4,7 @@ import { ModelState, OnlyNumbers, ViewValues } from '../helpers/interfaces';
 
 class Model extends Observer {
   public state: ModelState = defaultModel;
-  mapOfHandles: Map<HTMLElement, OnlyNumbers> = new Map();
+  private mapOfHandles: Map<HTMLElement, OnlyNumbers> = new Map();
   private edge = 0;
 
   constructor(state: ModelState) {

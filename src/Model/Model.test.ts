@@ -235,6 +235,7 @@ describe('Model', () => {
     expect(model.state.values).to.deep.eq([170, 1000]);
 
     model.counting({ target, value: 390 });
+    // @ts-ignore
     expect(model.mapOfHandles.get(target)).to.deep.eq({ value: 390, pxValue: 153.53535353535355 });
   });
 });
