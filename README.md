@@ -34,7 +34,7 @@ $(#myDiv).rangeSlider(
         settings: true,
         skin: "red"
     },
-    // а тут для второго
+    /// а тут для второго
     {
         min: 20,
         step: 5
