@@ -28,7 +28,6 @@ $(#myDiv).rangeSlider();
 
 ```javascript
 $(#myDiv).rangeSlider(
-    'init',
     // тут настройки для первого передаваемого объекта (подробнее ниже)
     {
         settings: true,
@@ -94,7 +93,7 @@ $('#anchor').rangeSlider('destroy');
 $('#anchor').rangeSlider('onChange', () => 'ваш код');
 
 // Так же можно брать значения слайдера из свойства detail, пример:
-$('#anchor').rangeSlider('onChange', event => console.log(event.detail));
+$('#anchor').rangeSlider('onChange', (event) => console.log(event.detail));
 ```
 
 # Архитектура
